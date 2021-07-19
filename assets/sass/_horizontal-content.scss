@@ -1,0 +1,41 @@
+.horizontal-form {
+  * {
+    width: 100%;
+  }
+
+  @include govuk-media-query($from: desktop) {
+    display: flex;
+    flex-flow: row wrap;
+
+    * {
+      width: auto;
+      margin-bottom: 0;
+    }
+
+    > div {
+      margin-right: govuk-spacing(3);
+    }
+
+    .date-picker-container input {
+      width: 130px !important;
+    }
+
+    label {
+      margin-bottom: govuk-spacing(1);
+    }
+
+    button {
+      margin-right: govuk-spacing(3);
+    }
+
+    a {
+      margin-top: govuk-spacing(3);
+    }
+
+    button,
+    a {
+      align-self: flex-end;
+      margin-bottom: $govuk-border-width-form-element;
+    }
+  }
+}

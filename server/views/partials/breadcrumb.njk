@@ -1,0 +1,30 @@
+{% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
+
+
+{% macro breadcrumb(breadcrumbList) %}
+  {% set rows = [
+    {
+      text: "Digital prison services",
+      href: pshUrl
+    },
+    {
+      text: "Manage restricted patients",
+      href: '/'
+    }
+  ] %}
+
+  {% for item in breadcrumbList %}
+    {% set rows = (rows.push(
+      {
+        text: item.title,
+        href: item.href
+      }
+    ), rows) %}
+  {% endfor %}
+
+  {{ govukBreadcrumbs({
+    collapseOnMobile: true,
+    items: rows,
+    classes: "govuk-!-display-none-print"
+  }) }}
+{% endmacro %}

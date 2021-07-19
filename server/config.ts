@@ -69,4 +69,5 @@ export default {
     },
   },
   domain: get('INGRESS_URL', 'http://localhost:3000', requiredInProduction),
+  pshUrl: get('PSH_URL', 'http://localhost:3002', requiredInProduction),
 }
