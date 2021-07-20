@@ -22,7 +22,7 @@ context('Prisoner search', () => {
     })
   })
 
-  it.only('Handles validation', () => {
+  it('Handles validation', () => {
     cy.visit('/search-for-prisoner')
     PrisonerSearchPage.verifyOnPage()
     const form = PrisonerSearchPage.form()
