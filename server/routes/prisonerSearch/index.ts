@@ -3,7 +3,7 @@ import asyncMiddleware from '../../middleware/asyncMiddleware'
 
 import PrisonerSearchRoutes from './prisonerSearch'
 
-export default function MovingPrisonerRoutes(): Router {
+export default function movingPrisonerRoutes(): Router {
   const router = express.Router()
 
   const prisonerSearch = new PrisonerSearchRoutes()
