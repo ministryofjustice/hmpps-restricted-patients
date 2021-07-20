@@ -1,5 +1,7 @@
 import type { RequestHandler, Router } from 'express'
 
+import prisonerSearchRoutes from './prisonerSearch'
+
 import asyncMiddleware from '../middleware/asyncMiddleware'
 
 export default function routes(router: Router): Router {
@@ -8,6 +10,8 @@ export default function routes(router: Router): Router {
   get('/', (req, res, next) => {
     res.render('pages/index')
   })
+
+  router.use('/search-for-prisoner', prisonerSearchRoutes())
 
   return router
 }

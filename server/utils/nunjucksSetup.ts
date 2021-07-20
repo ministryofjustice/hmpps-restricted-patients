@@ -2,6 +2,8 @@
 import nunjucks from 'nunjucks'
 import express from 'express'
 import * as pathModule from 'path'
+import { FormError } from '../@types/template'
+import config from '../config'
 
 const production = process.env.NODE_ENV === 'production'
 
@@ -9,7 +11,7 @@ export default function nunjucksSetup(app: express.Express, path: pathModule.Pla
   app.set('view engine', 'njk')
 
   app.locals.asset_path = '/assets/'
-  app.locals.applicationName = 'Hmpps Restricted Patients'
+  app.locals.applicationName = 'Manage restricted patients'
 
   // Cachebusting version string
   if (production) {
@@ -45,4 +47,16 @@ export default function nunjucksSetup(app: express.Express, path: pathModule.Pla
     const array = fullName.split(' ')
     return `${array[0][0]}. ${array.reverse()[0]}`
   })
+
+  njkEnv.addFilter('findError', (array: FormError[] = [], formFieldId: string) => {
+    const item = array.find(error => error.href === `#${formFieldId}`)
+    if (item) {
+      return {
+        text: item.text,
+      }
+    }
+    return null
+  })
+
+  njkEnv.addGlobal('pshUrl', config.pshUrl)
 }
