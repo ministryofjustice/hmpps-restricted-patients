@@ -16,7 +16,7 @@
     {{ govukErrorSummary({
       titleText: "There is a problem",
       errorList: errors,
-      attributes: { "data-test": "form-errors" }
+      attributes: { "data-test": "error-summary" }
     })
   }}
   {% endif %}
@@ -31,20 +31,21 @@
         id: "searchText",
         name: "searchText",
         label: {
-            html: 'Enter a prisoner’s name or number'
+            html: "Enter a prisoner’s name or number"
         },
-        classes: 'govuk-!-width-full',
+        classes: "govuk-!-width-full",
         attributes: {
-          'data-test': 'prisoner-search-keywords'
+          'data-test': "prisoner-search-text-input"
         },
-        errorMessage: errors | findError('searchText')
+        errorMessage: errors | findError("searchText")
 
       }) }}
 
       {{ govukButton({
         text: "Search",
         type: "submit",
-        classes: "govuk-button--secondary"
+        classes: "govuk-button--secondary",
+        attributes: { "data-test": "prisoner-search-submit" }
       }) }}
     </div>
   </form>

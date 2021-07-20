@@ -5,7 +5,7 @@ import { FormError } from '../../@types/template'
 
 export default class PrisonerSearchRoutes {
   private renderView = async (req: Request, res: Response, error?: FormError): Promise<void> => {
-    return res.render('pages/searchForPrisoner', {
+    return res.render('pages/prisonerSearch', {
       errors: error ? [error] : [],
     })
   }
