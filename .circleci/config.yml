@@ -167,7 +167,6 @@ workflows:
             - unit_test
             - integration_test
             - build_docker
-
      - request-preprod-approval:
          type: approval
          requires:
