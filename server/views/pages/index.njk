@@ -1,12 +1,43 @@
 {% extends "../partials/layout.njk" %}
+{% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
+{% from "../partials/card.njk" import card %}
 
-{% set pageTitle = applicationName + " - Home" %}
+{% set title = "Manage restricted patients" %}
 
-{% block content %}
 
-  <main class="app-container govuk-body">
-    <h1>This site is under construction...</h1>
-    <p>Please check back later when there is content to view.</p>
-  </main>
+{% block main %}
+  <div class="govuk-width-container">
+    {{ govukBreadcrumbs({
+      collapseOnMobile: true,
+      items: [{
+        text: "Digital prison services",
+        href: pshUrl
+      }],
+      classes: "govuk-!-display-none-print"
+    }) }}
 
+    <h1 class="govuk-heading-l govuk-!-margin-top-7">{{ title }}</h1>
+  </div>
+
+  <div class="homepage-content govuk-!-margin-bottom-9">
+    <div class="govuk-width-container">
+      <ul class="govuk-grid-row card-group">
+          {% for task in tasks %}
+            <li class="govuk-grid-column-one-third card-group__item">
+              {{ card({
+                "href": task.href,
+                "clickable": "true",
+                "heading": task.heading,
+                "description": task.description,
+                "id": task.id
+              }) }}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+  </div>
+{% endblock %}
+
+{% block pageScripts %}
+  <script src="/assets/js/card.js"></script>
 {% endblock %}

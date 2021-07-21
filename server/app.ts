@@ -8,6 +8,7 @@ import nunjucksSetup from './utils/nunjucksSetup'
 import errorHandler from './errorHandler'
 import standardRouter from './routes/standardRouter'
 import type UserService from './services/userService'
+import homepageController from './controllers/homepage'
 
 import setUpWebSession from './middleware/setUpWebSession'
 import setUpStaticResources from './middleware/setUpStaticResources'
@@ -33,7 +34,8 @@ export default function createApp(userService: UserService): express.Application
   app.use(setUpAuthentication())
   app.use(authorisationMiddleware())
 
-  app.use('/', indexRoutes(standardRouter(userService)))
+  app.use(indexRoutes(standardRouter(userService)))
+  app.use('/$', homepageController())
 
   app.use((req, res, next) => next(createError(404, 'Not found')))
   app.use(errorHandler(process.env.NODE_ENV === 'production'))
