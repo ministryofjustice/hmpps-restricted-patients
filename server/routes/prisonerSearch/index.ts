@@ -3,7 +3,13 @@ import asyncMiddleware from '../../middleware/asyncMiddleware'
 
 import PrisonerSearchRoutes from './prisonerSearch'
 
-export default function movingPrisonerRoutes(): Router {
+import PrisonerSearchService from '../../services/prisonerSearchService'
+
+export default function movingPrisonerRoutes({
+  prisonerSearchService,
+}: {
+  prisonerSearchService: PrisonerSearchService
+}): Router {
   const router = express.Router()
 
   const prisonerSearch = new PrisonerSearchRoutes()
@@ -13,6 +19,22 @@ export default function movingPrisonerRoutes(): Router {
 
   get('/', prisonerSearch.view)
   post('/', prisonerSearch.submit)
+
+  get(
+    '/results/:searchTerm',
+    asyncMiddleware(async (req, res, next) => {
+      const { searchTerm } = req.params
+
+      prisonerSearchService
+        .search({ searchTerm, ...res.locals.user }, res.locals.user)
+        .then(data => {
+          res.json(data)
+        })
+        .catch(error => {
+          res.send(error)
+        })
+    })
+  )
 
   return router
 }

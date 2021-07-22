@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 import express, { Router, Express } from 'express'
 import cookieSession from 'cookie-session'
 import createError from 'http-errors'
@@ -9,6 +10,7 @@ import errorHandler from '../../errorHandler'
 import standardRouter from '../standardRouter'
 import UserService from '../../services/userService'
 import * as auth from '../../authentication/auth'
+import PrisonerSearchService from '../../services/prisonerSearchService'
 
 const user = {
   name: 'john smith',
@@ -56,5 +58,11 @@ function appSetup(route: Router, production: boolean): Express {
 
 export default function appWithAllRoutes({ production = false }: { production?: boolean }): Express {
   auth.default.authenticationMiddleware = () => (req, res, next) => next()
-  return appSetup(allRoutes(standardRouter(new MockUserService())), production)
+  return appSetup(
+    allRoutes(standardRouter(new MockUserService()), {
+      userService: new MockUserService(),
+      prisonerSearchService: {} as PrisonerSearchService,
+    }),
+    production
+  )
 }

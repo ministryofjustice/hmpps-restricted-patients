@@ -33,6 +33,7 @@ function getSystemClientTokenFromHmppsAuth(username?: string): Promise<superagen
 }
 
 export interface User {
+  username: string
   name: string
   activeCaseLoadId: string
 }
