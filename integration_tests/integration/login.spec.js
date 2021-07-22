@@ -1,4 +1,4 @@
-const IndexPage = require('../pages/index')
+const IndexPage = require('../pages/homepage')
 const AuthLoginPage = require('../pages/authLogin')
 
 context('Login', () => {
@@ -9,7 +9,7 @@ context('Login', () => {
   })
 
   it('Unauthenticated user directed to auth', () => {
-    cy.visit('/')
+    cy.visit('/manage-restricted-patients')
     AuthLoginPage.verifyOnPage()
   })
   it('User name visible in header', () => {
