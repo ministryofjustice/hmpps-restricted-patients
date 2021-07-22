@@ -20,7 +20,7 @@ afterEach(() => {
 })
 
 describe('Tasks', () => {
-  it('should show three tabs', async () => {
+  it('should show the available tasks', async () => {
     await controller(req, res)
 
     expect(res.render).toHaveBeenCalledWith(
