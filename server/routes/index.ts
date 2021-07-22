@@ -9,8 +9,8 @@ import asyncMiddleware from '../middleware/asyncMiddleware'
 export default function routes(router: Router): Router {
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
 
-  router.use('/manage-restricted-patients/', homepageController())
-  router.use('/manage-restricted-patients/search-for-prisoner', prisonerSearchRoutes())
+  router.use('/$', homepageController())
+  router.use('/search-for-prisoner', prisonerSearchRoutes())
 
   return router
 }

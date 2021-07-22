@@ -1,5 +1,4 @@
 window.onload = function () {
-  console.log('in here!')
   // Loops through dom and finds all elements with card--clickable class
   document.querySelectorAll('.card--clickable').forEach(card => {
     // Check if card has a link within it
