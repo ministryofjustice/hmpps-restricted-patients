@@ -1,18 +1,12 @@
-import type { Express, Request, Response } from 'express'
-import request from 'supertest'
-import appWithAllRoutes from '../routes/testutils/appSetup'
+import type { Request, Response } from 'express'
 import homepageController from './homepage'
 
-let app: Express
-let req: any
-let res: any
-let controller: any
+let req: Request
+let res: Response
 
 beforeEach(() => {
-  req = { session: { userDetails: { activeCaseLoadId: 'MDI' } } }
-  res = { locals: {}, render: jest.fn(), redirect: jest.fn() }
-  app = appWithAllRoutes({ production: false })
-  controller = homepageController()
+  req = { session: { userDetails: { activeCaseLoadId: 'MDI' } } } as Request
+  res = { locals: {}, render: jest.fn(), redirect: jest.fn() } as unknown as Response
 })
 
 afterEach(() => {
@@ -21,7 +15,7 @@ afterEach(() => {
 
 describe('Tasks', () => {
   it('should show the available tasks', async () => {
-    await controller(req, res)
+    await homepageController(req, res)
 
     expect(res.render).toHaveBeenCalledWith(
       'pages/homepage',

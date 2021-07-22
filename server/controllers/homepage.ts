@@ -37,9 +37,8 @@ export const tasks: TaskType[] = [
   },
 ]
 
-export default () =>
-  (_req: Request, res: any): Response => {
-    return res.render('pages/homepage', {
-      tasks,
-    })
-  }
+export default (_req: Request, res: Response): void => {
+  return res.render('pages/homepage', {
+    tasks,
+  })
+}
