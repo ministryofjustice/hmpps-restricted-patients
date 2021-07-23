@@ -25,7 +25,7 @@ describe('Tasks', () => {
             id: 'search-restricted-patient',
             heading: 'Search for a restricted patient',
             description: 'Search for a restricted patient to view their details and to add a case note.',
-            href: '/manage-restricted-patients/search-for-a-restricted-patient',
+            href: '/search-for-a-restricted-patient',
             roles: null,
             enabled: true,
           },
@@ -34,7 +34,7 @@ describe('Tasks', () => {
             heading: 'Move someone to a hospital',
             description:
               'Move someone from either a prison or court to a hospital when detained under the Mental Health Act. This also changes them to a restricted patient.',
-            href: '/manage-restricted-patients/search-for-prisoner',
+            href: '/search-for-prisoner',
             roles: null,
             enabled: true,
           },
@@ -43,7 +43,7 @@ describe('Tasks', () => {
             heading: 'Remove someone from restricted patients',
             description:
               'Remove someone from restricted patients if they have been released from a hospital to the community.',
-            href: '/manage-restricted-patients/search-for-a-restricted-patient',
+            href: '/search-for-a-restricted-patient',
             roles: null,
             enabled: true,
           },

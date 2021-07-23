@@ -9,7 +9,7 @@ context('Login', () => {
   })
 
   it('Unauthenticated user directed to auth', () => {
-    cy.visit('/manage-restricted-patients')
+    cy.visit('/')
     AuthLoginPage.verifyOnPage()
   })
   it('User name visible in header', () => {

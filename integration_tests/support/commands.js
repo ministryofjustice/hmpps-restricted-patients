@@ -1,4 +1,4 @@
 Cypress.Commands.add('login', () => {
-  cy.request(`/manage-restricted-patients`)
+  cy.request(`/`)
   cy.task('getLoginUrl').then(cy.visit)
 })

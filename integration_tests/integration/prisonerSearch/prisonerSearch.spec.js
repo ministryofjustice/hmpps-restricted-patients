@@ -9,7 +9,7 @@ context('Prisoner search', () => {
   })
 
   it('Searches correctly', () => {
-    cy.visit('/manage-restricted-patients/search-for-prisoner')
+    cy.visit('/search-for-prisoner')
     PrisonerSearchPage.verifyOnPage()
     const form = PrisonerSearchPage.form()
 
@@ -23,7 +23,7 @@ context('Prisoner search', () => {
   })
 
   it('Handles validation', () => {
-    cy.visit('/manage-restricted-patients/search-for-prisoner')
+    cy.visit('/search-for-prisoner')
     PrisonerSearchPage.verifyOnPage()
     const form = PrisonerSearchPage.form()
 

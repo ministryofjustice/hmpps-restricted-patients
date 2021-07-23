@@ -11,7 +11,7 @@ const homePage = () =>
 export default {
   verifyOnPage: homePage,
   goTo: () => {
-    cy.visit(`/manage-restricted-patients`)
+    cy.visit(`/`)
     return homePage()
   },
 }
