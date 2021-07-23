@@ -1,10 +1,9 @@
 import { Readable } from 'stream'
 import type { PrisonerSearchByName, PrisonerSearchByPrisonerNumber } from '../data/prisonerSearchClient'
-import type HmppsAuthClient from '../data/hmppsAuthClient'
 import PrisonerSearchClient from '../data/prisonerSearchClient'
 import PrisonApiClient from '../data/prisonApiClient'
 import PrisonerSearchResult, { AlertType } from '../data/prisonerSearchResult'
-import { User } from '../data/hmppsAuthClient'
+import HmppsAuthClient, { User } from '../data/hmppsAuthClient'
 
 import { alertFlagLabels } from '../common/alertFlagValues'
 import convertToTitleCase from '../utils/utils'
@@ -27,17 +26,12 @@ function searchByPrisonerIdentifier(searchTerm: string, prisonIds: string[]): Pr
 
 export interface PrisonerSearch {
   searchTerm: string
-  username: string
-  token: string
-  authSource: string
 }
 
 export default class PrisonerSearchService {
   constructor(private readonly hmppsAuthClient: HmppsAuthClient) {}
 
   async search(search: PrisonerSearch, user: User): Promise<PrisonerSearchSummary[]> {
-    const { token } = search
-
     const searchTerm = search.searchTerm.replace(/,/g, ' ').replace(/\s\s+/g, ' ').trim()
     const prisonIds = [user.activeCaseLoadId]
 
@@ -45,7 +39,7 @@ export default class PrisonerSearchService {
       ? searchByPrisonerIdentifier(searchTerm, prisonIds)
       : searchByName(searchTerm, prisonIds)
 
-    const results = await new PrisonerSearchClient(token).search(searchRequest)
+    const results = await new PrisonerSearchClient(user.token).search(searchRequest)
 
     return results.map(prisoner => {
       const prisonerAlerts = prisoner.alerts?.map((alert: AlertType) => alert.alertCode)
@@ -61,7 +55,7 @@ export default class PrisonerSearchService {
   }
 
   async getPrisonerImage(prisonerNumber: string, user: User): Promise<Readable> {
-    const { token } = user
+    const token = await this.hmppsAuthClient.getSystemClientToken(user.username)
     return new PrisonApiClient(token).getPrisonerImage(prisonerNumber)
   }
 }
