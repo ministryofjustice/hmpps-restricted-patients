@@ -1,5 +1,10 @@
 import { Expose, Type } from 'class-transformer'
 
+export type AlertType = {
+  alertType: string
+  alertCode: string
+}
+
 export default class PrisonerSearchResult {
   @Expose()
   prisonerNumber: string
@@ -57,4 +62,7 @@ export default class PrisonerSearchResult {
   @Type(() => Date)
   @Expose()
   releaseDate: Date
+
+  @Expose()
+  alerts: AlertType[]
 }

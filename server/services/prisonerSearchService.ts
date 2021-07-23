@@ -1,8 +1,12 @@
+import { Readable } from 'stream'
 import type { PrisonerSearchByName, PrisonerSearchByPrisonerNumber } from '../data/prisonerSearchClient'
+import type HmppsAuthClient from '../data/hmppsAuthClient'
 import PrisonerSearchClient from '../data/prisonerSearchClient'
-import PrisonerSearchResult from '../data/prisonerSearchResult'
+import PrisonApiClient from '../data/prisonApiClient'
+import PrisonerSearchResult, { AlertType } from '../data/prisonerSearchResult'
 import { User } from '../data/hmppsAuthClient'
 
+import { alertFlagLabels } from '../common/alertFlagValues'
 import convertToTitleCase from '../utils/utils'
 
 export interface PrisonerSearchSummary extends PrisonerSearchResult {
@@ -29,6 +33,8 @@ export interface PrisonerSearch {
 }
 
 export default class PrisonerSearchService {
+  constructor(private readonly hmppsAuthClient: HmppsAuthClient) {}
+
   async search(search: PrisonerSearch, user: User): Promise<PrisonerSearchSummary[]> {
     const { token } = search
 
@@ -41,9 +47,21 @@ export default class PrisonerSearchService {
 
     const results = await new PrisonerSearchClient(token).search(searchRequest)
 
-    return results.map(prisoner => ({
-      ...prisoner,
-      displayName: convertToTitleCase(`${prisoner.lastName}, ${prisoner.firstName}`),
-    }))
+    return results.map(prisoner => {
+      const prisonerAlerts = prisoner.alerts?.map((alert: AlertType) => alert.alertCode)
+
+      return {
+        ...prisoner,
+        displayName: convertToTitleCase(`${prisoner.lastName}, ${prisoner.firstName}`),
+        formattedAlerts: alertFlagLabels.filter(alertFlag =>
+          alertFlag.alertCodes.some(alert => prisonerAlerts?.includes(alert))
+        ),
+      }
+    })
+  }
+
+  async getPrisonerImage(prisonerNumber: string, user: User): Promise<Readable> {
+    const { token } = user
+    return new PrisonApiClient(token).getPrisonerImage(prisonerNumber)
   }
 }

@@ -1,0 +1,81 @@
+{% extends "../partials/layout.njk" %}
+{% from "../partials/breadcrumb.njk" import breadcrumb %}
+{% from "../macros/alertFlags.njk" import alertFlags %}
+{% from "../macros/categoryFlag.njk" import categoryFlag %}
+
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% set title = "Select a prisoner" %}
+
+{% block beforeContent %}
+  {{ breadcrumb() }}
+{% endblock %}
+
+{% block content %}
+  {% if errors.length > 0 %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: errors,
+      attributes: { "data-test": "error-summary" }
+    })
+  }}
+  {% endif %}
+
+  <h1 class="govuk-heading-l">{{ title }}</h1>
+
+  {% set rows = [] %}
+  {% for prisoner in searchResults %}
+    {% set prisonerImageHtml %}
+      <img src="/prisoner/{{ prisoner.prisonerNumber }}/image" alt="Photograph of {{ prisoner.displayName }}" class="results-table__image" />
+    {% endset -%}
+    {% set prisonerLinkHtml %}
+      <a href="{{ pshUrl }}/prisoner/{{prisoner.prisonerNumber}}" class="govuk-link">{{ prisoner.displayName }}</a>
+    {% endset -%}
+    {% set moveHospitalLinkHtml %}
+      <a href="#" class="govuk-link" data-test="prisoner-cell-search-link"><span class="govuk-visually-hidden">{{ prisoner.displayName }} - </span>Move to a hospital</a>
+    {% endset -%}
+    {% set rows = (rows.push([
+      { html: prisonerImageHtml },
+      {
+        html: prisonerLinkHtml,
+        attributes: {
+          "data-sort-value": prisoner.displayName
+        }
+      },
+      { text: prisoner.prisonerNumber },
+      { text: prisoner.cellLocation },
+      { html: alertFlags(prisoner.formattedAlerts, newLine=true) + categoryFlag('', prisoner.category, false) },
+      { html: moveHospitalLinkHtml }
+    ]), rows) %}
+  {% endfor %}
+
+  <div class="results-table">
+    {{ govukTable({
+      head: [
+        { html: '<span class="govuk-visually-hidden">Picture</span>' },
+        {
+          text: "Name",
+          attributes: {
+            "aria-sort": "ascending"
+          }
+        },
+        { text: "Prison number" },
+        {
+          text: "Cell",
+          attributes: {
+            "aria-sort": "none"
+          }
+        },
+        {
+          text: "Relevant alerts"
+        },
+        { text: "" }
+      ],
+      rows: rows,
+      attributes: { "data-test": "prisoner-search-results-table" }
+    }) }}
+  </div>
+{% endblock %}

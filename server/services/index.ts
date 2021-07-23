@@ -8,7 +8,7 @@ import TokenStore from '../data/tokenStore'
 
 const hmppsAuthClient = new HmppsAuthClient(new TokenStore())
 const userService = new UserService(hmppsAuthClient)
-const prisonerSearchService = new PrisonerSearchService()
+const prisonerSearchService = new PrisonerSearchService(hmppsAuthClient)
 
 export const services = {
   userService,

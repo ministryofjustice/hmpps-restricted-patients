@@ -27,8 +27,8 @@ describe('POST /search-for-prisoner', () => {
   it('should redirect to select prisoner page with the correct search text', () => {
     return request(app)
       .post('/search-for-prisoner')
-      .send({ searchText: 'Smith' })
-      .expect('Location', '/select-prisoner?searchText=Smith')
+      .send({ searchTerm: 'Smith' })
+      .expect('Location', '/select-prisoner?searchTerm=Smith')
   })
 
   it('should render validation messages', () => {

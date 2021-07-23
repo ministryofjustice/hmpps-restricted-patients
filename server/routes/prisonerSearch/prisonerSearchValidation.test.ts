@@ -1,14 +1,14 @@
 import validateForm from './prisonerSearchValidation'
 
 describe('validateForm', () => {
-  describe('searchText', () => {
+  describe('searchTerm', () => {
     it('valid', () => {
-      expect(validateForm({ searchText: 'Smith' })).toBeNull()
+      expect(validateForm({ searchTerm: 'Smith' })).toBeNull()
     })
 
     it('invalid', () => {
-      expect(validateForm({ searchText: '' })).toStrictEqual({
-        href: '#searchText',
+      expect(validateForm({ searchTerm: '' })).toStrictEqual({
+        href: '#searchTerm',
         text: 'Enter a prisoner’s name or number',
       })
     })
