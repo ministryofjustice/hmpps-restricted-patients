@@ -1,4 +1,3 @@
-import 'reflect-metadata'
 import nock from 'nock'
 import config from '../config'
 import logger from '../../logger'

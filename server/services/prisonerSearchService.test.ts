@@ -1,4 +1,3 @@
-import 'reflect-metadata'
 import PrisonerSearchService, { PrisonerSearchSummary } from './prisonerSearchService'
 import PrisonerSearchClient from '../data/prisonerSearchClient'
 import PrisonApiClient from '../data/prisonApiClient'

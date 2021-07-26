@@ -12,7 +12,6 @@ import UserService from '../../services/userService'
 import * as auth from '../../authentication/auth'
 import PrisonerSearchService from '../../services/prisonerSearchService'
 import { Services } from '../../services'
-// import { Services } from '../../services'
 
 const user = {
   name: 'john smith',
