@@ -72,13 +72,13 @@ export default class RestClient {
     }
   }
 
-  async post({
+  async post<T>({
     path = null,
     headers = {},
     responseType = '',
     data = {},
     raw = false,
-  }: PostRequest = {}): Promise<unknown> {
+  }: PostRequest = {}): Promise<T> {
     logger.info(`Post using user credentials: calling ${this.name}: ${path}`)
     try {
       const result = await superagent
@@ -105,7 +105,7 @@ export default class RestClient {
   async stream({
     path = null,
     headers = {},
-    errorLogger = this.defaultErrorLogger,
+    errorLogger = this.defaultErrorLogger.bind(this),
   }: StreamRequest = {}): Promise<unknown> {
     logger.info(`Get using user credentials: calling ${this.name}: ${path}`)
     return new Promise((resolve, reject) => {

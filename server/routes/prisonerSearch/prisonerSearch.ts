@@ -13,16 +13,16 @@ export default class PrisonerSearchRoutes {
   view = async (req: Request, res: Response): Promise<void> => this.renderView(req, res)
 
   submit = async (req: Request, res: Response): Promise<void> => {
-    const { searchText } = req.body
+    const { searchTerm } = req.body
 
-    const error = validateForm({ searchText })
+    const error = validateForm({ searchTerm })
 
     if (error) return this.renderView(req, res, error)
 
     return res.redirect(
       url.format({
         pathname: '/select-prisoner',
-        query: { searchText },
+        query: { searchTerm },
       })
     )
   }

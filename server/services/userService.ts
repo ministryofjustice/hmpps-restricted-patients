@@ -2,6 +2,7 @@ import convertToTitleCase from '../utils/utils'
 import type HmppsAuthClient from '../data/hmppsAuthClient'
 
 interface UserDetails {
+  username: string
   name: string
   displayName: string
 }

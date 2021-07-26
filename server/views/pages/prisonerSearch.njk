@@ -28,16 +28,16 @@
 
     <div class="horizontal-form govuk-!-margin-bottom-3">
       {{ govukInput({
-        id: "searchText",
-        name: "searchText",
+        id: "searchTerm",
+        name: "searchTerm",
         label: {
             html: "Enter a prisoner’s name or number"
         },
         classes: "govuk-!-width-full",
         attributes: {
-          'data-test': "prisoner-search-text-input"
+          'data-test': "prisoner-search-term-input"
         },
-        errorMessage: errors | findError("searchText")
+        errorMessage: errors | findError("searchTerm")
 
       }) }}
 

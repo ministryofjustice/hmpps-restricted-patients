@@ -13,12 +13,12 @@ context('Prisoner search', () => {
     PrisonerSearchPage.verifyOnPage()
     const form = PrisonerSearchPage.form()
 
-    form.searchText().type('Smith')
+    form.searchTerm().type('Smith')
     form.submit().click()
 
     cy.location().should(loc => {
       expect(loc.pathname).to.eq('/select-prisoner')
-      expect(loc.search).to.eq('?searchText=Smith')
+      expect(loc.search).to.eq('?searchTerm=Smith')
     })
   })
 

@@ -1,18 +1,18 @@
 import { FormError } from '../../@types/template'
 
 type SearchForm = {
-  searchText?: string
+  searchTerm?: string
 }
 
 const errors: { [key: string]: FormError } = {
   MISSING_TEXT: {
-    href: '#searchText',
+    href: '#searchTerm',
     text: 'Enter a prisoner’s name or number',
   },
 }
 
-export default function validateForm({ searchText }: SearchForm): FormError | null {
-  if (!searchText) {
+export default function validateForm({ searchTerm }: SearchForm): FormError | null {
+  if (!searchTerm) {
     return errors.MISSING_TEXT
   }
 

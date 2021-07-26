@@ -21,7 +21,7 @@
     "record-build-info": "node ./bin/record-build-info",
     "lint": "eslint . --cache --max-warnings 0",
     "typecheck": "tsc",
-    "test": "jest",
+    "test": "jest --runInBand",
     "security_audit": "npx audit-ci --config audit-ci.json",
     "int-test": "cypress run --config video=false",
     "int-test-ui": "cypress open",
@@ -90,6 +90,7 @@
     "body-parser": "^1.19.0",
     "bunyan": "^1.8.15",
     "bunyan-format": "^0.2.1",
+    "class-transformer": "^0.3.1",
     "compression": "^1.7.4",
     "connect-flash": "^0.1.1",
     "connect-redis": "^6.0.0",
@@ -109,6 +110,7 @@
     "passport": "^0.4.1",
     "passport-oauth2": "^1.5.0",
     "redis": "^3.1.2",
+    "reflect-metadata": "^0.1.13",
     "superagent": "^6.1.0"
   },
   "devDependencies": {
