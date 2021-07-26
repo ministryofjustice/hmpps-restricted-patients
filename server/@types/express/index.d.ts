@@ -1,10 +1,11 @@
-export default {}
-
 declare module 'express-session' {
   // Declare that the session will potentially contain these additional fields
-  interface SessionData {
+  export interface SessionData {
     returnTo: string
     nowInMinutes: number
+    userDetails: {
+      activeCaseLoadId: string
+    }
   }
 }
 

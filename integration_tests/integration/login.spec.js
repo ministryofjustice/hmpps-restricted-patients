@@ -1,4 +1,4 @@
-const IndexPage = require('../pages/index')
+const IndexPage = require('../pages/homepage')
 const AuthLoginPage = require('../pages/authLogin')
 
 context('Login', () => {
