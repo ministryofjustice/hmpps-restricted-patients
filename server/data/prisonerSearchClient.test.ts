@@ -3,7 +3,7 @@ import nock from 'nock'
 import config from '../config'
 import PrisonSearchClient from './prisonerSearchClient'
 
-describe.skip('prisonSearchClient', () => {
+describe('prisonerSearchClient', () => {
   let fakePrisonerSearchApi: nock.Scope
   let client: PrisonSearchClient
 
