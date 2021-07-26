@@ -11,14 +11,14 @@ const prisonerSearchService = new PrisonerSearchService(null) as jest.Mocked<Pri
 let app: Express
 
 beforeEach(() => {
-  app = appWithAllRoutes({ production: false })
+  app = appWithAllRoutes({ production: false }, { prisonerSearchService })
 })
 
 afterEach(() => {
   jest.resetAllMocks()
 })
 
-describe.skip('GET /select-prisoner', () => {
+describe('GET /select-prisoner', () => {
   describe('with results', () => {
     beforeEach(() => {
       prisonerSearchService.search.mockResolvedValue([

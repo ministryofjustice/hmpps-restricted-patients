@@ -31,7 +31,7 @@ const user = {
   token: 'token-1',
 } as User
 
-describe.skip('prisonerSearchService', () => {
+describe('prisonerSearchService', () => {
   let service: PrisonerSearchService
 
   beforeEach(() => {

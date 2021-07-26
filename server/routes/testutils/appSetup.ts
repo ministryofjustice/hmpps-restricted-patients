@@ -11,6 +11,7 @@ import standardRouter from '../standardRouter'
 import UserService from '../../services/userService'
 import * as auth from '../../authentication/auth'
 import PrisonerSearchService from '../../services/prisonerSearchService'
+import { Services } from '../../services'
 // import { Services } from '../../services'
 
 const user = {
@@ -44,7 +45,7 @@ function appSetup(route: Router, production: boolean): Express {
 
   app.use((req, res, next) => {
     res.locals = {}
-    res.locals.user = req.user
+    res.locals.user = user
     next()
   })
 
@@ -58,12 +59,16 @@ function appSetup(route: Router, production: boolean): Express {
   return app
 }
 
-export default function appWithAllRoutes({ production = false }: { production?: boolean }): Express {
+export default function appWithAllRoutes(
+  { production = false }: { production?: boolean },
+  overrides: Partial<Services> = {}
+): Express {
   auth.default.authenticationMiddleware = () => (req, res, next) => next()
   return appSetup(
     allRoutes(standardRouter(new MockUserService()), {
       userService: new MockUserService(),
       prisonerSearchService: {} as PrisonerSearchService,
+      ...overrides,
     }),
     production
   )
