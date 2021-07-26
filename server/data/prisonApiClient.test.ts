@@ -6,7 +6,7 @@ import PrisonApiClient from './prisonApiClient'
 
 jest.mock('../../logger')
 
-describe.skip('prisonApiClient', () => {
+describe('prisonApiClient', () => {
   let fakePrisonApi: nock.Scope
   let client: PrisonApiClient
 
