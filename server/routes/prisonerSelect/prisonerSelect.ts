@@ -20,11 +20,15 @@ export default class PrisonerSelectRoutes {
   }
 
   view = async (req: Request, res: Response): Promise<void> => {
+    const { user } = res.locals
     const searchTerm = JSON.stringify(req.query.searchTerm)
 
     if (!searchTerm) return res.redirect('/search-for-prisoner')
 
-    const searchResults = await this.prisonerSearchService.search({ searchTerm }, res.locals.user)
+    const searchResults = await this.prisonerSearchService.search(
+      { searchTerm, prisonIds: [user.activeCaseLoadId] },
+      user
+    )
 
     return this.renderView(req, res, { searchResults })
   }

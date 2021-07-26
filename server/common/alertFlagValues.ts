@@ -1,3 +1,9 @@
+export type FormattedAlertType = {
+  alertCodes: string[]
+  classes: string
+  label: string
+}
+
 export const alertFlagLabels = [
   { alertCodes: ['HA'], classes: 'alert-status alert-status--acct', label: 'ACCT open' },
   {
