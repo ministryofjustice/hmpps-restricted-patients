@@ -48,6 +48,10 @@ describe('prisonerSearchService', () => {
     it('search by prisoner identifier', async () => {
       search.mockResolvedValue([
         {
+          alerts: [
+            { alertType: 'T', alertCode: 'TCPA' },
+            { alertType: 'X', alertCode: 'XCU' },
+          ],
           firstName: 'JOHN',
           lastName: 'SMITH',
           prisonName: 'HMP Moorland',
@@ -57,8 +61,24 @@ describe('prisonerSearchService', () => {
       const results = await service.search({ searchTerm: 'a1234aA', prisonIds }, user)
       expect(results).toStrictEqual([
         {
+          alerts: [
+            {
+              alertCode: 'TCPA',
+              alertType: 'T',
+            },
+            {
+              alertCode: 'XCU',
+              alertType: 'X',
+            },
+          ],
           displayName: 'Smith, John',
-          formattedAlerts: [],
+          formattedAlerts: [
+            {
+              alertCodes: ['XCU'],
+              classes: 'alert-status alert-status--controlled-unlock',
+              label: 'Controlled unlock',
+            },
+          ],
           firstName: 'JOHN',
           lastName: 'SMITH',
           prisonerNumber: 'A1234AA',
