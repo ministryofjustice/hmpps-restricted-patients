@@ -1,4 +1,3 @@
-/* eslint-disable max-classes-per-file */
 import express, { Router, Express } from 'express'
 import cookieSession from 'cookie-session'
 import createError from 'http-errors'
