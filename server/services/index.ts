@@ -1,5 +1,3 @@
-// import config from '../config'
-
 import UserService from './userService'
 import PrisonerSearchService from './prisonerSearchService'
 import HmppsAuthClient from '../data/hmppsAuthClient'
