@@ -1,4 +1,4 @@
-// import { plainToClass } from 'class-transformer'
+import { plainToClass } from 'class-transformer'
 import config from '../config'
 import RestClient from './restClient'
 import PrisonerSearchResult from './prisonerSearchResult'
@@ -34,6 +34,6 @@ export default class PrisonerSearchClient {
       },
     })
 
-    return results.map((result: PrisonerSearchResult) => result)
+    return results.map(result => plainToClass(PrisonerSearchResult, result, { excludeExtraneousValues: true }))
   }
 }
