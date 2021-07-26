@@ -11,7 +11,7 @@ const prisonerSearchService = new PrisonerSearchService(null) as jest.Mocked<Pri
 let app: Express
 
 beforeEach(() => {
-  app = appWithAllRoutes({ production: false }, { prisonerSearchService })
+  app = appWithAllRoutes({ production: false })
 })
 
 afterEach(() => {
