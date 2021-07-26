@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import type { Express } from 'express'
 import request from 'supertest'
 import appWithAllRoutes from './routes/testutils/appSetup'
