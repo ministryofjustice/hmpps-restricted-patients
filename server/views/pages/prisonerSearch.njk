@@ -12,41 +12,15 @@
 {% endblock %}
 
 {% block content %}
-  {% if errors.length > 0 %}
+  {% if errors | length %}
     {{ govukErrorSummary({
       titleText: "There is a problem",
       errorList: errors,
       attributes: { "data-test": "error-summary" }
-    })
-  }}
+    }) }}
   {% endif %}
 
   <h1 class="govuk-heading-l">{{ title }}</h1>
 
-  <form method="POST" novalidate="novalidate" data-test="prisoner-search-form">
-    <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
-
-    <div class="horizontal-form govuk-!-margin-bottom-3">
-      {{ govukInput({
-        id: "searchTerm",
-        name: "searchTerm",
-        label: {
-            html: "Enter a prisoner’s name or number"
-        },
-        classes: "govuk-!-width-full",
-        attributes: {
-          'data-test': "prisoner-search-term-input"
-        },
-        errorMessage: errors | findError("searchTerm")
-
-      }) }}
-
-      {{ govukButton({
-        text: "Search",
-        type: "submit",
-        classes: "govuk-button--secondary",
-        attributes: { "data-test": "prisoner-search-submit" }
-      }) }}
-    </div>
-  </form>
+  {% include "../partials/prisonerSearchForm.njk" %}
 {% endblock %}

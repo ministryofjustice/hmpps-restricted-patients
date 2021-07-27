@@ -15,7 +15,17 @@
 {% endblock %}
 
 {% block content %}
+  {% if errors | length %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: errors,
+      attributes: { "data-test": "error-summary" }
+    }) }}
+  {% endif %}
+
   <h1 class="govuk-heading-l">{{ title }}</h1>
+  
+  {% include "../partials/prisonerSearchForm.njk" %}
 
   {% set rows = [] %}
   {% for prisoner in searchResults %}
@@ -71,6 +81,8 @@
       }) }}
     </div>
   {% else %}
-    <p>There are no results for the name or number you have entered. You can search again.</p>
+    {% if not errors | length %}
+      <p>There are no results for the name or number you have entered. You can search again.</p>
+    {% endif %}
   {% endif %}
 {% endblock %}
