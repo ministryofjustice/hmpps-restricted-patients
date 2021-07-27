@@ -15,7 +15,17 @@
 {% endblock %}
 
 {% block content %}
+  {% if errors | length %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: errors,
+      attributes: { "data-test": "error-summary" }
+    }) }}
+  {% endif %}
+
   <h1 class="govuk-heading-l">{{ title }}</h1>
+  
+  {% include "../partials/prisonerSearchForm.njk" %}
 
   {% set rows = [] %}
   {% for prisoner in searchResults %}
@@ -44,6 +54,8 @@
   {% endfor %}
 
   {% if rows | length %}
+    <p class="align-right"><strong>People listed:</strong> {{ rows.length }}</p>
+
     <div class="results-table">
       {{ govukTable({
         head: [
@@ -67,10 +79,12 @@
           { text: "" }
         ],
         rows: rows,
-        attributes: { "data-test": "prisoner-search-results-table" }
+        attributes: { "data-test": "prisoner-search-results-table", "data-module": "moj-sortable-table" }
       }) }}
     </div>
   {% else %}
-    <p>There are no results for the name or number you have entered. You can search again.</p>
+    {% if not errors | length %}
+      <p class="govuk-!-padding-top-3" data-test="no-results-message">There are no results for the name or number you have entered. You can search again.</p>
+    {% endif %}
   {% endif %}
 {% endblock %}
