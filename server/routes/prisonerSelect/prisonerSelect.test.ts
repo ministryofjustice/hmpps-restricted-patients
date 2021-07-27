@@ -48,6 +48,7 @@ describe('GET /select-prisoner', () => {
         .expect('Content-Type', /html/)
         .expect(res => {
           expect(res.text).toContain('Select a prisoner')
+          expect(res.text).toContain('<p><strong>People listed:</strong> 1</p>')
           expect(res.text).toContain(
             '<img src="/prisoner/A1234AA/image" alt="Photograph of Smith, John" class="results-table__image" />'
           )
