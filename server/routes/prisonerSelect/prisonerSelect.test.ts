@@ -79,3 +79,23 @@ describe('GET /select-prisoner', () => {
     })
   })
 })
+
+describe('POST /select-prisoner', () => {
+  it('should redirect to select prisoner page with the correct search text', () => {
+    return request(app)
+      .post('/select-prisoner')
+      .send({ searchTerm: 'Smith' })
+      .expect('Location', '/select-prisoner?searchTerm=Smith')
+  })
+
+  it('should render validation messages', () => {
+    return request(app)
+      .post('/select-prisoner')
+      .expect('Content-Type', /html/)
+      .expect(res => {
+        expect(res.text).toContain('Error: Select a prisoner')
+        expect(res.text).toContain('There is a problem')
+        expect(res.text).toContain('Enter a prisoner’s name or number')
+      })
+  })
+})
