@@ -56,9 +56,25 @@ describe('prisonerSearchService', () => {
           prisonName: 'HMP Moorland',
           prisonerNumber: 'A1234AA',
         },
+        {
+          alerts: [],
+          firstName: 'STEVE',
+          lastName: 'JONES',
+          prisonName: 'HMP Moorland',
+          prisonerNumber: 'A1234AB',
+        },
       ])
       const results = await service.search({ searchTerm: 'a1234aA', prisonIds }, user)
       expect(results).toStrictEqual([
+        {
+          alerts: [],
+          displayName: 'Jones, Steve',
+          firstName: 'STEVE',
+          formattedAlerts: [],
+          lastName: 'JONES',
+          prisonName: 'HMP Moorland',
+          prisonerNumber: 'A1234AB',
+        },
         {
           alerts: [
             {

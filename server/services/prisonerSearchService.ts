@@ -43,7 +43,7 @@ export default class PrisonerSearchService {
 
     const results = await new PrisonerSearchClient(user.token).search(searchRequest)
 
-    return results.map(prisoner => {
+    const enhancedResults = results.map(prisoner => {
       const prisonerAlerts = prisoner.alerts?.map((alert: AlertType) => alert.alertCode)
 
       return {
@@ -54,6 +54,10 @@ export default class PrisonerSearchService {
         ),
       }
     })
+
+    return enhancedResults.sort((a: PrisonerSearchSummary, b: PrisonerSearchSummary) =>
+      a.displayName.localeCompare(b.displayName)
+    )
   }
 
   async getPrisonerImage(prisonerNumber: string, user: User): Promise<Readable> {
