@@ -54,7 +54,7 @@
   {% endfor %}
 
   {% if rows | length %}
-    <p><strong>People listed:</strong> {{ rows.length }}</p>
+    <p class="align-right"><strong>People listed:</strong> {{ rows.length }}</p>
 
     <div class="results-table">
       {{ govukTable({
@@ -84,7 +84,7 @@
     </div>
   {% else %}
     {% if not errors | length %}
-      <p>There are no results for the name or number you have entered. You can search again.</p>
+      <p class="govuk-!-padding-top-3">There are no results for the name or number you have entered. You can search again.</p>
     {% endif %}
   {% endif %}
 {% endblock %}
