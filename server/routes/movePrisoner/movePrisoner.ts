@@ -3,6 +3,7 @@ import { FormError } from '../../@types/template'
 import validateMovePrisonerForm from './movePrisonerValidation'
 import MovePrisonerService from '../../services/movePrisonerService'
 import PrisonerSearchService from '../../services/prisonerSearchService'
+import { addSelect } from '../../utils/utils'
 
 type PageData = {
   error?: FormError
@@ -24,16 +25,13 @@ export default class PrisonerSelectRoutes {
       this.prisonerSearchService.getPrisonerDetails(prisonerNumber, user),
     ])
 
-    const formattedHospitals = [
-      {
-        value: '',
-        text: 'Select',
-      },
-      ...hospitals.map(hospital => ({
+    const formattedHospitals = addSelect(
+      hospitals.map(hospital => ({
         value: hospital.agencyId,
         text: hospital.description,
       })),
-    ]
+      'Select a hospital'
+    )
 
     return res.render('pages/movePrisoner/movePrisonerSelectHospital', {
       errors: error ? [error] : [],
@@ -52,6 +50,6 @@ export default class PrisonerSelectRoutes {
 
     if (error) return this.renderView(req, res, { error })
 
-    return res.redirect(`/confirm-move/${prisonerNumber}`)
+    return res.redirect(`/confirm-move/${prisonerNumber}/${hospital}`)
   }
 }
