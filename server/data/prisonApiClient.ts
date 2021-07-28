@@ -1,8 +1,10 @@
+import { plainToClass } from 'class-transformer'
 import type { Readable } from 'stream'
 
 import config from '../config'
 import logger from '../../logger'
 import RestClient from './restClient'
+import PrisonerResult from './prisonerResult'
 
 export interface Prison {
   agencyId: string
@@ -26,5 +28,19 @@ export default class PrisonApiClient {
           ? logger.info(`No prisoner image available for prisonerNumber: ${prisonerNumber}`)
           : this.restClient.defaultErrorLogger(error),
     }) as Promise<Readable>
+  }
+
+  getAgenciesByType(type: string, active?: true): Promise<Prison[]> {
+    return this.restClient.get<Prison[]>({
+      path: `/api/agencies/type/${type}?active=${active}`,
+    })
+  }
+
+  async getPrisonerDetails(prisonerNumber: string): Promise<PrisonerResult> {
+    const result = await this.restClient.get<PrisonerResult>({
+      path: `/api/offenders/${prisonerNumber}`,
+    })
+
+    return plainToClass(PrisonerResult, result, { excludeExtraneousValues: true })
   }
 }

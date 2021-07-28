@@ -8,7 +8,6 @@ import indexRoutes from './routes'
 import nunjucksSetup from './utils/nunjucksSetup'
 import errorHandler from './errorHandler'
 import standardRouter from './routes/standardRouter'
-import { Services } from './services'
 
 import homepageController from './controllers/homepage'
 
@@ -19,6 +18,7 @@ import setUpAuthentication from './middleware/setUpAuthentication'
 import setUpHealthChecks from './middleware/setUpHealthChecks'
 import setUpWebRequestParsing from './middleware/setupRequestParsing'
 import authorisationMiddleware from './middleware/authorisationMiddleware'
+import { Services } from './services'
 
 export default function createApp(services: Services): express.Application {
   const app = express()
@@ -38,6 +38,12 @@ export default function createApp(services: Services): express.Application {
 
   app.use(indexRoutes(standardRouter(services.userService), services))
   app.get('/$', homepageController)
+  app.get('/back-to-start', async (req, res) => {
+    const { returnUrl = '/' } = req.session
+    delete req.session.returnUrl
+
+    return res.redirect(returnUrl)
+  })
 
   app.use((req, res, next) => next(createError(404, 'Not found')))
   app.use(errorHandler(process.env.NODE_ENV === 'production'))
