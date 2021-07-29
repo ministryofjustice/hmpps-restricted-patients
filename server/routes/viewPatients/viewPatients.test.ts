@@ -52,7 +52,7 @@ describe('GET /viewing-restricted-patients', () => {
           expect(res.text).toContain('Viewing restricted patients')
           expect(res.text).toContain('<p class="align-right"><strong>People listed:</strong> 1</p>')
           expect(res.text).toContain(
-            '<img src="http://localhost:3002/prisoner/A1234AA/image" alt="Photograph of Smith, John" class="results-table__image" />'
+            '<img src="/prisoner/A1234AA/image" alt="Photograph of Smith, John" class="results-table__image" />'
           )
           expect(res.text).toContain('Smith, John')
           expect(res.text).toContain('Yew Trees')
