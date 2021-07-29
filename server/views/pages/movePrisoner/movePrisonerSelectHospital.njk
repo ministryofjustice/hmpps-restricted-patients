@@ -29,7 +29,7 @@
     
     <div class="horizontal-information__item">
       <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Name</h3>
-      <p class="govuk-!-margin-bottom-0" data-test="name">{{ prisoner.displayName }}</p>
+      <p class="govuk-!-margin-bottom-0" data-test="prisoner-name">{{ prisoner.displayName }}</p>
     </div>
     <div class="horizontal-information__item">
       <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Prison number</h3>
@@ -37,15 +37,17 @@
     </div>
     <div class="horizontal-information__item">
       <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Cell</h3>
-      <p class="govuk-!-margin-bottom-0" data-test="cell-location">{{ prisoner.assignedLivingUnit.description }}</p>
+      <p class="govuk-!-margin-bottom-0" data-test="prisoner-cell-location">{{ prisoner.assignedLivingUnit.description }}</p>
     </div>
     <div class="horizontal-information__item horizontal-information__item--quarter">
       <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Relevant alerts</h3>
       {% if prisoner.formattedAlerts | length or prisoner.categoryCode %}
-        {{ alertFlags(prisoner.formattedAlerts) }}
-        {{ categoryFlag('', prisoner.categoryCode, false) }}
+        <div data-test="prisoner-relevant-alerts">
+          {{ alertFlags(prisoner.formattedAlerts) }}
+          {{ categoryFlag('', prisoner.categoryCode, false) }}
+        </div>
       {% else %}
-        <p class="govuk-!-margin-bottom-0" data-test="cell-location">No relevant alerts</p>
+        <p class="govuk-!-margin-bottom-0" data-test="no-alerts">No relevant alerts</p>
       {% endif %}
     </div>
   </div>
@@ -60,21 +62,26 @@
         text: "Select the hospital " + prisoner.friendlyName + " is moving to"
       },
       items: formattedHospitals,
-      errorMessage: errors | findError("hospital")
+      errorMessage: errors | findError("hospital"),
+      attributes: {
+        "data-test": "select-hospital-input"
+      }
     }) }}
 
     {{ govukButton({ 
       text: "Continue",
       preventDoubleClick: true,
       classes: "govuk-!-margin-right-3",
-      type: "submit"
+      type: "submit",
+      attributes: { "data-test": "select-hospital-submit" }
     }) }}
 
     {{ govukButton({
       text: "Cancel",
       element: 'a',
       href: '/back-to-start',
-      classes: "govuk-button--secondary"
+      classes: "govuk-button--secondary",
+      attributes: { "data-test": "select-hospital-cancel" }
     }) }}
   </form>
 {% endblock %}
