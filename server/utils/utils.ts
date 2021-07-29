@@ -16,9 +16,9 @@ const properCaseName = (name: string): string => (isBlank(name) ? '' : name.spli
 const convertToTitleCase = (sentence: string): string =>
   isBlank(sentence) ? '' : sentence.split(' ').map(properCaseName).join(' ')
 
-export const addSelect = (selectItems: SelectOption[], text = 'Select'): SelectOption[] => {
-  selectItems.unshift({ value: '', text })
-  return selectItems
-}
+export const addSelect = (selectItems: SelectOption[], text = 'Select'): SelectOption[] => [
+  { value: '', text },
+  ...selectItems,
+]
 
 export default convertToTitleCase

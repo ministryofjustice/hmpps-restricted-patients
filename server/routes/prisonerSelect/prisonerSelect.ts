@@ -18,6 +18,7 @@ export default class PrisonerSelectRoutes {
 
     return res.render('pages/prisonerSelect', {
       errors: error ? [error] : [],
+      journeyStartUrl: `/select-prisoner?searchTerm=${searchTerm}`,
       searchResults,
       searchTerm,
     })

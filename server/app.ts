@@ -39,10 +39,10 @@ export default function createApp(services: Services): express.Application {
   app.use(indexRoutes(standardRouter(services.userService), services))
   app.get('/$', homepageController)
   app.get('/back-to-start', async (req, res) => {
-    const { returnUrl = '/' } = req.session
-    delete req.session.returnUrl
+    const { journeyStartUrl = '/' } = req.session
+    delete req.session.journeyStartUrl
 
-    return res.redirect(returnUrl)
+    return res.redirect(journeyStartUrl)
   })
 
   app.use((req, res, next) => next(createError(404, 'Not found')))

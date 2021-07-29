@@ -1,7 +1,7 @@
 declare module 'express-session' {
   // Declare that the session will potentially contain these additional fields
   export interface SessionData {
-    returnUrl: query
+    journeyStartUrl: query
     returnTo: string
     nowInMinutes: number
     userDetails: {
