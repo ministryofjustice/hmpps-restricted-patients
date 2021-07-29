@@ -1,9 +1,9 @@
-import RestrictedPatientSearchService, { RestrictedPatientSearchSummary } from './restrictedPatientSearchService'
+import RestrictedPatientSearchService from './restrictedPatientSearchService'
 import RestrictedPatientSearchClient from '../data/restrictedPatientSearchClient'
+import RestrictedPatientSearchResult from '../data/restrictedPatientSearchResult'
 import HmppsAuthClient, { User } from '../data/hmppsAuthClient'
 
 const search = jest.fn()
-const getPrisonerImage = jest.fn()
 
 jest.mock('../data/hmppsAuthClient')
 jest.mock('../data/restrictedPatientSearchClient', () => {
@@ -43,98 +43,53 @@ describe('restrictedPatientSearchService', () => {
           lastName: 'SMITH',
           prisonName: 'HMP Moorland',
           prisonerNumber: 'A1234AA',
-          locationDescription: 'Outside - released from Moorland (HMP & YOI)',
-          restrictedPatient: true,
           supportingPrisonId: 'MDI',
           dischargedHospitalId: 'HAZLWD',
           dischargedHospitalDescription: 'Hazelwood House',
           dischargeDate: '2021-06-07',
           dischargeDetails: 'Psychiatric Hospital Discharge to Hazelwood House',
-        },
+        } as RestrictedPatientSearchResult,
         {
           alerts: [],
           firstName: 'STEVE',
           lastName: 'JONES',
           prisonName: 'HMP Doncaster',
           prisonerNumber: 'A1234AB',
-          locationDescription: 'Outside - released from Doncaster',
-          restrictedPatient: true,
           supportingPrisonId: 'DNI',
           dischargedHospitalId: 'YEWTHO',
           dischargedHospitalDescription: 'Yew Trees',
           dischargeDate: '2021-06-08',
           dischargeDetails: 'Psychiatric Hospital Discharge to Yew Trees',
-        },
+        } as RestrictedPatientSearchResult,
       ])
+
       const results = await service.search({ searchTerm: 'a1234aA' }, user)
-      expect(results).toStrictEqual([
-        {
-          alerts: [],
-          displayName: 'Jones, Steve',
-          firstName: 'STEVE',
-          formattedAlerts: [],
-          lastName: 'JONES',
-          prisonName: 'HMP Doncaster',
-          prisonerNumber: 'A1234AB',
-          supportingPrisonId: 'DNI',
-          dischargedHospitalId: 'YEWTHO',
-          dischargedHospitalDescription: 'Yew Trees',
-          dischargeDate: '2021-06-08',
-          dischargeDetails: 'Psychiatric Hospital Discharge to Yew Trees',
-        },
-        {
-          alerts: [
-            {
-              alertCode: 'TCPA',
-              alertType: 'T',
-            },
-            {
-              alertCode: 'XCU',
-              alertType: 'X',
-            },
-          ],
-          displayName: 'Smith, John',
-          formattedAlerts: [
-            {
-              alertCodes: ['XCU'],
-              classes: 'alert-status alert-status--controlled-unlock',
-              label: 'Controlled unlock',
-            },
-          ],
-          firstName: 'JOHN',
-          lastName: 'SMITH',
-          prisonerNumber: 'A1234AA',
-          prisonName: 'HMP Moorland',
-          supportingPrisonId: 'MDI',
-          dischargedHospitalId: 'HAZLWD',
-          dischargedHospitalDescription: 'Hazelwood House',
-          dischargeDate: '2021-06-07',
-          dischargeDetails: 'Psychiatric Hospital Discharge to Hazelwood House',
-        } as RestrictedPatientSearchSummary,
-      ])
+      expect(results).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ displayName: 'Jones, Steve' }),
+          expect.objectContaining({ displayName: 'Smith, John' }),
+        ])
+      )
+
       expect(RestrictedPatientSearchClient).toBeCalledWith(user.token)
       expect(search).toBeCalledWith({ prisonerIdentifier: 'A1234AA' })
     })
 
     it('search by prisoner name', async () => {
-      const searchResult = {
-        firstName: 'JOHN',
-        lastName: 'SMITH',
-        prisonName: 'HMP Moorland',
-        prisonerNumber: 'A1234AA',
-        supportingPrisonId: 'MDI',
-        dischargedHospitalId: 'HAZLWD',
-        dischargeDate: '2021-06-07',
-      }
-      search.mockResolvedValue([searchResult])
-      const results = await service.search({ searchTerm: 'Smith, John' }, user)
-      expect(results).toStrictEqual([
+      search.mockResolvedValue([
         {
-          displayName: 'Smith, John',
-          formattedAlerts: [],
-          ...searchResult,
-        } as RestrictedPatientSearchSummary,
+          firstName: 'JOHN',
+          lastName: 'SMITH',
+          prisonName: 'HMP Moorland',
+          prisonerNumber: 'A1234AA',
+          supportingPrisonId: 'MDI',
+          dischargedHospitalId: 'HAZLWD',
+          dischargeDate: '2021-06-07',
+        } as RestrictedPatientSearchResult,
       ])
+
+      const results = await service.search({ searchTerm: 'Smith, John' }, user)
+      expect(results).toEqual(expect.arrayContaining([expect.objectContaining({ displayName: 'Smith, John' })]))
       expect(RestrictedPatientSearchClient).toBeCalledWith(user.token)
       expect(search).toBeCalledWith({ lastName: 'Smith', firstName: 'John' })
     })

@@ -1,19 +1,15 @@
-import { Readable } from 'stream'
 import type {
   RestrictedPatientSearchByName,
   RestrictedPatientSearchByPrisonerNumber,
 } from '../data/restrictedPatientSearchClient'
 import RestrictedPatientSearchClient from '../data/restrictedPatientSearchClient'
 import RestrictedPatientSearchResult from '../data/restrictedPatientSearchResult'
-import { AlertType } from '../data/prisonerSearchResult'
 import HmppsAuthClient, { User } from '../data/hmppsAuthClient'
 
-import { alertFlagLabels, FormattedAlertType } from '../common/alertFlagValues'
 import convertToTitleCase from '../utils/utils'
 
 export interface RestrictedPatientSearchSummary extends RestrictedPatientSearchResult {
   displayName: string
-  formattedAlerts: FormattedAlertType[]
 }
 
 // Anything with a number is considered not to be a name, so therefore an identifier (prison no, PNC no etc.)
@@ -45,14 +41,9 @@ export default class RestrictedPatientSearchService {
     const results = await new RestrictedPatientSearchClient(user.token).search(searchRequest)
 
     const enhancedResults = results.map(prisoner => {
-      const prisonerAlerts = prisoner.alerts?.map((alert: AlertType) => alert.alertCode)
-
       return {
         ...prisoner,
         displayName: convertToTitleCase(`${prisoner.lastName}, ${prisoner.firstName}`),
-        formattedAlerts: alertFlagLabels.filter(alertFlag =>
-          alertFlag.alertCodes.some(alert => prisonerAlerts?.includes(alert))
-        ),
       }
     })
 
