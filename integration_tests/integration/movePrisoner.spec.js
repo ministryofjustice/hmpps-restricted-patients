@@ -7,10 +7,10 @@ const toOffender = $cell => ({
   prisonerNumber: $cell[2].textContent,
   cellLocation: $cell[3].textContent,
   alerts: $cell[4].textContent,
-  moveHospitalLink: $cell[5],
+  moveHospitalLink: $cell[5].textContent,
 })
 
-context('Move prisoner', () => {
+context.only('Move prisoner', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubLogin')
@@ -84,10 +84,10 @@ context('Move prisoner', () => {
           expect(offenders[1].prisonerNumber).to.eq('A1234AA')
           expect(offenders[1].cellLocation).to.eq('1-2-015')
           expect(offenders[1].alerts).to.contain('Controlled unlock')
-          expect(offenders[1].moveHospitalLink.textContent).to.contain('Move to a hospital')
-          cy.get(offenders[1].moveHospitalLink).click()
+          expect(offenders[1].moveHospitalLink).to.contain('Move to a hospital')
         })
     })
+    prisonerSelectPage.moveToHospitalLink().click()
 
     const movePrisonerSelectHospitalPage = MovePrisonerSelectHospitalPage.verifyOnPage('John Smith')
     const movePrisonerSelectHospitalPageForm = movePrisonerSelectHospitalPage.form()
@@ -158,15 +158,7 @@ context('Move prisoner', () => {
 
       const prisonerSelectPage = PrisonerSelectPage.verifyOnPage()
 
-      prisonerSelectPage.resultsTable().then($table => {
-        cy.get($table)
-          .find('tr')
-          .then($tableRows => {
-            const offenders = Array.from($tableRows).map($row => toOffender($row.cells))
-
-            cy.get(offenders[1].moveHospitalLink).click()
-          })
-      })
+      prisonerSelectPage.moveToHospitalLink().click()
 
       const movePrisonerSelectHospitalPage = MovePrisonerSelectHospitalPage.verifyOnPage('John Smith')
       const movePrisonerSelectHospitalPageForm = movePrisonerSelectHospitalPage.form()
@@ -191,15 +183,7 @@ context('Move prisoner', () => {
 
       const prisonerSelectPage = PrisonerSelectPage.verifyOnPage()
 
-      prisonerSelectPage.resultsTable().then($table => {
-        cy.get($table)
-          .find('tr')
-          .then($tableRows => {
-            const offenders = Array.from($tableRows).map($row => toOffender($row.cells))
-
-            cy.get(offenders[1].moveHospitalLink).click()
-          })
-      })
+      prisonerSelectPage.moveToHospitalLink().click()
 
       const movePrisonerSelectHospitalPage = MovePrisonerSelectHospitalPage.verifyOnPage('John Smith')
       const movePrisonerSelectHospitalPageForm = movePrisonerSelectHospitalPage.form()

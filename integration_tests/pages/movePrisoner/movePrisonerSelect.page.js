@@ -10,5 +10,6 @@ module.exports = {
       }),
       resultsTable: () => cy.get('[data-test="prisoner-search-results-table"]'),
       noResultsMessage: () => cy.get('[data-test="no-results-message"]'),
+      moveToHospitalLink: () => cy.get('[data-test="prisoner-move-to-hospital-link"]'),
     }),
 }
