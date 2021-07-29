@@ -23,14 +23,14 @@
     }) }}
   {% endif %}
 
-  <h1 class="govuk-heading-l">{{ title }}</h1>
+  <h1 class="govuk-heading-l">Restricted patients</h1>
   
   {% include "../partials/patientSearchForm.njk" %}
 
   {% set rows = [] %}
   {% for prisoner in searchResults %}
     {% set prisonerImageHtml %}
-      <img src="{{ pshUrl }}/prisoner/{{ prisoner.prisonerNumber }}/image" alt="Photograph of {{ prisoner.displayName }}" class="results-table__image" />
+      <img src="/prisoner/{{ prisoner.prisonerNumber }}/image" alt="Photograph of {{ prisoner.displayName }}" class="results-table__image" />
     {% endset -%}
     {% set prisonerLinkHtml %}
       <a href="{{ pshUrl }}/prisoner/{{ prisoner.prisonerNumber }}" class="govuk-link">{{ prisoner.displayName }}</a>
