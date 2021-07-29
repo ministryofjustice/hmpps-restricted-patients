@@ -1,7 +1,7 @@
 import PrisonApiClient, { Prison } from '../data/prisonApiClient'
 import HmppsAuthClient, { User } from '../data/hmppsAuthClient'
 
-type Hospital = {
+export type Hospital = {
   agencyId: string
   description: string
   longDescription: string
