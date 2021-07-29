@@ -12,6 +12,7 @@ import UserService from '../../services/userService'
 import * as auth from '../../authentication/auth'
 import PrisonerSearchService from '../../services/prisonerSearchService'
 import MovePrisonerService from '../../services/movePrisonerService'
+import RestrictedPatientSearchService from '../../services/restrictedPatientSearchService'
 import { Services } from '../../services'
 
 const user = {
@@ -69,6 +70,7 @@ export default function appWithAllRoutes(
       userService: new MockUserService(),
       prisonerSearchService: {} as PrisonerSearchService,
       movePrisonerService: {} as MovePrisonerService,
+      restrictedPatientSearchService: {} as RestrictedPatientSearchService,
       ...overrides,
     }),
     production
