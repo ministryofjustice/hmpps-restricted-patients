@@ -5,6 +5,7 @@ import HmppsAuthClient, { User } from '../data/hmppsAuthClient'
 
 const search = jest.fn()
 const getPrisonerImage = jest.fn()
+const getPrisonerDetails = jest.fn()
 
 jest.mock('../data/hmppsAuthClient')
 jest.mock('../data/prisonerSearchClient', () => {
@@ -15,7 +16,7 @@ jest.mock('../data/prisonerSearchClient', () => {
 
 jest.mock('../data/prisonApiClient', () => {
   return jest.fn().mockImplementation(() => {
-    return { getPrisonerImage }
+    return { getPrisonerImage, getPrisonerDetails }
   })
 })
 
@@ -157,16 +158,59 @@ describe('prisonerSearchService', () => {
     it('uses prison api to request image data', async () => {
       getPrisonerImage.mockResolvedValue('image data')
 
-      const results = await service.getPrisonerImage('A1234AA', {
+      const result = await service.getPrisonerImage('A1234AA', {
         activeCaseLoadId: 'MDI',
         name: 'User',
         username: 'user1',
         token: 'token-1',
       })
 
-      expect(results).toEqual('image data')
+      expect(result).toEqual('image data')
       expect(PrisonApiClient).toBeCalledWith(token)
       expect(getPrisonerImage).toBeCalledWith('A1234AA')
+    })
+  })
+
+  describe('getPrisonerDetails', () => {
+    it('uses prison api to request image data', async () => {
+      getPrisonerDetails.mockResolvedValue({
+        offenderNo: 'A1234AA',
+        firstName: 'JOHN',
+        lastName: 'SMITH',
+        assignedLivingUnit: { description: '1-2-015' },
+        categoryCode: 'C',
+        alerts: [
+          { alertType: 'T', alertCode: 'TCPA' },
+          { alertType: 'X', alertCode: 'XCU' },
+        ],
+      })
+
+      const result = await service.getPrisonerDetails('A1234AA', {
+        activeCaseLoadId: 'MDI',
+        name: 'User',
+        username: 'user1',
+        token: 'token-1',
+      })
+
+      expect(result).toEqual({
+        alerts: [
+          { alertCode: 'TCPA', alertType: 'T' },
+          { alertCode: 'XCU', alertType: 'X' },
+        ],
+        assignedLivingUnit: { description: '1-2-015' },
+        categoryCode: 'C',
+        displayName: 'Smith, John',
+        firstName: 'JOHN',
+        formattedAlerts: [
+          { alertCodes: ['XCU'], classes: 'alert-status alert-status--controlled-unlock', label: 'Controlled unlock' },
+        ],
+        friendlyName: 'John Smith',
+        lastName: 'SMITH',
+        offenderNo: 'A1234AA',
+        prisonerNumber: 'A1234AA',
+      })
+      expect(PrisonApiClient).toBeCalledWith(token)
+      expect(getPrisonerDetails).toBeCalledWith('A1234AA')
     })
   })
 })
