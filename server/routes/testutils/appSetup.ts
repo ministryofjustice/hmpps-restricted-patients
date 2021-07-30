@@ -11,6 +11,7 @@ import standardRouter from '../standardRouter'
 import UserService from '../../services/userService'
 import * as auth from '../../authentication/auth'
 import PrisonerSearchService from '../../services/prisonerSearchService'
+import MovePrisonerService from '../../services/movePrisonerService'
 import RestrictedPatientSearchService from '../../services/restrictedPatientSearchService'
 import { Services } from '../../services'
 
@@ -68,6 +69,7 @@ export default function appWithAllRoutes(
     allRoutes(standardRouter(new MockUserService()), {
       userService: new MockUserService(),
       prisonerSearchService: {} as PrisonerSearchService,
+      movePrisonerService: {} as MovePrisonerService,
       restrictedPatientSearchService: {} as RestrictedPatientSearchService,
       ...overrides,
     }),

@@ -7,10 +7,18 @@ import HmppsAuthClient, { User } from '../data/hmppsAuthClient'
 
 import { alertFlagLabels, FormattedAlertType } from '../common/alertFlagValues'
 import convertToTitleCase from '../utils/utils'
+import PrisonerResult from '../data/prisonerResult'
 
 export interface PrisonerSearchSummary extends PrisonerSearchResult {
   displayName: string
   formattedAlerts: FormattedAlertType[]
+}
+
+export interface PrisonerResultSummary extends PrisonerResult {
+  displayName: string
+  formattedAlerts: FormattedAlertType[]
+  friendlyName: string
+  prisonerNumber: string
 }
 
 // Anything with a number is considered not to be a name, so therefore an identifier (prison no, PNC no etc.)
@@ -33,6 +41,17 @@ export interface PrisonerSearch {
 export default class PrisonerSearchService {
   constructor(private readonly hmppsAuthClient: HmppsAuthClient) {}
 
+  private enhancePrisoner(prisoner: PrisonerSearchResult | PrisonerResult) {
+    const prisonerAlerts = prisoner.alerts?.map((alert: AlertType) => alert.alertCode)
+
+    return {
+      displayName: convertToTitleCase(`${prisoner.lastName}, ${prisoner.firstName}`),
+      formattedAlerts: alertFlagLabels.filter(alertFlag =>
+        alertFlag.alertCodes.some(alert => prisonerAlerts?.includes(alert))
+      ),
+    }
+  }
+
   async search(search: PrisonerSearch, user: User): Promise<PrisonerSearchSummary[]> {
     const searchTerm = search.searchTerm.replace(/,/g, ' ').replace(/\s\s+/g, ' ').trim()
     const { prisonIds } = search
@@ -44,14 +63,9 @@ export default class PrisonerSearchService {
     const results = await new PrisonerSearchClient(user.token).search(searchRequest)
 
     const enhancedResults = results.map(prisoner => {
-      const prisonerAlerts = prisoner.alerts?.map((alert: AlertType) => alert.alertCode)
-
       return {
         ...prisoner,
-        displayName: convertToTitleCase(`${prisoner.lastName}, ${prisoner.firstName}`),
-        formattedAlerts: alertFlagLabels.filter(alertFlag =>
-          alertFlag.alertCodes.some(alert => prisonerAlerts?.includes(alert))
-        ),
+        ...this.enhancePrisoner(prisoner),
       }
     })
 
@@ -63,5 +77,19 @@ export default class PrisonerSearchService {
   async getPrisonerImage(prisonerNumber: string, user: User): Promise<Readable> {
     const token = await this.hmppsAuthClient.getSystemClientToken(user.username)
     return new PrisonApiClient(token).getPrisonerImage(prisonerNumber)
+  }
+
+  async getPrisonerDetails(prisonerNumber: string, user: User): Promise<PrisonerResultSummary> {
+    const token = await this.hmppsAuthClient.getSystemClientToken(user.username)
+    const prisoner = await new PrisonApiClient(token).getPrisonerDetails(prisonerNumber)
+
+    const enhancedResult = {
+      ...prisoner,
+      ...this.enhancePrisoner(prisoner),
+      friendlyName: convertToTitleCase(`${prisoner.firstName} ${prisoner.lastName}`),
+      prisonerNumber: prisoner.offenderNo,
+    }
+
+    return enhancedResult
   }
 }

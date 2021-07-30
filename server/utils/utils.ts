@@ -1,3 +1,5 @@
+import { SelectOption } from '../@types/template'
+
 const properCase = (word: string): string =>
   word.length >= 1 ? word[0].toUpperCase() + word.toLowerCase().slice(1) : word
 
@@ -13,5 +15,10 @@ const properCaseName = (name: string): string => (isBlank(name) ? '' : name.spli
 
 const convertToTitleCase = (sentence: string): string =>
   isBlank(sentence) ? '' : sentence.split(' ').map(properCaseName).join(' ')
+
+export const addSelect = (selectItems: SelectOption[], text = 'Select'): SelectOption[] => [
+  { value: '', text },
+  ...selectItems,
+]
 
 export default convertToTitleCase

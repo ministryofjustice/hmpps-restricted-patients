@@ -1,0 +1,87 @@
+{% extends "../../partials/layout.njk" %}
+{% from "../../partials/breadcrumb.njk" import breadcrumb %}
+{% from "../../macros/alertFlags.njk" import alertFlags %}
+{% from "../../macros/categoryFlag.njk" import categoryFlag %}
+
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+
+{% set title = "Move prisoner to a hospital" %}
+
+{% block beforeContent %}
+  {{ breadcrumb() }}
+{% endblock %}
+
+{% block content %}
+{% if errors | length %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: errors,
+      attributes: { "data-test": "error-summary" }
+    }) }}
+  {% endif %}
+
+  <h1 class="govuk-heading-l">Move {{ prisoner.friendlyName }} to a hospital</h1>  
+
+  <div class="horizontal-information horizontal-information--with-border govuk-!-margin-bottom-6">
+    <img src="/prisoner/{{ prisoner.prisonerNumber }}/image" alt="Photograph of {{ prisoner.friendlyName }}" class="horizontal-information__prisoner-image" />
+    
+    <div class="horizontal-information__item">
+      <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Name</h3>
+      <p class="govuk-!-margin-bottom-0" data-test="prisoner-name">{{ prisoner.displayName }}</p>
+    </div>
+    <div class="horizontal-information__item">
+      <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Prison number</h3>
+      <p class="govuk-!-margin-bottom-0" data-test="prisoner-number">{{ prisoner.prisonerNumber }}</p>
+    </div>
+    <div class="horizontal-information__item">
+      <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Cell</h3>
+      <p class="govuk-!-margin-bottom-0" data-test="prisoner-cell-location">{{ prisoner.assignedLivingUnit.description }}</p>
+    </div>
+    <div class="horizontal-information__item horizontal-information__item--quarter">
+      <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Relevant alerts</h3>
+      {% if prisoner.formattedAlerts | length or prisoner.categoryCode %}
+        <div data-test="prisoner-relevant-alerts">
+          {{ alertFlags(prisoner.formattedAlerts) }}
+          {{ categoryFlag('', prisoner.categoryCode, false) }}
+        </div>
+      {% else %}
+        <p class="govuk-!-margin-bottom-0" data-test="no-alerts">No relevant alerts</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <form method="POST">
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+
+    {{ govukSelect({
+      id: "hospital",
+      name: "hospital",
+      label: {
+        text: "Select the hospital " + prisoner.friendlyName + " is moving to"
+      },
+      items: formattedHospitals,
+      errorMessage: errors | findError("hospital"),
+      attributes: {
+        "data-test": "select-hospital-input"
+      }
+    }) }}
+
+    {{ govukButton({ 
+      text: "Continue",
+      preventDoubleClick: true,
+      classes: "govuk-!-margin-right-3",
+      type: "submit",
+      attributes: { "data-test": "select-hospital-submit" }
+    }) }}
+
+    {{ govukButton({
+      text: "Cancel",
+      element: 'a',
+      href: '/back-to-start',
+      classes: "govuk-button--secondary",
+      attributes: { "data-test": "select-hospital-cancel" }
+    }) }}
+  </form>
+{% endblock %}
