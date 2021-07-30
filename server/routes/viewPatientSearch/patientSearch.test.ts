@@ -12,10 +12,10 @@ afterEach(() => {
   jest.resetAllMocks()
 })
 
-describe('GET /search-for-a-restricted-patient', () => {
+describe('GET /search-for-restricted-patient', () => {
   it('should load the search for a restricted patient page', () => {
     return request(app)
-      .get('/search-for-a-restricted-patient')
+      .get('/search-for-restricted-patient')
       .expect('Content-Type', /html/)
       .expect(res => {
         expect(res.text).toContain('Search for a restricted patient')
@@ -24,17 +24,17 @@ describe('GET /search-for-a-restricted-patient', () => {
   })
 })
 
-describe('POST /search-for-a-restricted-patient', () => {
+describe('POST /search-for-restricted-patient', () => {
   it('should redirect to select restricted patient page with the correct search text', () => {
     return request(app)
-      .post('/search-for-a-restricted-patient')
+      .post('/search-for-restricted-patient')
       .send({ searchTerm: 'Smith' })
       .expect('Location', '/viewing-restricted-patients?searchTerm=Smith')
   })
 
   it('should render validation messages', () => {
     return request(app)
-      .post('/search-for-a-restricted-patient')
+      .post('/search-for-restricted-patient')
       .expect('Content-Type', /html/)
       .expect(res => {
         expect(res.text).toContain('Error: Search for a restricted patient')

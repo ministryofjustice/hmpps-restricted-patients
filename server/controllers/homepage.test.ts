@@ -25,7 +25,7 @@ describe('Tasks', () => {
             id: 'search-restricted-patient',
             heading: 'Search for a restricted patient',
             description: 'Search for a restricted patient to view their details and to add a case note.',
-            href: '/search-for-a-restricted-patient',
+            href: '/search-for-restricted-patient',
             roles: null,
             enabled: true,
           },
