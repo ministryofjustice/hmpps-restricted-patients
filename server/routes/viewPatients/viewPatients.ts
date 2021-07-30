@@ -29,7 +29,7 @@ export default class ViewPatientsRoutes {
     const { user } = res.locals
     const searchTerm = JSON.stringify(req.query.searchTerm)?.replace(/"/g, '')
 
-    if (!searchTerm) return res.redirect('/search-for-a-restricted-patient')
+    if (!searchTerm) return res.redirect('/search-for-restricted-patient')
 
     const searchResults = await this.restrictedPatientSearchService.search({ searchTerm }, user)
 
