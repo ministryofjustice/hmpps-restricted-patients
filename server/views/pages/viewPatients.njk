@@ -8,7 +8,7 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 
-{% set title = "Viewing restricted patients" %}
+{% set title = pageTitle or "Viewing restricted patients" %}
 
 {% block beforeContent %}
   {{ breadcrumb() }}
@@ -23,64 +23,19 @@
     }) }}
   {% endif %}
 
-  <h1 class="govuk-heading-l">Restricted patients</h1>
+  <h1 class="govuk-heading-l">{{ heading or "Restricted patients" }}</h1>
   
   {% include "../partials/patientSearchForm.njk" %}
 
-  {% set rows = [] %}
-  {% for prisoner in searchResults %}
-    {% set prisonerImageHtml %}
-      <img src="/prisoner/{{ prisoner.prisonerNumber }}/image" alt="Photograph of {{ prisoner.displayName }}" class="results-table__image" />
-    {% endset -%}
-    {% set prisonerLinkHtml %}
-      <a href="{{ pshUrl }}/prisoner/{{ prisoner.prisonerNumber }}" class="govuk-link">{{ prisoner.displayName }}</a>
-    {% endset -%}
-    {% set addCaseNoteLinkHtml %}
-      <a href="{{ pshUrl }}/prisoner/{{ prisoner.prisonerNumber }}/add-case-note" class="govuk-link" data-test="patient-add-case-note-link"><span class="govuk-visually-hidden">{{ prisoner.displayName }} - </span>Add a case note</a>
-    {% endset -%}
-    {% set rows = (rows.push([
-      { html: prisonerImageHtml },
-      {
-        html: prisonerLinkHtml,
-        attributes: {
-          "data-sort-value": prisoner.displayName
-        }
-      },
-      { text: prisoner.prisonerNumber },
-      { text: prisoner.dischargedHospitalDescription },
-      { html: addCaseNoteLinkHtml }
-    ]), rows) %}
-  {% endfor %}
-
-  {% if rows | length %}
-    <p class="align-right"><strong>People listed:</strong> {{ rows.length }}</p>
+  {% if tableData.rows | length %}
+    <p class="align-right"><strong>People listed:</strong> {{ tableData.rows.length }}</p>
 
     <div class="results-table">
-      {{ govukTable({
-        head: [
-          { html: '<span class="govuk-visually-hidden">Picture</span>' },
-          {
-            text: "Name",
-            attributes: {
-              "aria-sort": "ascending"
-            }
-          },
-          { text: "Prison number" },
-          {
-            text: "Location",
-            attributes: {
-              "aria-sort": "none"
-            }
-          },
-          { text: "" }
-        ],
-        rows: rows,
-        attributes: { "data-test": "patient-search-results-table", "data-module": "moj-sortable-table" }
-      }) }}
+      {{ govukTable(tableData) }}
     </div>
   {% else %}
     {% if not errors | length %}
-      <p class="govuk-!-padding-top-3" data-test="no-results-message">There are no results for the name or number you have entered. You can search again.</p>
+      <p class="govuk-!-padding-top-3" data-test="no-results-message">There are no results for the details you have entered.</p>
     {% endif %}
   {% endif %}
 {% endblock %}

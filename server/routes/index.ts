@@ -8,6 +8,11 @@ import viewPatientSearchRoutes from './viewPatientSearch'
 import viewPatientsRoutes from './viewPatients'
 
 import { Services } from '../services'
+import {
+  removeRestrictedPatientsSearchResultRoutes,
+  searchForARestrictedPatientRoutes,
+} from './removeRestrictedPatient'
+import { RemoveRestrictedPatientPath } from './removeRestrictedPatient/constants'
 
 export default function routes(
   router: Router,
@@ -19,6 +24,14 @@ export default function routes(
   router.use('/move-to-hospital', movePrisonerRoutes({ movePrisonerService, prisonerSearchService }))
   router.use('/search-for-restricted-patient', viewPatientSearchRoutes())
   router.use('/viewing-restricted-patients', viewPatientsRoutes({ restrictedPatientSearchService }))
+  router.use(
+    RemoveRestrictedPatientPath.DisplaySearch,
+    searchForARestrictedPatientRoutes({ restrictedPatientSearchService })
+  )
+  router.use(
+    RemoveRestrictedPatientPath.SearchResults,
+    removeRestrictedPatientsSearchResultRoutes({ restrictedPatientSearchService })
+  )
 
   return router
 }

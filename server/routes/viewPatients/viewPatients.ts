@@ -1,48 +1,50 @@
 import url from 'url'
 import { Request, Response } from 'express'
+import { plainToClass } from 'class-transformer'
 import RestrictedPatientSearchService, {
   RestrictedPatientSearchSummary,
 } from '../../services/restrictedPatientSearchService'
-import validateForm from '../viewPatientSearch/patientSearchValidation'
 import { FormError } from '../../@types/template'
+import SearchForm from '../../@types/SearchForm'
+import config from '../../config'
+import PatientSearchTableViewModel from '../../viewmodel/PatientSearchTableViewModel'
 
 type PageData = {
   error?: FormError
   searchResults?: RestrictedPatientSearchSummary[]
-  searchTerm: string
-}
+} & SearchForm
 
 export default class ViewPatientsRoutes {
   constructor(private readonly restrictedPatientSearchService: RestrictedPatientSearchService) {}
 
   private renderView = async (req: Request, res: Response, pageData: PageData): Promise<void> => {
-    const { error, searchResults, searchTerm } = pageData
+    const { searchResults, searchTerm } = pageData
+
+    const renderCTA = (prisoner: RestrictedPatientSearchSummary) => ({
+      html: `<a href="${config.pshUrl}/prisoner/${prisoner.prisonerNumber}/add-case-note" class="govuk-link" data-test="patient-add-case-note-link">
+                <span class="govuk-visually-hidden">${prisoner.displayName} - </span>Add a case note
+              </a>`,
+    })
+
+    const tableViewModel = new PatientSearchTableViewModel(searchResults).addColumn({ text: '' }, renderCTA)
 
     return res.render('pages/viewPatients', {
-      errors: error ? [error] : [],
-      searchResults,
+      tableData: tableViewModel.build(),
       searchTerm,
     })
   }
 
   view = async (req: Request, res: Response): Promise<void> => {
     const { user } = res.locals
-    const searchTerm = JSON.stringify(req.query.searchTerm)?.replace(/"/g, '')
+    const searchForm = plainToClass(SearchForm, req.query, { excludeExtraneousValues: true })
 
-    if (!searchTerm) return res.redirect('/search-for-restricted-patient')
+    const searchResults = await this.restrictedPatientSearchService.search({ searchTerm: searchForm.searchTerm }, user)
 
-    const searchResults = await this.restrictedPatientSearchService.search({ searchTerm }, user)
-
-    return this.renderView(req, res, { searchResults, searchTerm })
+    return this.renderView(req, res, { searchResults, ...searchForm })
   }
 
   submit = async (req: Request, res: Response): Promise<void> => {
-    const { searchTerm } = req.body
-
-    const error = validateForm({ searchTerm })
-
-    if (error) return this.renderView(req, res, { error, searchTerm })
-
+    const { searchTerm } = plainToClass(SearchForm, req.body, { excludeExtraneousValues: true })
     return res.redirect(
       url.format({
         pathname: '/viewing-restricted-patients',

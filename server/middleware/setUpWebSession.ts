@@ -4,6 +4,7 @@ import connectRedis from 'connect-redis'
 import addRequestId from 'express-request-id'
 import express, { Router } from 'express'
 
+import flash from 'connect-flash'
 import config from '../config'
 
 const RedisStore = connectRedis(session)
@@ -36,6 +37,7 @@ export default function setUpWebSession(): Router {
   })
 
   router.use(addRequestId())
+  router.use(flash())
 
   return router
 }

@@ -4,6 +4,7 @@ import cookieSession from 'cookie-session'
 import createError from 'http-errors'
 import path from 'path'
 
+import flash from 'connect-flash'
 import allRoutes from '../index'
 import nunjucksSetup from '../../utils/nunjucksSetup'
 import errorHandler from '../../errorHandler'
@@ -14,6 +15,7 @@ import PrisonerSearchService from '../../services/prisonerSearchService'
 import MovePrisonerService from '../../services/movePrisonerService'
 import RestrictedPatientSearchService from '../../services/restrictedPatientSearchService'
 import { Services } from '../../services'
+import internalRedirectMiddleware from '../../middleware/internalRedirectMiddleware'
 
 const user = {
   name: 'john smith',
@@ -51,8 +53,10 @@ function appSetup(route: Router, production: boolean): Express {
   })
 
   app.use(cookieSession({ keys: [''] }))
+  app.use(flash())
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
+  app.use(internalRedirectMiddleware)
   app.use('/', route)
   app.use((req, res, next) => next(createError(404, 'Not found')))
   app.use(errorHandler(production))

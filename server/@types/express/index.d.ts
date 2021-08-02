@@ -18,6 +18,10 @@ export declare global {
       authSource: string
     }
 
+    interface Response {
+      internalRedirect(url: string): void
+    }
+
     interface Request {
       verified?: boolean
     }

@@ -12,10 +12,10 @@
 {% endblock %}
 
 {% block content %}
-  {% if errors | length %}
+  {% if validationErrors | length %}
     {{ govukErrorSummary({
       titleText: "There is a problem",
-      errorList: errors,
+      errorList: validationErrors | asErrorSummary,
       attributes: { "data-test": "error-summary" }
     }) }}
   {% endif %}

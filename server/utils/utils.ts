@@ -21,4 +21,9 @@ export const addSelect = (selectItems: SelectOption[], text = 'Select'): SelectO
   ...selectItems,
 ]
 
+export const stripDuplicateSlashes = (value: string): string => {
+  const pathSeparatorPattern = /(\/)\/+/g
+  return value.replace(pathSeparatorPattern, '$1')
+}
+
 export default convertToTitleCase

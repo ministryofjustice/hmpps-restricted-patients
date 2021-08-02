@@ -1,4 +1,4 @@
-<form method="POST" novalidate="novalidate" data-test="prisoner-search-form">
+<form method="POST" action="{{ action }}" novalidate="novalidate" data-test="prisoner-search-form">
   <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
   <div class="horizontal-form govuk-!-margin-bottom-3">
@@ -13,7 +13,7 @@
       attributes: {
         'data-test': "patient-search-term-input"
       },
-      errorMessage: errors | findError("searchTerm")
+      errorMessage: validationErrors | formError("searchTerm")
 
     }) }}
 

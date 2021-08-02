@@ -19,6 +19,7 @@ import setUpHealthChecks from './middleware/setUpHealthChecks'
 import setUpWebRequestParsing from './middleware/setupRequestParsing'
 import authorisationMiddleware from './middleware/authorisationMiddleware'
 import { Services } from './services'
+import internalRedirectMiddleware from './middleware/internalRedirectMiddleware'
 
 export default function createApp(services: Services): express.Application {
   const app = express()
@@ -31,6 +32,7 @@ export default function createApp(services: Services): express.Application {
   app.use(setUpWebSecurity())
   app.use(setUpWebSession())
   app.use(setUpWebRequestParsing())
+  app.use(internalRedirectMiddleware)
   app.use(setUpStaticResources())
   nunjucksSetup(app, path)
   app.use(setUpAuthentication())

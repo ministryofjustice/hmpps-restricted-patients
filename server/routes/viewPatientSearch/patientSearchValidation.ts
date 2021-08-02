@@ -1,8 +1,5 @@
 import { FormError } from '../../@types/template'
-
-type SearchForm = {
-  searchTerm?: string
-}
+import SearchForm from '../../@types/SearchForm'
 
 const errors: { [key: string]: FormError } = {
   MISSING_TEXT: {

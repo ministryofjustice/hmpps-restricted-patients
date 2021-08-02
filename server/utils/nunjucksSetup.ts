@@ -4,6 +4,7 @@ import express from 'express'
 import * as pathModule from 'path'
 import { FormError } from '../@types/template'
 import config from '../config'
+import { ValidationErrorResponse } from '../middleware/requestValidationMiddleware'
 
 const production = process.env.NODE_ENV === 'production'
 
@@ -56,6 +57,24 @@ export default function nunjucksSetup(app: express.Express, path: pathModule.Pla
       }
     }
     return null
+  })
+
+  njkEnv.addFilter('formError', (array: ValidationErrorResponse[], formFieldId) => {
+    if (!array || !formFieldId) return null
+    const item = array.find(error => error.field === formFieldId)
+    if (item) {
+      return {
+        text: item.message.split(',')[0],
+      }
+    }
+    return null
+  })
+
+  njkEnv.addFilter('asErrorSummary', (array: ValidationErrorResponse[] = []) => {
+    return array.map(error => ({
+      text: error.message.split(',')[0],
+      href: `#${error.field}`,
+    }))
   })
 
   njkEnv.addGlobal('pshUrl', config.pshUrl)

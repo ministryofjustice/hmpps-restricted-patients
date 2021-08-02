@@ -44,7 +44,7 @@ describe('GET /viewing-restricted-patients', () => {
       ])
     })
 
-    it('should load the viewing rstricted patients page', () => {
+    it('should load the viewing restricted patients page', () => {
       return request(app)
         .get('/viewing-restricted-patients?searchTerm=Smith')
         .expect('Content-Type', /html/)
@@ -52,12 +52,14 @@ describe('GET /viewing-restricted-patients', () => {
           expect(res.text).toContain('Viewing restricted patients')
           expect(res.text).toContain('<p class="align-right"><strong>People listed:</strong> 1</p>')
           expect(res.text).toContain(
-            '<img src="/prisoner/A1234AA/image" alt="Photograph of Smith, John" class="results-table__image" />'
+            `<img src="/prisoner/A1234AA/image" alt="Photograph of Smith, John" class="results-table__image" />`
           )
           expect(res.text).toContain('Smith, John')
           expect(res.text).toContain('Yew Trees')
           expect(res.text).toContain(
-            '<a href="http://localhost:3002/prisoner/A1234AA/add-case-note" class="govuk-link" data-test="patient-add-case-note-link"><span class="govuk-visually-hidden">Smith, John - </span>Add a case note</a>'
+            `<a href="http://localhost:3002/prisoner/A1234AA/add-case-note" class="govuk-link" data-test="patient-add-case-note-link">
+                <span class="govuk-visually-hidden">Smith, John - </span>Add a case note
+              </a>`
           )
         })
     })
@@ -74,9 +76,7 @@ describe('GET /viewing-restricted-patients', () => {
         .expect('Content-Type', /html/)
         .expect(res => {
           expect(res.text).toContain('Viewing restricted patients')
-          expect(res.text).toContain(
-            'There are no results for the name or number you have entered. You can search again.'
-          )
+          expect(res.text).toContain('There are no results for the details you have entered.')
         })
     })
   })
@@ -90,14 +90,13 @@ describe('POST /viewing-restricted-patients', () => {
       .expect('Location', '/viewing-restricted-patients?searchTerm=Smith')
   })
 
-  it('should render validation messages', () => {
+  it('should redirect back to search-for-restricted-patient', () => {
     return request(app)
-      .post('/viewing-restricted-patients')
-      .expect('Content-Type', /html/)
+      .post('/search-for-restricted-patient')
+      .redirects(1)
       .expect(res => {
-        expect(res.text).toContain('Error: Viewing restricted patients')
-        expect(res.text).toContain('There is a problem')
-        expect(res.text).toContain('Enter a restricted patient’s name or prison number')
+        expect(res.redirects.length).toBe(1)
+        expect(res.redirects[0]).toMatch('/search-for-restricted-patient')
       })
   })
 })
