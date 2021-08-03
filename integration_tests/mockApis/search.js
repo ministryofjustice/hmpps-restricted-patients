@@ -53,10 +53,7 @@ const stubSearch = ({ query = defaultSearchQuery, results = defaultSearchRespons
     },
   })
 
-const stubRestrictedPatientSearch = ({
-  query = defaultSearchQuery,
-  results = defaultSearchResponse,
-} = defaultStubbing) =>
+const stubRestrictedPatientSearch = ({ results = defaultSearchResponse } = defaultStubbing) =>
   stubFor({
     request: {
       method: 'POST',
