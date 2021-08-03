@@ -18,6 +18,7 @@ module.exports = on => {
     stubTokenVerificationPing: tokenVerification.stubPing,
 
     stubSearch: search.stubSearch,
+    stubRestrictedPatientSearch: search.stubRestrictedPatientSearch,
     stubSearchPing: search.stubPing,
 
     stubGetAgenciesByType: prisonApi.stubGetAgenciesByType,

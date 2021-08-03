@@ -53,7 +53,26 @@ const stubSearch = ({ query = defaultSearchQuery, results = defaultSearchRespons
     },
   })
 
+const stubRestrictedPatientSearch = ({
+  query = defaultSearchQuery,
+  results = defaultSearchResponse,
+} = defaultStubbing) =>
+  stubFor({
+    request: {
+      method: 'POST',
+      urlPattern: '/search/restricted-patient-search/match-restricted-patients\\?size=3000',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: results,
+    },
+  })
+
 module.exports = {
   stubPing,
   stubSearch,
+  stubRestrictedPatientSearch,
 }
