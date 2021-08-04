@@ -13,16 +13,16 @@ module.exports = on => {
     stubLogin: auth.stubLogin,
 
     stubAuthUser: auth.stubUser,
-    stubAuthPing: auth.stubPing,
+    stubAuthPing: status => auth.stubPing(status),
 
     stubTokenVerificationPing: tokenVerification.stubPing,
 
     stubSearch: search.stubSearch,
     stubRestrictedPatientSearch: search.stubRestrictedPatientSearch,
-    stubSearchPing: search.stubPing,
+    stubSearchPing: status => search.stubPing(status),
 
     stubGetAgenciesByType: prisonApi.stubGetAgenciesByType,
     stubGetPrisonerDetails: prisonApi.stubGetPrisonerDetails,
-    stubPrisonApiPing: prisonApi.stubPing,
+    stubPrisonApiPing: status => prisonApi.stubPing(status),
   })
 }
