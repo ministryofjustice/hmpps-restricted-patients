@@ -74,6 +74,14 @@ export default {
       },
       agent: new AgentConfig(),
     },
+    restrictedPatientApi: {
+      url: get('RESTRICTED_PATIENT_API_URL', 'http://localhost:8084', requiredInProduction),
+      timeout: {
+        response: Number(get('RESTRICTED_PATIENT_API_TIMEOUT_RESPONSE', 10000)),
+        deadline: Number(get('RESTRICTED_PATIENT_API_TIMEOUT_DEADLINE', 10000)),
+      },
+      agent: new AgentConfig(),
+    },
     tokenVerification: {
       url: get('TOKEN_VERIFICATION_API_URL', 'http://localhost:8100', requiredInProduction),
       timeout: {
