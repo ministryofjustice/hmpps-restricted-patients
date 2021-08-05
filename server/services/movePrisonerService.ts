@@ -36,14 +36,19 @@ export default class MovePrisonerService {
     return client.getAgencyDetails(hospitalId)
   }
 
-  async dischargePatientToHospital(prisonerNumber: string, currentPrisonId: string, hospitalId: string, user: User) {
+  async dischargePatientToHospital(
+    prisonerNumber: string,
+    currentPrisonId: string,
+    hospitalId: string,
+    user: User
+  ): Promise<unknown> {
     const client = new RestrictedPatientApiClient(user.token)
     const request = {
       // TODO - Confirm supportingPrisonId, date, commentText
       // TODO - Needs role RELEASE_PRISONER
       offenderNo: prisonerNumber,
       //      commentText: 'test comment text',
-      dischargeTime: new Date(),
+      dischargeTime: new Date(Date.now()),
       fromLocationId: currentPrisonId,
       hospitalLocationCode: hospitalId,
       supportingPrisonId: currentPrisonId,
