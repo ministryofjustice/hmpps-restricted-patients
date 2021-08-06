@@ -125,7 +125,7 @@ describe('movePrisonerService', () => {
       jest.spyOn(global.Date, 'now').mockImplementationOnce(() => new Date('2019-05-14T11:01:58.135Z').valueOf())
     })
 
-    it('makes the correct calls and returns the hospitals', async () => {
+    it('makes the correct calls and returns the recieved data', async () => {
       const results = await service.dischargePatientToHospital('A1234AA', 'MDI', 'SHEFF', user)
 
       expect(dischargePatient).toBeCalledWith({
@@ -133,7 +133,6 @@ describe('movePrisonerService', () => {
         dischargeTime: new Date('2019-05-14T11:01:58.135Z'),
         fromLocationId: 'MDI',
         hospitalLocationCode: 'SHEFF',
-        supportingPrisonId: 'MDI',
       })
       expect(results).toStrictEqual({
         restrictivePatient: {
