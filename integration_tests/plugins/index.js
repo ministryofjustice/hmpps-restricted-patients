@@ -4,6 +4,7 @@ const auth = require('../mockApis/auth')
 const tokenVerification = require('../mockApis/tokenVerification')
 const search = require('../mockApis/search')
 const prisonApi = require('../mockApis/prisonApi')
+const restrictedPatientApi = require('../mockApis/restrictedPatientApi')
 
 module.exports = on => {
   on('task', {
@@ -22,7 +23,11 @@ module.exports = on => {
     stubSearchPing: status => search.stubPing(status),
 
     stubGetAgenciesByType: prisonApi.stubGetAgenciesByType,
+    stubGetAgencyDetails: prisonApi.stubGetAgencyDetails,
     stubGetPrisonerDetails: prisonApi.stubGetPrisonerDetails,
     stubPrisonApiPing: status => prisonApi.stubPing(status),
+
+    stubDischargeToHospital: restrictedPatientApi.stubDischargeToHospital,
+    stubRestrictedPatientApiPing: status => restrictedPatientApi.stubPing(status),
   })
 }

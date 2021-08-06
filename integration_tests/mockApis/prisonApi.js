@@ -26,6 +26,19 @@ const stubGetAgenciesByType = ({ type, response = [], active = true }) =>
     },
   })
 
+const stubGetAgencyDetails = ({ id, response = {} }) =>
+  stubFor({
+    request: {
+      method: 'GET',
+      url: `/prisonApi/api/agencies/${id}`,
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: response,
+    },
+  })
+
 const stubGetPrisonerDetails = ({ prisonerNumber, response = {} }) =>
   stubFor({
     request: {
@@ -42,5 +55,6 @@ const stubGetPrisonerDetails = ({ prisonerNumber, response = {} }) =>
 module.exports = {
   stubPing,
   stubGetAgenciesByType,
+  stubGetAgencyDetails,
   stubGetPrisonerDetails,
 }

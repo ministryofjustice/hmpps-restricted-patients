@@ -1,4 +1,5 @@
 import PrisonApiClient, { Prison } from '../data/prisonApiClient'
+import RestrictedPatientApiClient from '../data/restrictedPatientApiClient'
 import HmppsAuthClient, { User } from '../data/hmppsAuthClient'
 
 export type Hospital = {
@@ -26,5 +27,29 @@ export default class MovePrisonerService {
     )
 
     return sortedHospitals
+  }
+
+  async getHospital(hospitalId: string, user: User): Promise<Prison> {
+    const token = await this.hmppsAuthClient.getSystemClientToken(user.username)
+    const client = new PrisonApiClient(token)
+
+    return client.getAgencyDetails(hospitalId)
+  }
+
+  async dischargePatientToHospital(
+    prisonerNumber: string,
+    currentPrisonId: string,
+    hospitalId: string,
+    user: User
+  ): Promise<unknown> {
+    const client = new RestrictedPatientApiClient(user.token)
+    const request = {
+      offenderNo: prisonerNumber,
+      dischargeTime: new Date(Date.now()),
+      fromLocationId: currentPrisonId,
+      hospitalLocationCode: hospitalId,
+    }
+
+    return client.dischargePatient(request)
   }
 }

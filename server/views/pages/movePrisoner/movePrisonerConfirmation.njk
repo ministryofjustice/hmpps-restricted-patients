@@ -1,0 +1,35 @@
+{% extends "../../partials/layout.njk" %}
+{% from "../../partials/breadcrumb.njk" import breadcrumb %}
+
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set title = "Confirm move" %}
+
+{% block beforeContent %}
+  {{ breadcrumb() }}
+{% endblock %}
+
+{% block content %}
+  <h1 class="govuk-heading-l">You are moving {{ prisoner.friendlyName }} to {{ hospital.description }}</h1>  
+
+  <form method="POST">
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+    <input type="hidden" name="currentAgencyId" value="{{ currentAgencyId }}" />
+
+    {{ govukButton({ 
+      text: "Confirm move",
+      preventDoubleClick: true,
+      classes: "govuk-!-margin-right-3",
+      type: "submit",
+      attributes: { "data-test": "confirm-prisoner-move-submit" }
+    }) }}
+
+    {{ govukButton({
+      text: "Cancel",
+      element: 'a',
+      href: '/back-to-start',
+      classes: "govuk-button--secondary",
+      attributes: { "data-test": "confirm-prisoner-move-cancel" }
+    }) }}
+  </form>
+{% endblock %}
