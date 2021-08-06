@@ -5,6 +5,7 @@ import prisonerSelectRoutes from './prisonerSelect'
 import prisonerRoutes from './prisonerRoutes'
 import movePrisonerRoutes from './movePrisoner'
 import movePrisonerConfirmationRoutes from './movePrisonerConfirmation'
+import movePrisonerCompletedRoutes from './movePrisonerCompleted'
 import viewPatientSearchRoutes from './viewPatientSearch'
 import viewPatientsRoutes from './viewPatients'
 
@@ -19,6 +20,7 @@ export default function routes(
   router.use('/prisoner', prisonerRoutes({ prisonerSearchService }))
   router.use('/move-to-hospital', movePrisonerRoutes({ movePrisonerService, prisonerSearchService }))
   router.use('/confirm-move', movePrisonerConfirmationRoutes({ movePrisonerService, prisonerSearchService }))
+  router.use('/prisoner-moved-to-hospital', movePrisonerCompletedRoutes({ movePrisonerService, prisonerSearchService }))
   router.use('/search-for-restricted-patient', viewPatientSearchRoutes())
   router.use('/viewing-restricted-patients', viewPatientsRoutes({ restrictedPatientSearchService }))
 

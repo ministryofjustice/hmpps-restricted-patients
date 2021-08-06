@@ -2,6 +2,7 @@ const PrisonerSearchPage = require('../pages/movePrisoner/movePrisonerSearch.pag
 const PrisonerSelectPage = require('../pages/movePrisoner/movePrisonerSelect.page')
 const MovePrisonerSelectHospitalPage = require('../pages/movePrisoner/movePrisonerSelectHospital.page')
 const MovePrisonerConfirmationPage = require('../pages/movePrisoner/movePrisonerConfirmation.page')
+const MovePrisonerCompletedPage = require('../pages/movePrisoner/movePrisonerCompleted.page')
 
 const toOffender = $cell => ({
   name: $cell[1].textContent,
@@ -124,8 +125,12 @@ context.only('Move prisoner', () => {
 
     movePrisonerConfirmationPageForm.confirm().click()
 
+    const movePrisonerCompletedPage = MovePrisonerCompletedPage.verifyOnPage('John Smith', 'Sheffield Hospital')
+
+    movePrisonerCompletedPage.finish().click()
+
     cy.location().should(loc => {
-      expect(loc.pathname).to.eq('/prisoner-moved-to-hospital/A1234AA/SHEFF')
+      expect(loc.pathname).to.eq('/')
     })
   })
 
