@@ -1,13 +1,13 @@
 const { stubFor } = require('./wiremock')
 
-const stubPing = () =>
+const stubPing = (status = 200) =>
   stubFor({
     request: {
       method: 'GET',
       urlPattern: '/search/health/ping',
     },
     response: {
-      status: 200,
+      status,
       headers: { 'Content-Type': 'application/json;charset=UTF-8' },
       jsonBody: { status: 'UP' },
     },
