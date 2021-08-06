@@ -6,6 +6,7 @@ context('Healthcheck', () => {
       cy.task('stubTokenVerificationPing')
       cy.task('stubSearchPing')
       cy.task('stubPrisonApiPing')
+      cy.task('stubRestrictedPatientApiPing')
     })
 
     it('Health check page is visible', () => {
@@ -19,6 +20,7 @@ context('Healthcheck', () => {
           prisonerOffenderSearch: 'OK',
           tokenVerification: 'OK',
           prisonApi: 'OK',
+          restrictedPatientApi: 'OK',
         })
       })
     })
@@ -35,6 +37,7 @@ context('Healthcheck', () => {
       cy.task('stubTokenVerificationPing', 500)
       cy.task('stubSearchPing', 500)
       cy.task('stubPrisonApiPing', 500)
+      cy.task('stubRestrictedPatientApiPing', 500)
     })
 
     it('Health check page is visible', () => {
@@ -47,6 +50,7 @@ context('Healthcheck', () => {
         expect(response.body.checks.prisonerOffenderSearch.status).to.eq(500)
         expect(response.body.checks.tokenVerification.status).to.eq(500)
         expect(response.body.checks.prisonApi.status).to.eq(500)
+        expect(response.body.checks.restrictedPatientApi.status).to.eq(500)
       })
     })
   })

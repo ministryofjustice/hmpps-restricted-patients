@@ -28,5 +28,6 @@ module.exports = on => {
     stubPrisonApiPing: status => prisonApi.stubPing(status),
 
     stubDischargeToHospital: restrictedPatientApi.stubDischargeToHospital,
+    stubRestrictedPatientApiPing: status => restrictedPatientApi.stubPing(status),
   })
 }
