@@ -44,14 +44,10 @@ export default class MovePrisonerService {
   ): Promise<unknown> {
     const client = new RestrictedPatientApiClient(user.token)
     const request = {
-      // TODO - Confirm supportingPrisonId, date, commentText
-      // TODO - Needs role RELEASE_PRISONER
       offenderNo: prisonerNumber,
-      //      commentText: 'test comment text',
       dischargeTime: new Date(Date.now()),
       fromLocationId: currentPrisonId,
       hospitalLocationCode: hospitalId,
-      supportingPrisonId: currentPrisonId,
     }
 
     return client.dischargePatient(request)
