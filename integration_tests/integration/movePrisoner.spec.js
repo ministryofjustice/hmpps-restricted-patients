@@ -148,9 +148,7 @@ context.only('Move prisoner', () => {
       const prisonerSelectPage = PrisonerSelectPage.verifyOnPage()
 
       prisonerSelectPage.resultsTable().should('not.exist')
-      prisonerSelectPage
-        .noResultsMessage()
-        .should('contain', 'There are no results for the name or number you have entered. You can search again.')
+      prisonerSelectPage.noResultsMessage().should('contain', 'There are no results for the details you have entered.')
     })
 
     it('Handles search again validation', () => {

@@ -73,9 +73,7 @@ describe('GET /select-prisoner', () => {
         .expect('Content-Type', /html/)
         .expect(res => {
           expect(res.text).toContain('Select a prisoner')
-          expect(res.text).toContain(
-            'There are no results for the name or number you have entered. You can search again.'
-          )
+          expect(res.text).toContain('There are no results for the details you have entered.')
         })
     })
   })
