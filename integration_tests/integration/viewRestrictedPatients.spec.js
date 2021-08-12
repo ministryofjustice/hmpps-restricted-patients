@@ -8,7 +8,7 @@ const toOffender = $cell => ({
   addACaseNoteLink: $cell[4].textContent,
 })
 
-context.only('View restricted patients', () => {
+context('View restricted patients', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubLogin')

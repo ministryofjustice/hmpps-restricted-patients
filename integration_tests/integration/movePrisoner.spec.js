@@ -12,7 +12,7 @@ const toOffender = $cell => ({
   moveHospitalLink: $cell[5].textContent,
 })
 
-context.only('Move prisoner', () => {
+context('Move prisoner', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubLogin')

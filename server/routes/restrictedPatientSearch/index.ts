@@ -1,18 +1,18 @@
 import express, { RequestHandler, Router } from 'express'
 import asyncMiddleware from '../../middleware/asyncMiddleware'
 
-import PatientSearchRoutes from './patientSearch'
+import RestrictedPatientSearchRoutes from './restrictedPatientSearch'
 
-export default function viewPatientRoutes(): Router {
+export default function restrictedPatientSearchRoutes(searchResultsPath: string): Router {
   const router = express.Router()
 
-  const patientSearch = new PatientSearchRoutes()
+  const restrictedPatientSearch = new RestrictedPatientSearchRoutes(searchResultsPath)
 
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
   const post = (path: string, handler: RequestHandler) => router.post(path, asyncMiddleware(handler))
 
-  get('/', patientSearch.view)
-  post('/', patientSearch.submit)
+  get('/', restrictedPatientSearch.view)
+  post('/', restrictedPatientSearch.submit)
 
   return router
 }
