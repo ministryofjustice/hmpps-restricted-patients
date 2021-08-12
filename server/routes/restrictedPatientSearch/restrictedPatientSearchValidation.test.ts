@@ -1,4 +1,4 @@
-import validateForm from './patientSearchValidation'
+import validateForm from './restrictedPatientSearchValidation'
 
 describe('validateForm', () => {
   describe('searchTerm', () => {

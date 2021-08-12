@@ -44,7 +44,7 @@ describe('GET /viewing-restricted-patients', () => {
       ])
     })
 
-    it('should load the viewing rstricted patients page', () => {
+    it('should load the viewing restricted patients page', () => {
       return request(app)
         .get('/viewing-restricted-patients?searchTerm=Smith')
         .expect('Content-Type', /html/)
