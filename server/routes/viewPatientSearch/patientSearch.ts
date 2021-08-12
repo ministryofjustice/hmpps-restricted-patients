@@ -4,6 +4,8 @@ import validateForm from './patientSearchValidation'
 import { FormError } from '../../@types/template'
 
 export default class PatientSearchRoutes {
+  constructor(private readonly searchResultsPath: string) {}
+
   private renderView = async (req: Request, res: Response, error?: FormError): Promise<void> => {
     return res.render('pages/patientSearch', {
       errors: error ? [error] : [],
@@ -21,7 +23,7 @@ export default class PatientSearchRoutes {
 
     return res.redirect(
       url.format({
-        pathname: '/viewing-restricted-patients',
+        pathname: this.searchResultsPath,
         query: { searchTerm },
       })
     )
