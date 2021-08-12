@@ -15,17 +15,18 @@ let app: Express
 beforeEach(() => {
   app = appWithAllRoutes({ production: false }, { prisonerSearchService, movePrisonerService })
 
-  movePrisonerService.getHospitals.mockResolvedValue([
-    {
-      agencyId: 'SHEFF',
-      description: 'Sheffield Hospital',
-      longDescription: 'Sheffield Teaching Hospital',
-      agencyType: 'HOSP',
-      active: true,
-    } as Hospital,
-  ])
+  movePrisonerService.getHospital.mockResolvedValue({
+    agencyId: 'SHEFF',
+    description: 'Sheffield Hospital',
+    longDescription: 'Sheffield Teaching Hospital',
+    agencyType: 'HOSP',
+    active: true,
+  } as Hospital)
   prisonerSearchService.getPrisonerDetails.mockResolvedValue({
-    assignedLivingUnit: { description: '1-2-015' },
+    assignedLivingUnit: {
+      agencyId: 'MDI',
+      description: '1-2-015',
+    },
     alerts: [
       { alertType: 'T', alertCode: 'TCPA' },
       { alertType: 'X', alertCode: 'XCU' },
@@ -47,39 +48,40 @@ afterEach(() => {
   jest.resetAllMocks()
 })
 
-describe('GET /move-to-hospital', () => {
-  it('should load the move prisoner to hospital page', () => {
+describe('GET /confirm-move', () => {
+  it('should load the confirm move page', () => {
     return request(app)
-      .get('/move-to-hospital/A1234AA')
+      .get('/confirm-move/A1234AA/SHEFF')
       .expect('Content-Type', /html/)
       .expect(res => {
-        expect(res.text).toContain('Move John Smith to a hospital')
-        expect(res.text).toContain(
-          '<img src="/prisoner/A1234AA/image" alt="Photograph of John Smith" class="horizontal-information__prisoner-image" />'
-        )
-        expect(res.text).toContain('Smith, John')
-        expect(res.text).toContain('1-2-015')
-        expect(res.text).toContain('Controlled unlock')
+        expect(res.text).toContain('You are moving John Smith to Sheffield Hospital')
+        expect(res.text).toContain('<input type="hidden" name="currentAgencyId" value="MDI"')
       })
   })
 })
 
-describe('POST /move-to-hospital', () => {
-  it('should redirect to confirm move page with correct url parameters', () => {
+describe('POST /confirm-move', () => {
+  it('should redirect to prisoner-moved page on success', () => {
+    movePrisonerService.dischargePatientToHospital.mockResolvedValue({
+      restrictivePatient: {
+        supportingPrison: 'MDI',
+      },
+    })
+
     return request(app)
-      .post('/move-to-hospital/A1234AA')
-      .send({ hospital: 'SHEFF' })
-      .expect('Location', '/confirm-move/A1234AA/SHEFF')
+      .post('/confirm-move/A1234AA/SHEFF')
+      .send({ currentAgencyId: 'MDI' })
+      .expect('Location', '/prisoner-moved-to-hospital/A1234AA/SHEFF')
   })
 
-  it('should render validation messages', () => {
+  it('should throw an error on failure', () => {
+    movePrisonerService.dischargePatientToHospital.mockRejectedValue(new Error('some error'))
+
     return request(app)
-      .post('/move-to-hospital/A1234AA')
+      .post('/confirm-move/A1234AA/SHEFF')
       .expect('Content-Type', /html/)
       .expect(res => {
-        expect(res.text).toContain('Error: Move to a hospital')
-        expect(res.text).toContain('There is a problem')
-        expect(res.text).toContain('Select a hospital')
+        expect(res.text).toContain('Error: some error')
       })
   })
 })

@@ -74,9 +74,7 @@ describe('GET /viewing-restricted-patients', () => {
         .expect('Content-Type', /html/)
         .expect(res => {
           expect(res.text).toContain('Viewing restricted patients')
-          expect(res.text).toContain(
-            'There are no results for the name or number you have entered. You can search again.'
-          )
+          expect(res.text).toContain('There are no results for the details you have entered.')
         })
     })
   })

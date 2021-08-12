@@ -35,14 +35,14 @@ const favicon = () =>
     },
   })
 
-const ping = () =>
+const ping = status =>
   stubFor({
     request: {
       method: 'GET',
       urlPattern: '/auth/health/ping',
     },
     response: {
-      status: 200,
+      status,
     },
   })
 
@@ -138,7 +138,7 @@ const stubUserRoles = () =>
 
 module.exports = {
   getLoginUrl,
-  stubPing: () => Promise.all([ping(), tokenVerification.stubPing()]),
+  stubPing: (status = 200) => Promise.all([ping(status), tokenVerification.stubPing(status)]),
   stubLogin: () => Promise.all([favicon(), redirect(), logout(), token(), tokenVerification.stubVerifyToken()]),
   stubUser: () => Promise.all([stubUser(), stubUserRoles()]),
 }

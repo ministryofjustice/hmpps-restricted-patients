@@ -1,13 +1,13 @@
 const { stubFor } = require('./wiremock')
 
-const stubPing = () =>
+const stubPing = (status = 200) =>
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: '/prisonApi/api/health/ping',
+      urlPattern: '/prisonApi/health/ping',
     },
     response: {
-      status: 200,
+      status,
       headers: { 'Content-Type': 'application/json;charset=UTF-8' },
       jsonBody: { status: 'UP' },
     },
@@ -18,6 +18,19 @@ const stubGetAgenciesByType = ({ type, response = [], active = true }) =>
     request: {
       method: 'GET',
       url: `/prisonApi/api/agencies/type/${type}?active=${active}`,
+    },
+    response: {
+      status: 200,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: response,
+    },
+  })
+
+const stubGetAgencyDetails = ({ id, response = {} }) =>
+  stubFor({
+    request: {
+      method: 'GET',
+      url: `/prisonApi/api/agencies/${id}`,
     },
     response: {
       status: 200,
@@ -42,5 +55,6 @@ const stubGetPrisonerDetails = ({ prisonerNumber, response = {} }) =>
 module.exports = {
   stubPing,
   stubGetAgenciesByType,
+  stubGetAgencyDetails,
   stubGetPrisonerDetails,
 }

@@ -36,6 +36,12 @@ export default class PrisonApiClient {
     })
   }
 
+  getAgencyDetails(id: string): Promise<Prison> {
+    return this.restClient.get<Prison>({
+      path: `/api/agencies/${id}`,
+    })
+  }
+
   async getPrisonerDetails(prisonerNumber: string): Promise<PrisonerResult> {
     const result = await this.restClient.get<PrisonerResult>({
       path: `/api/offenders/${prisonerNumber}`,

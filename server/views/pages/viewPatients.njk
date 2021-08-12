@@ -33,7 +33,7 @@
       <img src="/prisoner/{{ prisoner.prisonerNumber }}/image" alt="Photograph of {{ prisoner.displayName }}" class="results-table__image" />
     {% endset -%}
     {% set prisonerLinkHtml %}
-      <a href="{{ pshUrl }}/prisoner/{{ prisoner.prisonerNumber }}" class="govuk-link">{{ prisoner.displayName }}</a>
+      <a href="{{ pshUrl }}/prisoner/{{ prisoner.prisonerNumber }}" class="govuk-link" data-test="view-prisoner-profile">{{ prisoner.displayName }}</a>
     {% endset -%}
     {% set addCaseNoteLinkHtml %}
       <a href="{{ pshUrl }}/prisoner/{{ prisoner.prisonerNumber }}/add-case-note" class="govuk-link" data-test="patient-add-case-note-link"><span class="govuk-visually-hidden">{{ prisoner.displayName }} - </span>Add a case note</a>
@@ -80,7 +80,7 @@
     </div>
   {% else %}
     {% if not errors | length %}
-      <p class="govuk-!-padding-top-3" data-test="no-results-message">There are no results for the name or number you have entered. You can search again.</p>
+      <p class="govuk-!-padding-top-3" data-test="no-results-message">There are no results for the details you have entered.</p>
     {% endif %}
   {% endif %}
 {% endblock %}

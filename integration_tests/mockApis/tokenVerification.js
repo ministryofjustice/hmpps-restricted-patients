@@ -1,27 +1,27 @@
 const { stubFor } = require('./wiremock')
 
 module.exports = {
-  stubPing: () => {
+  stubPing: (status = 200) => {
     return stubFor({
       request: {
         method: 'GET',
         urlPattern: '/verification/health/ping',
       },
       response: {
-        status: 200,
+        status,
         headers: { 'Content-Type': 'application/json;charset=UTF-8' },
         jsonBody: { status: 'UP' },
       },
     })
   },
-  stubVerifyToken: () => {
+  stubVerifyToken: (status = 200) => {
     return stubFor({
       request: {
         method: 'POST',
         urlPattern: '/verification/token/verify',
       },
       response: {
-        status: 200,
+        status,
         headers: { 'Content-Type': 'application/json;charset=UTF-8' },
         jsonBody: { active: 'true' },
       },

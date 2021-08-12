@@ -1,6 +1,8 @@
 const PrisonerSearchPage = require('../pages/movePrisoner/movePrisonerSearch.page')
 const PrisonerSelectPage = require('../pages/movePrisoner/movePrisonerSelect.page')
 const MovePrisonerSelectHospitalPage = require('../pages/movePrisoner/movePrisonerSelectHospital.page')
+const MovePrisonerConfirmationPage = require('../pages/movePrisoner/movePrisonerConfirmation.page')
+const MovePrisonerCompletedPage = require('../pages/movePrisoner/movePrisonerCompleted.page')
 
 const toOffender = $cell => ({
   name: $cell[1].textContent,
@@ -39,6 +41,24 @@ context.only('Move prisoner', () => {
           active: true,
         },
       ],
+    })
+    cy.task('stubGetAgencyDetails', {
+      id: 'SHEFF',
+      response: {
+        agencyId: 'SHEFF',
+        description: 'Sheffield Hospital',
+        longDescription: 'Sheffield Teaching Hospital',
+        agencyType: 'HOSP',
+        active: true,
+      },
+    })
+    cy.task('stubDischargeToHospital', {
+      status: 200,
+      response: {
+        restrictivePatient: {
+          supportingPrison: 'MDI',
+        },
+      },
     })
     cy.task('stubGetPrisonerDetails', {
       prisonerNumber: 'A1234AA',
@@ -100,8 +120,17 @@ context.only('Move prisoner', () => {
     movePrisonerSelectHospitalPageForm.hospital().select('SHEFF')
     movePrisonerSelectHospitalPageForm.submit().click()
 
+    const movePrisonerConfirmationPage = MovePrisonerConfirmationPage.verifyOnPage('John Smith', 'Sheffield Hospital')
+    const movePrisonerConfirmationPageForm = movePrisonerConfirmationPage.form()
+
+    movePrisonerConfirmationPageForm.confirm().click()
+
+    const movePrisonerCompletedPage = MovePrisonerCompletedPage.verifyOnPage('John Smith', 'Sheffield Hospital')
+
+    movePrisonerCompletedPage.finish().click()
+
     cy.location().should(loc => {
-      expect(loc.pathname).to.eq('/confirm-move/A1234AA/SHEFF')
+      expect(loc.pathname).to.eq('/')
     })
   })
 
@@ -189,6 +218,37 @@ context.only('Move prisoner', () => {
       const movePrisonerSelectHospitalPageForm = movePrisonerSelectHospitalPage.form()
 
       movePrisonerSelectHospitalPageForm.cancel().click()
+
+      cy.location().should(loc => {
+        expect(loc.pathname).to.eq('/select-prisoner')
+        expect(loc.search).to.eq('?searchTerm=A1234AA')
+      })
+    })
+  })
+
+  describe('Confirm move page', () => {
+    it('Redirects back to search results when clicking cancel', () => {
+      cy.visit('/search-for-prisoner')
+      const prisonerSearchPage = PrisonerSearchPage.verifyOnPage()
+      const prisonerSearchPageForm = prisonerSearchPage.form()
+
+      prisonerSearchPageForm.searchTerm().type('A1234AA')
+      prisonerSearchPageForm.submit().click()
+
+      const prisonerSelectPage = PrisonerSelectPage.verifyOnPage()
+
+      prisonerSelectPage.moveToHospitalLink().click()
+
+      const movePrisonerSelectHospitalPage = MovePrisonerSelectHospitalPage.verifyOnPage('John Smith')
+      const movePrisonerSelectHospitalPageForm = movePrisonerSelectHospitalPage.form()
+
+      movePrisonerSelectHospitalPageForm.hospital().select('SHEFF')
+      movePrisonerSelectHospitalPageForm.submit().click()
+
+      const movePrisonerConfirmationPage = MovePrisonerConfirmationPage.verifyOnPage('John Smith', 'Sheffield Hospital')
+      const movePrisonerConfirmationPageForm = movePrisonerConfirmationPage.form()
+
+      movePrisonerConfirmationPageForm.cancel().click()
 
       cy.location().should(loc => {
         expect(loc.pathname).to.eq('/select-prisoner')

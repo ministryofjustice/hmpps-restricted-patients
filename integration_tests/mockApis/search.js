@@ -1,13 +1,13 @@
 const { stubFor } = require('./wiremock')
 
-const stubPing = () =>
+const stubPing = (status = 200) =>
   stubFor({
     request: {
       method: 'GET',
       urlPattern: '/search/health/ping',
     },
     response: {
-      status: 200,
+      status,
       headers: { 'Content-Type': 'application/json;charset=UTF-8' },
       jsonBody: { status: 'UP' },
     },
@@ -53,7 +53,23 @@ const stubSearch = ({ query = defaultSearchQuery, results = defaultSearchRespons
     },
   })
 
+const stubRestrictedPatientSearch = ({ results = defaultSearchResponse } = defaultStubbing) =>
+  stubFor({
+    request: {
+      method: 'POST',
+      urlPattern: '/search/restricted-patient-search/match-restricted-patients\\?size=3000',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+      },
+      jsonBody: results,
+    },
+  })
+
 module.exports = {
   stubPing,
   stubSearch,
+  stubRestrictedPatientSearch,
 }
