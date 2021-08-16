@@ -64,7 +64,7 @@ describe('/search-for-a-restricted-patient', () => {
       return request(app)
         .post('/search-for-a-restricted-patient')
         .send({ searchTerm: 'Smith' })
-        .expect('Location', '/select-a-restricted-patient?searchTerm=Smith')
+        .expect('Location', '/select-restricted-patient?searchTerm=Smith')
     })
 
     it('should render validation messages', () => {
