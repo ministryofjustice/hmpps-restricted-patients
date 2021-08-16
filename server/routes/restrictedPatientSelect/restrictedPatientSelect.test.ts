@@ -1,0 +1,101 @@
+import 'reflect-metadata'
+import { Express } from 'express'
+import request from 'supertest'
+import RestrictedPatientSearchService, {
+  RestrictedPatientSearchSummary,
+} from '../../services/restrictedPatientSearchService'
+import appWithAllRoutes from '../testutils/appSetup'
+
+jest.mock('../../services/restrictedPatientSearchService')
+
+const restrictedPatientSearchService = new RestrictedPatientSearchService(
+  null
+) as jest.Mocked<RestrictedPatientSearchService>
+
+let app: Express
+
+beforeEach(() => {
+  app = appWithAllRoutes({ production: false }, { restrictedPatientSearchService })
+})
+
+afterEach(() => {
+  jest.resetAllMocks()
+})
+
+describe('GET /select-restricted-patient', () => {
+  describe('with results', () => {
+    beforeEach(() => {
+      restrictedPatientSearchService.search.mockResolvedValue([
+        {
+          alerts: [
+            { alertType: 'T', alertCode: 'TCPA' },
+            { alertType: 'X', alertCode: 'XCU' },
+          ],
+          cellLocation: '1-2-015',
+          displayName: 'Smith, John',
+          prisonerNumber: 'A1234AA',
+          prisonName: 'HMP Moorland',
+          supportingPrisonId: 'DNI',
+          dischargedHospitalId: 'YEWTHO',
+          dischargedHospitalDescription: 'Yew Trees',
+          dischargeDate: '2021-06-08',
+          dischargeDetails: 'Psychiatric Hospital Discharge to Yew Trees',
+        } as RestrictedPatientSearchSummary,
+      ])
+    })
+
+    it('should load the select restricted patients page', () => {
+      return request(app)
+        .get('/select-restricted-patient?searchTerm=Smith')
+        .expect('Content-Type', /html/)
+        .expect(res => {
+          expect(res.text).toContain('Select a restricted patient')
+          expect(res.text).toContain('<p class="align-right"><strong>People listed:</strong> 1</p>')
+          expect(res.text).toContain(
+            '<img src="/prisoner/A1234AA/image" alt="Photograph of Smith, John" class="results-table__image" />'
+          )
+          expect(res.text).toContain('Smith, John')
+          expect(res.text).toContain('Yew Trees')
+          expect(res.text).toContain(
+            '<a href="/remove-from-restricted-patients/A1234AA" class="govuk-link" data-test="remove-restricted-patient-link"><span class="govuk-visually-hidden">Smith, John - </span>Remove as a restricted patient</a>'
+          )
+        })
+    })
+  })
+
+  describe('without results', () => {
+    beforeEach(() => {
+      restrictedPatientSearchService.search.mockResolvedValue([])
+    })
+
+    it('should load the page with a validation message', () => {
+      return request(app)
+        .get('/select-restricted-patient?searchTerm=Smith')
+        .expect('Content-Type', /html/)
+        .expect(res => {
+          expect(res.text).toContain('Select a restricted patient')
+          expect(res.text).toContain('There are no results for the details you have entered.')
+        })
+    })
+  })
+})
+
+describe('POST /select-restricted-patient', () => {
+  it('should redirect to select restricted patient page with the correct search text', () => {
+    return request(app)
+      .post('/select-restricted-patient')
+      .send({ searchTerm: 'Smith' })
+      .expect('Location', '/select-restricted-patient?searchTerm=Smith')
+  })
+
+  it('should render validation messages', () => {
+    return request(app)
+      .post('/select-restricted-patient')
+      .expect('Content-Type', /html/)
+      .expect(res => {
+        expect(res.text).toContain('Error: Select a restricted patient')
+        expect(res.text).toContain('There is a problem')
+        expect(res.text).toContain('Enter a restricted patient’s name or prison number')
+      })
+  })
+})
