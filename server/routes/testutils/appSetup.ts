@@ -14,6 +14,7 @@ import PrisonerSearchService from '../../services/prisonerSearchService'
 import MovePrisonerService from '../../services/movePrisonerService'
 import RestrictedPatientSearchService from '../../services/restrictedPatientSearchService'
 import { Services } from '../../services'
+import RemoveRestrictedPatientService from '../../services/removeRestrictedPatientService'
 
 const user = {
   name: 'john smith',
@@ -71,6 +72,7 @@ export default function appWithAllRoutes(
       prisonerSearchService: {} as PrisonerSearchService,
       movePrisonerService: {} as MovePrisonerService,
       restrictedPatientSearchService: {} as RestrictedPatientSearchService,
+      removeRestrictedPatientService: {} as RemoveRestrictedPatientService,
       ...overrides,
     }),
     production

@@ -5,18 +5,21 @@ import RestrictedPatientSearchService from './restrictedPatientSearchService'
 import HmppsAuthClient from '../data/hmppsAuthClient'
 
 import TokenStore from '../data/tokenStore'
+import RemoveRestrictedPatientService from './removeRestrictedPatientService'
 
 const hmppsAuthClient = new HmppsAuthClient(new TokenStore())
 const userService = new UserService(hmppsAuthClient)
 const prisonerSearchService = new PrisonerSearchService(hmppsAuthClient)
 const movePrisonerService = new MovePrisonerService(hmppsAuthClient)
 const restrictedPatientSearchService = new RestrictedPatientSearchService(hmppsAuthClient)
+const removeRestrictedPatientService = new RemoveRestrictedPatientService()
 
 export const services = {
   userService,
   prisonerSearchService,
   movePrisonerService,
   restrictedPatientSearchService,
+  removeRestrictedPatientService,
 }
 
 export type Services = typeof services
