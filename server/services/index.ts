@@ -11,8 +11,8 @@ const hmppsAuthClient = new HmppsAuthClient(new TokenStore())
 const userService = new UserService(hmppsAuthClient)
 const prisonerSearchService = new PrisonerSearchService(hmppsAuthClient)
 const movePrisonerService = new MovePrisonerService(hmppsAuthClient)
-const restrictedPatientSearchService = new RestrictedPatientSearchService(hmppsAuthClient)
-const removeRestrictedPatientService = new RemoveRestrictedPatientService()
+const restrictedPatientSearchService = new RestrictedPatientSearchService()
+const removeRestrictedPatientService = new RemoveRestrictedPatientService(hmppsAuthClient)
 
 export const services = {
   userService,

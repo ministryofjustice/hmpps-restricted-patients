@@ -29,18 +29,18 @@ export default class RestrictedPatientApiClient {
   }
 
   async getPatient(prisonerNumber: string): Promise<RestrictedPatientResult> {
-    const result = await this.restClient.get<string>({
+    const response = await this.restClient.get<RestrictedPatientResult>({
       path: `/restricted-patient/prison-number/${prisonerNumber}`,
     })
 
-    return plainToClass(RestrictedPatientResult, result, { excludeExtraneousValues: true })
+    return plainToClass(RestrictedPatientResult, response, { excludeExtraneousValues: true })
   }
 
-  async removePatient(prisonerNumber: string): Promise<unknown> {
-    const results = await this.restClient.delete<string>({
+  async removePatient(prisonerNumber: string): Promise<Record<string, unknown>> {
+    const response = await this.restClient.delete<Record<string, unknown>>({
       path: `/restricted-patient/prison-number/${prisonerNumber}`,
     })
 
-    return results
+    return response
   }
 }

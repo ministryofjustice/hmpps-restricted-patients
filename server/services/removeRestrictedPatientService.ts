@@ -1,16 +1,26 @@
-import { User } from '../data/hmppsAuthClient'
+import HmppsAuthClient, { User } from '../data/hmppsAuthClient'
 import PrisonApiClient from '../data/prisonApiClient'
 import RestrictedPatientApiClient from '../data/restrictedPatientApiClient'
 import convertToTitleCase from '../utils/utils'
 
+export interface RestrictedPatientDetails {
+  displayName: string
+  friendlyName: string
+  hospital: string
+  prisonerNumber: string
+}
+
 export default class RemoveRestrictedPatientService {
-  async removeRestrictedPatient(prisonerNumber: string, user: User): Promise<unknown> {
-    const client = new RestrictedPatientApiClient(user.token)
+  constructor(private readonly hmppsAuthClient: HmppsAuthClient) {}
+
+  async removeRestrictedPatient(prisonerNumber: string, user: User): Promise<Record<string, unknown>> {
+    const token = await this.hmppsAuthClient.getSystemClientToken(user.username)
+    const client = new RestrictedPatientApiClient(token)
 
     return client.removePatient(prisonerNumber)
   }
 
-  async getRestrictedPatient(prisonerNumber: string, user: User): Promise<unknown> {
+  async getRestrictedPatient(prisonerNumber: string, user: User): Promise<RestrictedPatientDetails> {
     const [patientDetails, prisonerDetails] = await Promise.all([
       new RestrictedPatientApiClient(user.token).getPatient(prisonerNumber),
       new PrisonApiClient(user.token).getPrisonerDetails(prisonerNumber),
