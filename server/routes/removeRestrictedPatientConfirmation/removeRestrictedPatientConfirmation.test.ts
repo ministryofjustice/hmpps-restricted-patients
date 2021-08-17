@@ -41,12 +41,29 @@ describe('/remove-from-restricted-patients', () => {
   })
 
   describe('POST /remove-from-restricted-patients', () => {
-    beforeEach(() => {
-      removeRestrictedPatientService.removeRestrictedPatient.mockResolvedValue({})
+    describe('with a successful response', () => {
+      beforeEach(() => {
+        removeRestrictedPatientService.removeRestrictedPatient.mockResolvedValue({})
+      })
+
+      it('should redirect to the person moved confirmation page', () => {
+        return request(app).post('/remove-from-restricted-patients/A1234AA').expect('Location', '/person-moved/A1234AA')
+      })
     })
 
-    it('should redirect to the person moved confirmation page', () => {
-      return request(app).post('/remove-from-restricted-patients/A1234AA').expect('Location', '/person-moved/A1234AA')
+    describe('when there has been an error', () => {
+      beforeEach(() => {
+        removeRestrictedPatientService.removeRestrictedPatient.mockRejectedValue(new Error('some error'))
+      })
+
+      it('should throw the error', () => {
+        return request(app)
+          .post('/remove-from-restricted-patients/A1234AA')
+          .expect('Content-Type', /html/)
+          .expect(res => {
+            expect(res.text).toContain('Error: some error')
+          })
+      })
     })
   })
 })

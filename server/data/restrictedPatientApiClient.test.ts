@@ -73,9 +73,9 @@ describe('restrictedPatientSearchClient', () => {
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, result)
 
-      const output = await client.getPatient('A1234AA')
+      const response = await client.getPatient('A1234AA')
 
-      expect(output).toEqual({
+      expect(response).toEqual({
         hospitalLocation: {
           description: 'Sheffield Hospital',
         },
@@ -90,9 +90,9 @@ describe('restrictedPatientSearchClient', () => {
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200)
 
-      const output = await client.removePatient('A1234AA')
+      const response = await client.removePatient('A1234AA')
 
-      expect(output).toEqual({})
+      expect(response).toEqual({})
     })
   })
 })
