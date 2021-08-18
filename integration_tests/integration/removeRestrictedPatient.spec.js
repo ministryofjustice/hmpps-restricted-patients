@@ -1,6 +1,7 @@
 const RestrictedPatientSearchPage = require('../pages/removeRestrictedPatient/removeRestrictedPatientSearch.page')
 const RestrictedPatientSelectPage = require('../pages/removeRestrictedPatient/removeRestrictedPatientSelect.page')
 const RemoveRestrictedPatientConfirmationPage = require('../pages/removeRestrictedPatient/removeRestrictedPatientConfirmation.page')
+const RemoveRestrictedPatientCompletedPage = require('../pages/removeRestrictedPatient/removeRestrictedPatientCompleted.page')
 
 const toOffender = $cell => ({
   name: $cell[1].textContent,
@@ -107,8 +108,12 @@ context('Remove restricted patient', () => {
 
     removeRestrictedPatientConfirmationPage.confirmRemoval().click()
 
+    const removeRestrictedPatientCompletedPage = RemoveRestrictedPatientCompletedPage.verifyOnPage('John Smith')
+
+    removeRestrictedPatientCompletedPage.finishButton().click()
+
     cy.location().should(loc => {
-      expect(loc.pathname).to.eq('/person-moved/A1234AA')
+      expect(loc.pathname).to.eq('/')
     })
   })
 
