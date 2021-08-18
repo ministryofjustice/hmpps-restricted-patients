@@ -1,5 +1,6 @@
 const RestrictedPatientSearchPage = require('../pages/removeRestrictedPatient/removeRestrictedPatientSearch.page')
 const RestrictedPatientSelectPage = require('../pages/removeRestrictedPatient/removeRestrictedPatientSelect.page')
+const RemoveRestrictedPatientConfirmationPage = require('../pages/removeRestrictedPatient/removeRestrictedPatientConfirmation.page')
 
 const toOffender = $cell => ({
   name: $cell[1].textContent,
@@ -28,13 +29,36 @@ context('Remove restricted patient', () => {
             prisonerNumber: 'A1234AA',
             prisonName: 'HMP Moorland',
             supportingPrisonId: 'MDI',
-            dischargedHospitalId: 'RIDGHO',
-            dischargedHospitalDescription: 'Ridge Lea Hospital',
+            dischargedHospitalId: 'SHEFF',
+            dischargedHospitalDescription: 'Sheffield Hospital',
             dischargeDate: '2021-08-11',
           },
         ],
       },
     })
+    cy.task('stubGetPrisonerDetails', {
+      prisonerNumber: 'A1234AA',
+      response: {
+        offenderNo: 'A1234AA',
+        firstName: 'JOHN',
+        lastName: 'SMITH',
+        assignedLivingUnit: { description: '1-2-015' },
+        categoryCode: 'C',
+        alerts: [
+          { alertType: 'T', alertCode: 'TCPA' },
+          { alertType: 'X', alertCode: 'XCU' },
+        ],
+      },
+    })
+    cy.task('stubGetPatient', {
+      prisonerNumber: 'A1234AA',
+      response: {
+        hospitalLocation: {
+          description: 'Sheffield Hospital',
+        },
+      },
+    })
+    cy.task('stubRemovePatient', { prisonerNumber: 'A1234AA' })
     cy.login()
   })
 
@@ -63,7 +87,7 @@ context('Remove restricted patient', () => {
 
           expect(offenders[1].name).to.contain('Smith, John')
           expect(offenders[1].prisonerNumber).to.eq('A1234AA')
-          expect(offenders[1].location).to.eq('Ridge Lea Hospital')
+          expect(offenders[1].location).to.eq('Sheffield Hospital')
           expect(offenders[1].removeRestrictedPatientLink).to.contain('Remove as a restricted patient')
         })
     })
@@ -72,6 +96,20 @@ context('Remove restricted patient', () => {
       .removeRestrictedPatientLink()
       .should('have.attr', 'href')
       .and('include', '/remove-from-restricted-patients/A1234AA')
+
+    restrictedPatientSelectPage.removeRestrictedPatientLink().click()
+
+    const removeRestrictedPatientConfirmationPage = RemoveRestrictedPatientConfirmationPage.verifyOnPage('John Smith')
+
+    removeRestrictedPatientConfirmationPage.patientName().should('contain', 'Smith, John')
+    removeRestrictedPatientConfirmationPage.prisonerNumber().should('contain', 'A1234AA')
+    removeRestrictedPatientConfirmationPage.patientHospital().should('contain', 'Sheffield Hospital')
+
+    removeRestrictedPatientConfirmationPage.confirmRemoval().click()
+
+    cy.location().should(loc => {
+      expect(loc.pathname).to.eq('/person-moved/A1234AA')
+    })
   })
 
   it('Handles search form validation', () => {

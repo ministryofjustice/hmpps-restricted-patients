@@ -19,7 +19,7 @@ export default class RestrictedPatientSearchClient {
   restClient: RestClient
 
   constructor(token: string) {
-    this.restClient = new RestClient('Resricted Patient Search', config.apis.prisonerSearch, token)
+    this.restClient = new RestClient('Restricted Patient Search', config.apis.prisonerSearch, token)
   }
 
   async search(searchRequest: RestrictedPatientSearchRequest): Promise<RestrictedPatientSearchResult[]> {

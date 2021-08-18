@@ -1,7 +1,7 @@
 import RestrictedPatientSearchService from './restrictedPatientSearchService'
 import RestrictedPatientSearchClient from '../data/restrictedPatientSearchClient'
 import RestrictedPatientSearchResult from '../data/restrictedPatientSearchResult'
-import HmppsAuthClient, { User } from '../data/hmppsAuthClient'
+import { User } from '../data/hmppsAuthClient'
 
 const search = jest.fn()
 
@@ -12,8 +12,6 @@ jest.mock('../data/restrictedPatientSearchClient', () => {
   })
 })
 
-const hmppsAuthClient = new HmppsAuthClient(null) as jest.Mocked<HmppsAuthClient>
-
 const user = {
   token: 'token-1',
 } as User
@@ -22,9 +20,7 @@ describe('restrictedPatientSearchService', () => {
   let service: RestrictedPatientSearchService
 
   beforeEach(() => {
-    hmppsAuthClient.getSystemClientToken.mockResolvedValue('some token')
-
-    service = new RestrictedPatientSearchService(hmppsAuthClient)
+    service = new RestrictedPatientSearchService()
   })
 
   afterEach(() => {

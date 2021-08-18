@@ -8,9 +8,8 @@ import appWithAllRoutes from '../testutils/appSetup'
 
 jest.mock('../../services/restrictedPatientSearchService')
 
-const restrictedPatientSearchService = new RestrictedPatientSearchService(
-  null
-) as jest.Mocked<RestrictedPatientSearchService>
+const restrictedPatientSearchService =
+  new RestrictedPatientSearchService() as jest.Mocked<RestrictedPatientSearchService>
 
 let app: Express
 
@@ -57,7 +56,7 @@ describe('GET /select-restricted-patient', () => {
           expect(res.text).toContain('Smith, John')
           expect(res.text).toContain('Yew Trees')
           expect(res.text).toContain(
-            '<a href="/remove-from-restricted-patients/A1234AA" class="govuk-link" data-test="remove-restricted-patient-link"><span class="govuk-visually-hidden">Smith, John - </span>Remove as a restricted patient</a>'
+            '<a href="/remove-from-restricted-patients/A1234AA?journeyStartUrl=/select-restricted-patient?searchTerm=Smith" class="govuk-link" data-test="remove-restricted-patient-link"><span class="govuk-visually-hidden">Smith, John - </span>Remove as a restricted patient</a>'
           )
         })
     })

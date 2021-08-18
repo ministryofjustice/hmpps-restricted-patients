@@ -46,4 +46,45 @@ describe('prisonApiClient', () => {
       expect(logger.warn).not.toHaveBeenCalled()
     })
   })
+
+  describe('getPrisonerDetails', () => {
+    it('should return only the neccessary prisoner details', async () => {
+      const result = {
+        offenderNo: 'A1234AA',
+        firstName: 'JOHN',
+        lastName: 'SMITH',
+        assignedLivingUnit: { description: '1-2-015' },
+        categoryCode: 'C',
+        alerts: [
+          { alertType: 'T', alertCode: 'TCPA' },
+          { alertType: 'X', alertCode: 'XCU' },
+        ],
+        imprisonmentStatus: 'UNKNOWN',
+        dateOfBirth: '2005-01-01',
+      }
+      fakePrisonApi.get('/api/offenders/A1234AA').matchHeader('authorization', `Bearer ${token}`).reply(200, result)
+
+      const response = await client.getPrisonerDetails('A1234AA')
+
+      expect(response).toEqual({
+        offenderNo: 'A1234AA',
+        firstName: 'JOHN',
+        lastName: 'SMITH',
+        assignedLivingUnit: {
+          description: '1-2-015',
+        },
+        categoryCode: 'C',
+        alerts: [
+          {
+            alertType: 'T',
+            alertCode: 'TCPA',
+          },
+          {
+            alertType: 'X',
+            alertCode: 'XCU',
+          },
+        ],
+      })
+    })
+  })
 })

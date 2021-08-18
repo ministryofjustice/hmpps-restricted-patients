@@ -36,7 +36,7 @@
       <a href="{{ pshUrl }}/prisoner/{{ prisoner.prisonerNumber }}" class="govuk-link" data-test="view-prisoner-profile">{{ prisoner.displayName }}</a>
     {% endset -%}
     {% set removeAsRestrictedPatientLinkHtml %}
-      <a href="/remove-from-restricted-patients/{{ prisoner.prisonerNumber }}" class="govuk-link" data-test="remove-restricted-patient-link"><span class="govuk-visually-hidden">{{ prisoner.displayName }} - </span>Remove as a restricted patient</a>
+      <a href="/remove-from-restricted-patients/{{ prisoner.prisonerNumber }}?journeyStartUrl={{ journeyStartUrl }}" class="govuk-link" data-test="remove-restricted-patient-link"><span class="govuk-visually-hidden">{{ prisoner.displayName }} - </span>Remove as a restricted patient</a>
     {% endset -%}
     {% set rows = (rows.push([
       { html: prisonerImageHtml },

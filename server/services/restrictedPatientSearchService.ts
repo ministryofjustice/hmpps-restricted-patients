@@ -4,7 +4,7 @@ import type {
 } from '../data/restrictedPatientSearchClient'
 import RestrictedPatientSearchClient from '../data/restrictedPatientSearchClient'
 import RestrictedPatientSearchResult from '../data/restrictedPatientSearchResult'
-import HmppsAuthClient, { User } from '../data/hmppsAuthClient'
+import { User } from '../data/hmppsAuthClient'
 
 import convertToTitleCase from '../utils/utils'
 
@@ -29,8 +29,6 @@ export interface RestrictedPatientSearchCriteria {
 }
 
 export default class RestrictedPatientSearchService {
-  constructor(private readonly hmppsAuthClient: HmppsAuthClient) {}
-
   async search(search: RestrictedPatientSearchCriteria, user: User): Promise<RestrictedPatientSearchSummary[]> {
     const searchTerm = search.searchTerm.replace(/,/g, ' ').replace(/\s\s+/g, ' ').trim()
 

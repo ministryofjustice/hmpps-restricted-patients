@@ -58,4 +58,41 @@ describe('restrictedPatientSearchClient', () => {
         })
     })
   })
+
+  describe('getPatient', () => {
+    it('makes the correct call and returns the response', async () => {
+      const result = {
+        hospitalLocation: {
+          description: 'Sheffield Hospital',
+        },
+        prisonerNumber: 'A1234AA',
+      }
+
+      fakeRestrictedPatientApi
+        .get('/restricted-patient/prison-number/A1234AA')
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(200, result)
+
+      const response = await client.getPatient('A1234AA')
+
+      expect(response).toEqual({
+        hospitalLocation: {
+          description: 'Sheffield Hospital',
+        },
+      })
+    })
+  })
+
+  describe('removePatient', () => {
+    it('works', async () => {
+      fakeRestrictedPatientApi
+        .delete('/restricted-patient/prison-number/A1234AA')
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(200)
+
+      const response = await client.removePatient('A1234AA')
+
+      expect(response).toEqual({})
+    })
+  })
 })

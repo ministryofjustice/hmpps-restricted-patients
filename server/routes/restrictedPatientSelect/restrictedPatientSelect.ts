@@ -20,6 +20,7 @@ export default class RestrictedPatientSelectRoutes {
 
     return res.render('pages/restrictedPatientSelect', {
       errors: error ? [error] : [],
+      journeyStartUrl: `/select-restricted-patient?searchTerm=${searchTerm}`,
       searchResults,
       searchTerm,
     })
