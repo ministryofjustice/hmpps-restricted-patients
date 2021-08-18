@@ -3,27 +3,22 @@
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% set title = "Prisoner moved to hospital" %}
+{% set title = "Person has been removed from restricted patients" %}
 
 {% block content %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-three-quarters">
       {{ govukPanel({
-        titleText: prisoner.friendlyName + ' has been moved to ' + hospital.description,
+        titleText: prisoner.friendlyName + ' has been removed from restricted patients',
         classes: "govuk-!-margin-bottom-6"
       }) }}
-
-      <div data-test="prisoner-move-completed-help-text">
-        <p class="govuk-body">{{ prisoner.friendlyName }}’s prison number is {{ prisoner.prisonerNumber }}.</p>
-        <p class="govuk-body">All of their activities, appointments and visits have been cancelled.</p>
-      </div>
 
       {{ govukButton({
         text: "Finish",
         element: 'a',
         href: '/',
         classes: "govuk-button--secondary",
-        attributes: { "data-test": "prisoner-move-completed-finish" }
+        attributes: { "data-test": "restricted-patient-removal-completed-finish" }
       }) }}
     </div>
   </div>

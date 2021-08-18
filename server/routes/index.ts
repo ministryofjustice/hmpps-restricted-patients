@@ -10,6 +10,7 @@ import restrictedPatientSearchRoutes from './restrictedPatientSearch'
 import viewPatientsRoutes from './viewPatients'
 import restrictedPatientSelectRoutes from './restrictedPatientSelect'
 import removeRestrictedPatientConfirmationRoutes from './removeRestrictedPatientConfirmation'
+import removeRestrictedPatientCompletedRoutes from './removeRestrictedPatientCompleted'
 
 import { Services } from '../services'
 
@@ -36,6 +37,7 @@ export default function routes(
     '/remove-from-restricted-patients',
     removeRestrictedPatientConfirmationRoutes({ removeRestrictedPatientService })
   )
+  router.use('/person-moved', removeRestrictedPatientCompletedRoutes({ prisonerSearchService }))
 
   return router
 }
