@@ -38,10 +38,10 @@ afterEach(() => {
   jest.resetAllMocks()
 })
 
-describe('GET /person-moved', () => {
+describe('GET /person-removed', () => {
   it('should load the prisoner move completed page', () => {
     return request(app)
-      .get('/person-moved/A1234AA')
+      .get('/person-removed/A1234AA')
       .expect('Content-Type', /html/)
       .expect(res => {
         expect(res.text).toContain('John Smith has been removed from restricted patients')
