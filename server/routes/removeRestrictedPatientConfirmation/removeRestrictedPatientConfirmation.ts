@@ -23,7 +23,7 @@ export default class RemoveRestrictedPatientConfirmationRoutes {
 
     try {
       await this.removeRestrictedPatientService.removeRestrictedPatient(prisonerNumber, user)
-      return res.redirect(`/person-moved/${prisonerNumber}`)
+      return res.redirect(`/person-removed/${prisonerNumber}`)
     } catch (error) {
       res.locals.redirectUrl = '/back-to-start'
       throw error

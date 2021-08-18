@@ -37,7 +37,7 @@ export default function routes(
     '/remove-from-restricted-patients',
     removeRestrictedPatientConfirmationRoutes({ removeRestrictedPatientService })
   )
-  router.use('/person-moved', removeRestrictedPatientCompletedRoutes({ prisonerSearchService }))
+  router.use('/person-removed', removeRestrictedPatientCompletedRoutes({ prisonerSearchService }))
 
   return router
 }
