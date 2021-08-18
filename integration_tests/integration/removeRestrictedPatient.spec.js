@@ -62,7 +62,7 @@ context('Remove restricted patient', () => {
     cy.login()
   })
 
-  it.only('Progresses through the removal of a restricted patient journey', () => {
+  it('Progresses through the removal of a restricted patient journey', () => {
     cy.visit('/search-for-a-restricted-patient')
     const restrictedPatientSearchPage = RestrictedPatientSearchPage.verifyOnPage()
     const restrictedPatientSearchPageForm = restrictedPatientSearchPage.form()
