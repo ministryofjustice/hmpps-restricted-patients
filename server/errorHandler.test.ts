@@ -1,9 +1,6 @@
 import type { Express } from 'express'
 import request from 'supertest'
-import type { HTTPError } from 'superagent'
-import createHttpError from 'http-errors'
 import appWithAllRoutes from './routes/testutils/appSetup'
-import createErrorHandler from './errorHandler'
 
 let app: Express
 
