@@ -18,7 +18,8 @@
             <p class="govuk-body">
                 {{ govukButton({
                     text: "Continue",
-                    href: url
+                    href: url,
+                    attributes: { "data-test": "continue-after-error" }
                 }) }}
             </p>
         </div>

@@ -3,6 +3,7 @@ const PrisonerSelectPage = require('../pages/movePrisoner/movePrisonerSelect.pag
 const MovePrisonerSelectHospitalPage = require('../pages/movePrisoner/movePrisonerSelectHospital.page')
 const MovePrisonerConfirmationPage = require('../pages/movePrisoner/movePrisonerConfirmation.page')
 const MovePrisonerCompletedPage = require('../pages/movePrisoner/movePrisonerCompleted.page')
+const ErrorPage = require('../pages/error.page')
 
 const toOffender = $cell => ({
   name: $cell[1].textContent,
@@ -247,6 +248,45 @@ context('Move prisoner', () => {
       const movePrisonerConfirmationPageForm = movePrisonerConfirmationPage.form()
 
       movePrisonerConfirmationPageForm.cancel().click()
+
+      cy.location().should(loc => {
+        expect(loc.pathname).to.eq('/select-prisoner')
+        expect(loc.search).to.eq('?searchTerm=A1234AA')
+      })
+    })
+
+    it('Shows error page that continues to the search results when an error occurs during a move', () => {
+      cy.task('stubDischargeToHospital', {
+        status: 500,
+        response: {
+          error: 'Error during move',
+        },
+      })
+
+      cy.visit('/search-for-prisoner')
+      const prisonerSearchPage = PrisonerSearchPage.verifyOnPage()
+      const prisonerSearchPageForm = prisonerSearchPage.form()
+
+      prisonerSearchPageForm.searchTerm().type('A1234AA')
+      prisonerSearchPageForm.submit().click()
+
+      const prisonerSelectPage = PrisonerSelectPage.verifyOnPage()
+
+      prisonerSelectPage.moveToHospitalLink().click()
+
+      const movePrisonerSelectHospitalPage = MovePrisonerSelectHospitalPage.verifyOnPage('John Smith')
+      const movePrisonerSelectHospitalPageForm = movePrisonerSelectHospitalPage.form()
+
+      movePrisonerSelectHospitalPageForm.hospital().select('SHEFF')
+      movePrisonerSelectHospitalPageForm.submit().click()
+
+      const movePrisonerConfirmationPage = MovePrisonerConfirmationPage.verifyOnPage('John Smith', 'Sheffield Hospital')
+      const movePrisonerConfirmationPageForm = movePrisonerConfirmationPage.form()
+
+      movePrisonerConfirmationPageForm.confirm().click()
+
+      const errorPage = ErrorPage.verifyOnPage('Internal Server Error')
+      errorPage.form().continue().click()
 
       cy.location().should(loc => {
         expect(loc.pathname).to.eq('/select-prisoner')
