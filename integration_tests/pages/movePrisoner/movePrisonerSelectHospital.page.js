@@ -9,7 +9,7 @@ module.exports = {
       prisonerCell: () => cy.get('[data-test="prisoner-cell-location"]'),
       prisonerAlerts: () => cy.get('[data-test="prisoner-relevant-alerts"]'),
       form: () => ({
-        hospital: () => cy.get('[data-test="select-hospital-input"]'),
+        hospital: () => cy.get('.autocomplete__input'),
         submit: () => cy.get('[data-test="select-hospital-submit"]'),
         cancel: () => cy.get('[data-test="select-hospital-cancel"]'),
       }),

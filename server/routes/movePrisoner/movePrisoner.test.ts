@@ -79,7 +79,7 @@ describe('POST /move-to-hospital', () => {
       .expect(res => {
         expect(res.text).toContain('Error: Move to a hospital')
         expect(res.text).toContain('There is a problem')
-        expect(res.text).toContain('Select a hospital')
+        expect(res.text).toContain('Enter a hospital')
       })
   })
 })

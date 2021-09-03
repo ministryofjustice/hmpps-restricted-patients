@@ -118,7 +118,7 @@ context('Move prisoner', () => {
     movePrisonerSelectHospitalPage.prisonerCell().should('contain', '1-2-015')
     movePrisonerSelectHospitalPage.prisonerAlerts().should('contain', 'Controlled unlock')
 
-    movePrisonerSelectHospitalPageForm.hospital().select('SHEFF')
+    movePrisonerSelectHospitalPageForm.hospital().type('Sheff')
     movePrisonerSelectHospitalPageForm.submit().click()
 
     const movePrisonerConfirmationPage = MovePrisonerConfirmationPage.verifyOnPage('John Smith', 'Sheffield Hospital')
@@ -197,7 +197,33 @@ context('Move prisoner', () => {
         .errorSummaryList()
         .find('li')
         .then($errors => {
-          expect($errors.get(0).innerText).to.contain('Select a hospital')
+          expect($errors.get(0).innerText).to.contain('Enter a hospital')
+        })
+    })
+
+    it('Show select hospital validation after entering, selecting and then deleting a hospital selection', () => {
+      cy.visit('/search-for-prisoner')
+      const prisonerSearchPage = PrisonerSearchPage.verifyOnPage()
+      const prisonerSearchPageForm = prisonerSearchPage.form()
+
+      prisonerSearchPageForm.searchTerm().type('A1234AA')
+      prisonerSearchPageForm.submit().click()
+
+      const prisonerSelectPage = PrisonerSelectPage.verifyOnPage()
+
+      prisonerSelectPage.moveToHospitalLink().click()
+
+      const movePrisonerSelectHospitalPage = MovePrisonerSelectHospitalPage.verifyOnPage('John Smith')
+      const movePrisonerSelectHospitalPageForm = movePrisonerSelectHospitalPage.form()
+
+      movePrisonerSelectHospitalPageForm.hospital().type('Sheff{enter}').clear()
+      movePrisonerSelectHospitalPageForm.submit().click()
+
+      movePrisonerSelectHospitalPage
+        .errorSummaryList()
+        .find('li')
+        .then($errors => {
+          expect($errors.get(0).innerText).to.contain('Enter a hospital')
         })
     })
 
@@ -241,7 +267,7 @@ context('Move prisoner', () => {
       const movePrisonerSelectHospitalPage = MovePrisonerSelectHospitalPage.verifyOnPage('John Smith')
       const movePrisonerSelectHospitalPageForm = movePrisonerSelectHospitalPage.form()
 
-      movePrisonerSelectHospitalPageForm.hospital().select('SHEFF')
+      movePrisonerSelectHospitalPageForm.hospital().type('Sheff')
       movePrisonerSelectHospitalPageForm.submit().click()
 
       const movePrisonerConfirmationPage = MovePrisonerConfirmationPage.verifyOnPage('John Smith', 'Sheffield Hospital')
@@ -277,7 +303,7 @@ context('Move prisoner', () => {
       const movePrisonerSelectHospitalPage = MovePrisonerSelectHospitalPage.verifyOnPage('John Smith')
       const movePrisonerSelectHospitalPageForm = movePrisonerSelectHospitalPage.form()
 
-      movePrisonerSelectHospitalPageForm.hospital().select('SHEFF')
+      movePrisonerSelectHospitalPageForm.hospital().type('Sheff')
       movePrisonerSelectHospitalPageForm.submit().click()
 
       const movePrisonerConfirmationPage = MovePrisonerConfirmationPage.verifyOnPage('John Smith', 'Sheffield Hospital')

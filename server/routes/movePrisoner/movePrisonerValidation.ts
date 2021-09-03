@@ -7,7 +7,7 @@ type MovePrisonerForm = {
 const errors: { [key: string]: FormError } = {
   MISSING_HOSPITAL: {
     href: '#hospital',
-    text: 'Select a hospital',
+    text: 'Enter a hospital',
   },
 }
 

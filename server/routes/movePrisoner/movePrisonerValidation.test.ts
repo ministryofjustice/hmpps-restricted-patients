@@ -9,7 +9,7 @@ describe('validateMovePrisonerForm', () => {
     it('invalid', () => {
       expect(validateMovePrisonerForm({ hospital: '' })).toStrictEqual({
         href: '#hospital',
-        text: 'Select a hospital',
+        text: 'Enter a hospital',
       })
     })
   })
