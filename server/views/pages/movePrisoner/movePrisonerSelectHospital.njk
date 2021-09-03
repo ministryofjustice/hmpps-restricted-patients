@@ -52,36 +52,46 @@
     </div>
   </div>
 
-  <form method="POST">
-    <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-one-half">
+      <form method="POST" spellcheck="false">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
-    {{ govukSelect({
-      id: "hospital",
-      name: "hospital",
-      label: {
-        text: "Select the hospital " + prisoner.friendlyName + " is moving to"
-      },
-      items: formattedHospitals,
-      errorMessage: errors | findError("hospital"),
-      attributes: {
-        "data-test": "select-hospital-input"
-      }
-    }) }}
+        {{ govukSelect({
+          id: "hospital",
+          name: "hospital",
+          label: {
+            text: "Enter the hospital " + prisoner.friendlyName + " is moving to"
+          },
+          items: formattedHospitals,
+          errorMessage: errors | findError("hospital"),
+          classes: "js-hospital-select",
+          attributes: {
+            "data-test": "select-hospital-input"
+          }
+        }) }}
 
-    {{ govukButton({ 
-      text: "Continue",
-      preventDoubleClick: true,
-      classes: "govuk-!-margin-right-3",
-      type: "submit",
-      attributes: { "data-test": "select-hospital-submit" }
-    }) }}
+        {{ govukButton({ 
+          text: "Continue",
+          preventDoubleClick: true,
+          classes: "govuk-!-margin-right-3 js-hospital-submit",
+          type: "submit",
+          attributes: { "data-test": "select-hospital-submit" }
+        }) }}
 
-    {{ govukButton({
-      text: "Cancel",
-      element: 'a',
-      href: '/back-to-start',
-      classes: "govuk-button--secondary",
-      attributes: { "data-test": "select-hospital-cancel" }
-    }) }}
-  </form>
+        {{ govukButton({
+          text: "Cancel",
+          element: 'a',
+          href: '/back-to-start',
+          classes: "govuk-button--secondary",
+          attributes: { "data-test": "select-hospital-cancel" }
+        }) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block pageScripts %}
+  <script src="/assets/js/accessible-autocomplete.min.js"></script>
+  <script src="/assets/js/autocomplete-hospital.js"></script>
 {% endblock %}
