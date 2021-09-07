@@ -9,6 +9,7 @@ const homePage = () =>
     searchRestrictedPatient: () => cy.get('[data-test="search-restricted-patient"]'),
     moveToHospital: () => cy.get('[data-test="move-to-hospital"]'),
     removeFromRestrictedPatients: () => cy.get('[data-test="remove-from-restricted-patients"]'),
+    logoutLink: () => cy.get('[data-test="logout-link"]'),
   })
 
 export default {
