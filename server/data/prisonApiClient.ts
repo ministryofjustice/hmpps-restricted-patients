@@ -13,6 +13,14 @@ export interface Prison {
   active: boolean
 }
 
+export interface CaseLoad {
+  caseLoadId: string
+  description: string
+  type: string
+  caseloadFunction: string
+  currentlyActive: boolean
+}
+
 export default class PrisonApiClient {
   restClient: RestClient
 
@@ -48,5 +56,9 @@ export default class PrisonApiClient {
     })
 
     return plainToClass(PrisonerResult, result, { excludeExtraneousValues: true })
+  }
+
+  getUserCaseLoads(): Promise<CaseLoad[]> {
+    return this.restClient.get<CaseLoad[]>({ path: '/api/users/me/caseLoads' })
   }
 }

@@ -37,6 +37,7 @@ export interface User {
   name: string
   activeCaseLoadId: string
   token: string
+  authSource: string
 }
 
 export interface UserRole {

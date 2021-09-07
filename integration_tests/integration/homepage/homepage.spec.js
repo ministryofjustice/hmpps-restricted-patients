@@ -3,12 +3,14 @@ const homepage = require('../../pages/homepage')
 context('Homepage', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubLogin')
     cy.task('stubAuthUser')
-    cy.login()
   })
 
   describe('Tasks', () => {
+    beforeEach(() => {
+      cy.task('stubLogin')
+      cy.login()
+    })
     it('should show search restricted patient', () => {
       const page = homepage.goTo()
 

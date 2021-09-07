@@ -23,6 +23,29 @@ const user = {
   username: 'user1',
   displayName: 'John Smith',
   activeCaseLoadId: 'MDI',
+  allCaseLoads: [
+    {
+      caseLoadId: 'MDI',
+      description: 'Moorland',
+      type: 'INST',
+      caseloadFunction: 'TEST',
+      currentlyActive: true,
+    },
+    {
+      caseLoadId: 'LEI',
+      description: 'Leeds',
+      type: 'INST',
+      caseloadFunction: 'TEST',
+      currentlyActive: false,
+    },
+  ],
+  activeCaseLoad: {
+    caseLoadId: 'MDI',
+    description: 'Moorland',
+    type: 'INST',
+    caseloadFunction: 'TEST',
+    currentlyActive: true,
+  },
 }
 
 class MockUserService extends UserService {
