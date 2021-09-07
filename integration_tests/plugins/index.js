@@ -11,7 +11,7 @@ module.exports = on => {
     reset: resetStubs,
 
     getLoginUrl: auth.getLoginUrl,
-    stubLogin: auth.stubLogin,
+    stubLogin: caseLoads => Promise.all([auth.stubLogin(), prisonApi.stubUserCaseloads(caseLoads)]),
 
     stubAuthUser: auth.stubUser,
     stubAuthPing: status => auth.stubPing(status),
@@ -25,6 +25,7 @@ module.exports = on => {
     stubGetAgenciesByType: prisonApi.stubGetAgenciesByType,
     stubGetAgencyDetails: prisonApi.stubGetAgencyDetails,
     stubGetPrisonerDetails: prisonApi.stubGetPrisonerDetails,
+    stubUserCaseloads: prisonApi.stubUserCaseloads,
     stubPrisonApiPing: status => prisonApi.stubPing(status),
 
     stubDischargeToHospital: restrictedPatientApi.stubDischargeToHospital,
