@@ -6,8 +6,10 @@ import HmppsAuthClient from '../data/hmppsAuthClient'
 
 import TokenStore from '../data/tokenStore'
 import RemoveRestrictedPatientService from './removeRestrictedPatientService'
+// import PrisonApiClient from '../data/prisonApiClient'
 
 const hmppsAuthClient = new HmppsAuthClient(new TokenStore())
+// const prisonApiClient = new PrisonApiClient(token)
 const userService = new UserService(hmppsAuthClient)
 const prisonerSearchService = new PrisonerSearchService(hmppsAuthClient)
 const movePrisonerService = new MovePrisonerService(hmppsAuthClient)

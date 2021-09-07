@@ -163,6 +163,7 @@ describe('prisonerSearchService', () => {
         name: 'User',
         username: 'user1',
         token: 'token-1',
+        authSource: 'auth',
       })
 
       expect(result).toEqual('image data')
@@ -190,6 +191,7 @@ describe('prisonerSearchService', () => {
         name: 'User',
         username: 'user1',
         token: 'token-1',
+        authSource: 'auth',
       })
 
       expect(result).toEqual({
