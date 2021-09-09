@@ -10,6 +10,7 @@ const homePage = () =>
     moveToHospital: () => cy.get('[data-test="move-to-hospital"]'),
     removeFromRestrictedPatients: () => cy.get('[data-test="remove-from-restricted-patients"]'),
     logoutLink: () => cy.get('[data-test="logout-link"]'),
+    feedbackBanner: () => cy.get('[data-test="feedback-banner"]'),
   })
 
 export default {

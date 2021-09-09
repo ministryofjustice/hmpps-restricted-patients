@@ -8,5 +8,6 @@ module.exports = {
         searchTerm: () => cy.get('[data-test="prisoner-search-term-input"]'),
         submit: () => cy.get('[data-test="prisoner-search-submit"]'),
       }),
+      feedbackBanner: () => cy.get('[data-test="feedback-banner"]'),
     }),
 }
