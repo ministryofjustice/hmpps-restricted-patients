@@ -49,8 +49,8 @@ describe('prisonerSearchService', () => {
       search.mockResolvedValue([
         {
           alerts: [
-            { alertType: 'T', alertCode: 'TCPA' },
-            { alertType: 'X', alertCode: 'XCU' },
+            { active: true, alertType: 'T', alertCode: 'TCPA' },
+            { active: true, alertType: 'X', alertCode: 'XCU' },
           ],
           firstName: 'JOHN',
           lastName: 'SMITH',
@@ -84,10 +84,12 @@ describe('prisonerSearchService', () => {
             {
               alertCode: 'TCPA',
               alertType: 'T',
+              active: true,
             },
             {
               alertCode: 'XCU',
               alertType: 'X',
+              active: true,
             },
           ],
           cellLocation: '1-2-015',
@@ -173,7 +175,7 @@ describe('prisonerSearchService', () => {
   })
 
   describe('getPrisonerDetails', () => {
-    it('uses prison api to request image data', async () => {
+    it('returns correctly formatted prisoner details', async () => {
       getPrisonerDetails.mockResolvedValue({
         offenderNo: 'A1234AA',
         firstName: 'JOHN',
@@ -181,8 +183,9 @@ describe('prisonerSearchService', () => {
         assignedLivingUnit: { description: '1-2-015' },
         categoryCode: 'C',
         alerts: [
-          { alertType: 'T', alertCode: 'TCPA' },
-          { alertType: 'X', alertCode: 'XCU' },
+          { active: true, alertType: 'T', alertCode: 'TCPA' },
+          { active: true, alertType: 'X', alertCode: 'XCU' },
+          { active: false, alertType: 'X', alertCode: 'XGANG' },
         ],
       })
 
@@ -196,15 +199,20 @@ describe('prisonerSearchService', () => {
 
       expect(result).toEqual({
         alerts: [
-          { alertCode: 'TCPA', alertType: 'T' },
-          { alertCode: 'XCU', alertType: 'X' },
+          { active: true, alertCode: 'TCPA', alertType: 'T' },
+          { active: true, alertCode: 'XCU', alertType: 'X' },
+          { active: false, alertCode: 'XGANG', alertType: 'X' },
         ],
         assignedLivingUnit: { description: '1-2-015' },
         categoryCode: 'C',
         displayName: 'Smith, John',
         firstName: 'JOHN',
         formattedAlerts: [
-          { alertCodes: ['XCU'], classes: 'alert-status alert-status--controlled-unlock', label: 'Controlled unlock' },
+          {
+            alertCodes: ['XCU'],
+            classes: 'alert-status alert-status--controlled-unlock',
+            label: 'Controlled unlock',
+          },
         ],
         friendlyName: 'John Smith',
         lastName: 'SMITH',

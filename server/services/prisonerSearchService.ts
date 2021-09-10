@@ -42,7 +42,8 @@ export default class PrisonerSearchService {
   constructor(private readonly hmppsAuthClient: HmppsAuthClient) {}
 
   private enhancePrisoner(prisoner: PrisonerSearchResult | PrisonerResult) {
-    const prisonerAlerts = prisoner.alerts?.map((alert: AlertType) => alert.alertCode)
+    const activePrisonerAlerts = prisoner.alerts?.filter((alert: AlertType) => alert.active)
+    const prisonerAlerts = activePrisonerAlerts?.map((alert: AlertType) => alert.alertCode)
 
     return {
       displayName: convertToTitleCase(`${prisoner.lastName}, ${prisoner.firstName}`),

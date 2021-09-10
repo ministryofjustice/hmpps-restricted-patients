@@ -24,8 +24,8 @@ const defaultSearchQuery = {
 const defaultSearchResponse = [
   {
     alerts: [
-      { alertType: 'T', alertCode: 'TCPA' },
-      { alertType: 'X', alertCode: 'XCU' },
+      { active: true, alertType: 'T', alertCode: 'TCPA' },
+      { active: true, alertType: 'X', alertCode: 'XCU' },
     ],
     cellLocation: '1-2-015',
     firstName: 'JOHN',
