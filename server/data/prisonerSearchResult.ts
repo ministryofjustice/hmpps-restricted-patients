@@ -3,6 +3,7 @@ import { Expose, Type } from 'class-transformer'
 export type AlertType = {
   alertType: string
   alertCode: string
+  active: boolean
 }
 
 export default class PrisonerSearchResult {
