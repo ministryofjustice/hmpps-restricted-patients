@@ -59,5 +59,6 @@ export default function nunjucksSetup(app: express.Express, path: pathModule.Pla
   })
 
   njkEnv.addGlobal('pshUrl', config.pshUrl)
+  njkEnv.addGlobal('supportUrl', config.supportUrl)
   njkEnv.addGlobal('authUrl', config.apis.hmppsAuth.url)
 }

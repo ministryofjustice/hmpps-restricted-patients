@@ -39,6 +39,20 @@ context('View restricted patients', () => {
     cy.login()
   })
 
+  it('should display the feedback banner with the correct href', () => {
+    cy.visit('/search-for-restricted-patient')
+    const restrictedPatientSearchPage = RestrictedPatientSearchPage.verifyOnPage()
+
+    restrictedPatientSearchPage
+      .feedbackBanner()
+      .find('a')
+      .should('contain', 'Give feedback on Digital Prison Services (opens in a new tab)')
+      .should('have.attr', 'href')
+      .then(href => {
+        expect(href).to.equal('https://eu.surveymonkey.com/r/GYB8Y9Q?source=localhost/search-for-restricted-patient')
+      })
+  })
+
   it('Shows Restricted Patients', () => {
     cy.visit('/search-for-restricted-patient')
     const restrictedPatientSearchPage = RestrictedPatientSearchPage.verifyOnPage()

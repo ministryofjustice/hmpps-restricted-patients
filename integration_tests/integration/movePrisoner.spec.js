@@ -78,6 +78,20 @@ context('Move prisoner', () => {
     cy.login()
   })
 
+  it('should display the feedback banner with the correct href', () => {
+    cy.visit('/search-for-prisoner')
+    const prisonerSearchPage = PrisonerSearchPage.verifyOnPage()
+
+    prisonerSearchPage
+      .feedbackBanner()
+      .find('a')
+      .should('contain', 'Give feedback on Digital Prison Services (opens in a new tab)')
+      .should('have.attr', 'href')
+      .then(href => {
+        expect(href).to.equal('https://eu.surveymonkey.com/r/GYB8Y9Q?source=localhost/search-for-prisoner')
+      })
+  })
+
   it('Completes a move prisoner journey', () => {
     cy.visit('/search-for-prisoner')
     const prisonerSearchPage = PrisonerSearchPage.verifyOnPage()
