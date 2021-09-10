@@ -87,7 +87,6 @@ export default class PrisonerSearchService {
     const enhancedResult = {
       ...prisoner,
       ...this.enhancePrisoner(prisoner),
-
       friendlyName: convertToTitleCase(`${prisoner.firstName} ${prisoner.lastName}`),
       prisonerNumber: prisoner.offenderNo,
     }
