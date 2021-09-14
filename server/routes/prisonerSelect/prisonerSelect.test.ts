@@ -29,13 +29,6 @@ describe('GET /select-prisoner', () => {
           ],
           cellLocation: '1-2-015',
           displayName: 'Smith, John',
-          formattedAlerts: [
-            {
-              alertCodes: ['XCU'],
-              classes: 'alert-status alert-status--controlled-unlock',
-              label: 'Controlled unlock',
-            },
-          ],
           prisonerNumber: 'A1234AA',
           prisonName: 'HMP Moorland',
         } as PrisonerSearchSummary,
