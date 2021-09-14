@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import { FormError } from '../../@types/template'
 import PrisonerSearchService, { PrisonerSearchSummary } from '../../services/prisonerSearchService'
 import validateForm from '../prisonerSearch/prisonerSearchValidation'
+import { alertFlagLabels } from '../../common/alertFlagValues'
 
 type PageData = {
   error?: FormError
@@ -16,10 +17,17 @@ export default class PrisonerSelectRoutes {
   private renderView = async (req: Request, res: Response, pageData: PageData): Promise<void> => {
     const { error, searchResults, searchTerm } = pageData
 
+    const searchResultsWithFormattedAlerts = searchResults.map(searchResult => ({
+      ...searchResult,
+      formattedAlerts: searchResult.alerts.flatMap(alert =>
+        alertFlagLabels.filter(label => label.alertCodes.includes(alert.alertCode))
+      ),
+    }))
+
     return res.render('pages/prisonerSelect', {
       errors: error ? [error] : [],
       journeyStartUrl: `/select-prisoner?searchTerm=${searchTerm}`,
-      searchResults,
+      searchResults: searchResultsWithFormattedAlerts,
       searchTerm,
     })
   }
