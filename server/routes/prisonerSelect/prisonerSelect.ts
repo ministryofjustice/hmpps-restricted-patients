@@ -18,7 +18,7 @@ export default class PrisonerSelectRoutes {
   private renderView = async (req: Request, res: Response, pageData: PageData): Promise<void> => {
     const { error, searchResults, searchTerm } = pageData
 
-    const searchResultsWithFormattedAlerts = searchResults.map(searchResult => ({
+    const searchResultsWithFormattedAlerts = searchResults?.map(searchResult => ({
       ...searchResult,
       formattedAlerts: searchResult.alerts
         .map(alert => alertFlagLabels.filter(label => label.alertCodes.includes(alert.alertCode)))
@@ -28,7 +28,7 @@ export default class PrisonerSelectRoutes {
     return res.render('pages/prisonerSelect', {
       errors: error ? [error] : [],
       journeyStartUrl: `/select-prisoner?searchTerm=${searchTerm}`,
-      searchResults: searchResultsWithFormattedAlerts,
+      searchResults: searchResultsWithFormattedAlerts || [],
       searchTerm,
     })
   }
