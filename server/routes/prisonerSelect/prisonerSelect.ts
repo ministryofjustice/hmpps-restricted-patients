@@ -10,6 +10,7 @@ type PageData = {
   searchResults?: PrisonerSearchSummary[]
   searchTerm: string
 }
+const join = (left: [], right: []) => left.concat(right)
 
 export default class PrisonerSelectRoutes {
   constructor(private readonly prisonerSearchService: PrisonerSearchService) {}
@@ -19,9 +20,9 @@ export default class PrisonerSelectRoutes {
 
     const searchResultsWithFormattedAlerts = searchResults.map(searchResult => ({
       ...searchResult,
-      formattedAlerts: searchResult.alerts.flatMap(alert =>
-        alertFlagLabels.filter(label => label.alertCodes.includes(alert.alertCode))
-      ),
+      formattedAlerts: searchResult.alerts
+        .map(alert => alertFlagLabels.filter(label => label.alertCodes.includes(alert.alertCode)))
+        .reduce(join),
     }))
 
     return res.render('pages/prisonerSelect', {
