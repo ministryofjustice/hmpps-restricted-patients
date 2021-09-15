@@ -9,8 +9,6 @@ type PageData = {
   searchResults?: PrisonerSearchSummary[]
   searchTerm: string
 }
-const join = (left: [], right: []) => left.concat(right)
-
 export default class PrisonerSelectRoutes {
   constructor(private readonly prisonerSearchService: PrisonerSearchService) {}
 
