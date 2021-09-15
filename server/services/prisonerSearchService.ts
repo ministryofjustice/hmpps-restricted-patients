@@ -2,10 +2,10 @@ import { Readable } from 'stream'
 import type { PrisonerSearchByName, PrisonerSearchByPrisonerNumber } from '../data/prisonerSearchClient'
 import PrisonerSearchClient from '../data/prisonerSearchClient'
 import PrisonApiClient from '../data/prisonApiClient'
-import PrisonerSearchResult, { AlertType } from '../data/prisonerSearchResult'
+import PrisonerSearchResult from '../data/prisonerSearchResult'
 import HmppsAuthClient, { User } from '../data/hmppsAuthClient'
 
-import { alertFlagLabels, FormattedAlertType } from '../common/alertFlagValues'
+import { FormattedAlertType, getFormattedAlerts } from '../common/alertFlagValues'
 import convertToTitleCase from '../utils/utils'
 import PrisonerResult from '../data/prisonerResult'
 
@@ -41,15 +41,10 @@ export interface PrisonerSearch {
 export default class PrisonerSearchService {
   constructor(private readonly hmppsAuthClient: HmppsAuthClient) {}
 
-  private enhancePrisoner(prisoner: PrisonerSearchResult | PrisonerResult) {
-    const activePrisonerAlerts = prisoner.alerts?.filter((alert: AlertType) => alert.active)
-    const prisonerAlerts = activePrisonerAlerts?.map((alert: AlertType) => alert.alertCode)
-
+  private static enhancePrisoner(prisoner: PrisonerSearchResult | PrisonerResult) {
     return {
       displayName: convertToTitleCase(`${prisoner.lastName}, ${prisoner.firstName}`),
-      formattedAlerts: alertFlagLabels.filter(alertFlag =>
-        alertFlag.alertCodes.some(alert => prisonerAlerts?.includes(alert))
-      ),
+      formattedAlerts: getFormattedAlerts(prisoner.alerts),
     }
   }
 
@@ -66,7 +61,7 @@ export default class PrisonerSearchService {
     const enhancedResults = results.map(prisoner => {
       return {
         ...prisoner,
-        ...this.enhancePrisoner(prisoner),
+        ...PrisonerSearchService.enhancePrisoner(prisoner),
       }
     })
 
@@ -86,7 +81,7 @@ export default class PrisonerSearchService {
 
     const enhancedResult = {
       ...prisoner,
-      ...this.enhancePrisoner(prisoner),
+      ...PrisonerSearchService.enhancePrisoner(prisoner),
       friendlyName: convertToTitleCase(`${prisoner.firstName} ${prisoner.lastName}`),
       prisonerNumber: prisoner.offenderNo,
     }

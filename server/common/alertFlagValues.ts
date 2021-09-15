@@ -1,10 +1,4 @@
-export type FormattedAlertType = {
-  alertCodes: string[]
-  classes: string
-  label: string
-}
-
-export const alertFlagLabels = [
+const alertFlagLabels = [
   { alertCodes: ['HA'], classes: 'alert-status alert-status--acct', label: 'ACCT open' },
   {
     alertCodes: ['HA1'],
@@ -106,7 +100,7 @@ export const alertFlagLabels = [
   { alertCodes: ['VIP'], classes: 'alert-status alert-status--isolated-prisoner', label: 'Isolated' },
 ].sort((a, b) => a.label.localeCompare(b.label))
 
-export const profileAlertCodes = [
+const profileAlertCodes = [
   'HA',
   'HA1',
   'XSA',
@@ -135,3 +129,24 @@ export const profileAlertCodes = [
   'USU',
   'URS',
 ]
+
+export type AlertType = {
+  alertType: string
+  alertCode: string
+  active: boolean
+  expired: boolean
+}
+
+export type FormattedAlertType = {
+  alertCodes: string[]
+  classes: string
+  label: string
+}
+
+export function getFormattedAlerts(allPrisonAlerts: AlertType[]): FormattedAlertType[] {
+  const activePrisonerAlerts = allPrisonAlerts?.filter((alert: AlertType) => !alert.expired)
+  const prisonerAlerts = activePrisonerAlerts?.map((alert: AlertType) => alert.alertCode)
+  const alertCodesToShow = profileAlertCodes.filter(alertFlag => prisonerAlerts?.includes(alertFlag))
+
+  return alertFlagLabels.filter(alertFlag => alertFlag.alertCodes.some(alert => alertCodesToShow?.includes(alert)))
+}

@@ -213,6 +213,11 @@ describe('prisonerSearchService', () => {
             classes: 'alert-status alert-status--controlled-unlock',
             label: 'Controlled unlock',
           },
+          {
+            alertCodes: ['XGANG'],
+            classes: 'alert-status alert-status--gang-member',
+            label: 'Gang member',
+          },
         ],
         friendlyName: 'John Smith',
         lastName: 'SMITH',

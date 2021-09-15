@@ -1,9 +1,6 @@
 import { Expose } from 'class-transformer'
 
-export type AlertType = {
-  alertType: string
-  alertCode: string
-}
+import { AlertType } from '../common/alertFlagValues'
 
 type AssignedLivingUnit = {
   agencyId: string
