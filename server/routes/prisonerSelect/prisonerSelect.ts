@@ -9,7 +9,6 @@ type PageData = {
   searchResults?: PrisonerSearchSummary[]
   searchTerm: string
 }
-
 export default class PrisonerSelectRoutes {
   constructor(private readonly prisonerSearchService: PrisonerSearchService) {}
 

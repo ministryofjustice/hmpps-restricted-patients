@@ -1,10 +1,5 @@
 import { Expose, Type } from 'class-transformer'
-
-export type AlertType = {
-  alertType: string
-  alertCode: string
-  active: boolean
-}
+import { AlertType } from '../common/alertFlagValues'
 
 export default class PrisonerSearchResult {
   @Expose()
