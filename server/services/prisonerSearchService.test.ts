@@ -49,8 +49,8 @@ describe('prisonerSearchService', () => {
       search.mockResolvedValue([
         {
           alerts: [
-            { active: true, alertType: 'T', alertCode: 'TCPA' },
-            { active: true, alertType: 'X', alertCode: 'XCU' },
+            { expired: false, alertType: 'T', alertCode: 'TCPA' },
+            { expired: false, alertType: 'X', alertCode: 'XCU' },
           ],
           firstName: 'JOHN',
           lastName: 'SMITH',
@@ -84,12 +84,12 @@ describe('prisonerSearchService', () => {
             {
               alertCode: 'TCPA',
               alertType: 'T',
-              active: true,
+              expired: false,
             },
             {
               alertCode: 'XCU',
               alertType: 'X',
-              active: true,
+              expired: false,
             },
           ],
           cellLocation: '1-2-015',
@@ -183,9 +183,9 @@ describe('prisonerSearchService', () => {
         assignedLivingUnit: { description: '1-2-015' },
         categoryCode: 'C',
         alerts: [
-          { active: true, alertType: 'T', alertCode: 'TCPA' },
-          { active: true, alertType: 'X', alertCode: 'XCU' },
-          { active: false, alertType: 'X', alertCode: 'XGANG' },
+          { expired: false, alertType: 'T', alertCode: 'TCPA' },
+          { expired: false, alertType: 'X', alertCode: 'XCU' },
+          { expired: true, alertType: 'X', alertCode: 'XGANG' },
         ],
       })
 
@@ -199,9 +199,9 @@ describe('prisonerSearchService', () => {
 
       expect(result).toEqual({
         alerts: [
-          { active: true, alertCode: 'TCPA', alertType: 'T' },
-          { active: true, alertCode: 'XCU', alertType: 'X' },
-          { active: false, alertCode: 'XGANG', alertType: 'X' },
+          { expired: false, alertCode: 'TCPA', alertType: 'T' },
+          { expired: false, alertCode: 'XCU', alertType: 'X' },
+          { expired: true, alertCode: 'XGANG', alertType: 'X' },
         ],
         assignedLivingUnit: { description: '1-2-015' },
         categoryCode: 'C',
@@ -212,11 +212,6 @@ describe('prisonerSearchService', () => {
             alertCodes: ['XCU'],
             classes: 'alert-status alert-status--controlled-unlock',
             label: 'Controlled unlock',
-          },
-          {
-            alertCodes: ['XGANG'],
-            classes: 'alert-status alert-status--gang-member',
-            label: 'Gang member',
           },
         ],
         friendlyName: 'John Smith',
