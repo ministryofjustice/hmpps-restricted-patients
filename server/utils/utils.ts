@@ -21,7 +21,7 @@ export const addSelect = (selectItems: SelectOption[], text = 'Select'): SelectO
   ...selectItems,
 ]
 
-export const possessive = (string: string) => {
+export const possessive = (string: string): string => {
   if (!string) return ''
   return `${string}${string.toLowerCase().endsWith('s') ? '’' : '’s'}`
 }
