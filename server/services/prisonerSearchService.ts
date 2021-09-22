@@ -6,7 +6,7 @@ import PrisonerSearchResult from '../data/prisonerSearchResult'
 import HmppsAuthClient, { User } from '../data/hmppsAuthClient'
 
 import { FormattedAlertType, getFormattedAlerts } from '../common/alertFlagValues'
-import convertToTitleCase from '../utils/utils'
+import { convertToTitleCase } from '../utils/utils'
 import PrisonerResult from '../data/prisonerResult'
 
 export interface PrisonerSearchSummary extends PrisonerSearchResult {

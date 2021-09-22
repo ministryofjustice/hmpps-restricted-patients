@@ -1,4 +1,4 @@
-import convertToTitleCase from './utils'
+import { convertToTitleCase, possessive } from './utils'
 
 describe('Convert to title case', () => {
   it('null string', () => {
@@ -27,5 +27,17 @@ describe('Convert to title case', () => {
   })
   it('Hyphenated', () => {
     expect(convertToTitleCase('Robert-John SmiTH-jONes-WILSON')).toEqual('Robert-John Smith-Jones-Wilson')
+  })
+})
+
+describe('Possessive', () => {
+  it('No string', () => {
+    expect(possessive(null)).toEqual('')
+  })
+  it('Converts name with no S correctly', () => {
+    expect(possessive('David Smith')).toEqual('David Smith’s')
+  })
+  it('Converts name with S correctly', () => {
+    expect(possessive('David Jones')).toEqual('David Jones’')
   })
 })

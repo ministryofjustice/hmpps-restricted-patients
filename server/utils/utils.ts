@@ -13,7 +13,7 @@ const isBlank = (str: string): boolean => !str || /^\s*$/.test(str)
  */
 const properCaseName = (name: string): string => (isBlank(name) ? '' : name.split('-').map(properCase).join('-'))
 
-const convertToTitleCase = (sentence: string): string =>
+export const convertToTitleCase = (sentence: string): string =>
   isBlank(sentence) ? '' : sentence.split(' ').map(properCaseName).join(' ')
 
 export const addSelect = (selectItems: SelectOption[], text = 'Select'): SelectOption[] => [
@@ -21,4 +21,13 @@ export const addSelect = (selectItems: SelectOption[], text = 'Select'): SelectO
   ...selectItems,
 ]
 
-export default convertToTitleCase
+export const possessive = (string: string): string => {
+  if (!string) return ''
+  return `${string}${string.toLowerCase().endsWith('s') ? '’' : '’s'}`
+}
+
+export default {
+  convertToTitleCase,
+  possessive,
+  addSelect,
+}
