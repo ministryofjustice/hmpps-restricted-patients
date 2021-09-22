@@ -1,7 +1,7 @@
 import HmppsAuthClient, { User } from '../data/hmppsAuthClient'
 import PrisonApiClient from '../data/prisonApiClient'
 import RestrictedPatientApiClient from '../data/restrictedPatientApiClient'
-import convertToTitleCase from '../utils/utils'
+import { convertToTitleCase } from '../utils/utils'
 
 export interface RestrictedPatientDetails {
   displayName: string

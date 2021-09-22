@@ -5,6 +5,8 @@ import * as pathModule from 'path'
 import { FormError } from '../@types/template'
 import config from '../config'
 
+import { possessive } from './utils'
+
 const production = process.env.NODE_ENV === 'production'
 
 export default function nunjucksSetup(app: express.Express, path: pathModule.PlatformPath): void {
@@ -61,4 +63,5 @@ export default function nunjucksSetup(app: express.Express, path: pathModule.Pla
   njkEnv.addGlobal('pshUrl', config.pshUrl)
   njkEnv.addGlobal('supportUrl', config.supportUrl)
   njkEnv.addGlobal('authUrl', config.apis.hmppsAuth.url)
+  njkEnv.addFilter('possessive', possessive)
 }

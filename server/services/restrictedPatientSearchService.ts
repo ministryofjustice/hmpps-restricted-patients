@@ -6,7 +6,7 @@ import RestrictedPatientSearchClient from '../data/restrictedPatientSearchClient
 import RestrictedPatientSearchResult from '../data/restrictedPatientSearchResult'
 import { User } from '../data/hmppsAuthClient'
 
-import convertToTitleCase from '../utils/utils'
+import { convertToTitleCase } from '../utils/utils'
 
 export interface RestrictedPatientSearchSummary extends RestrictedPatientSearchResult {
   displayName: string
