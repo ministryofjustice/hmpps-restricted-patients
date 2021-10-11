@@ -1,6 +1,5 @@
 {
   "low": true,
   "package-manager": "auto",
-  "registry": "https://registry.npmjs.org",
-  "skip-dev": "true"
+  "registry": "https://registry.npmjs.org"
 }
