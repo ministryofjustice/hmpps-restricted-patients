@@ -1,4 +1,6 @@
 import { Request, Response } from 'express'
+import UserService from '../../services/userService'
+import { hasAnyRole } from '../../utils/utils'
 
 type TaskType = {
   id: string
@@ -15,7 +17,7 @@ export const tasks: TaskType[] = [
     heading: 'Search for a restricted patient',
     description: 'Search for a restricted patient to view their details or add a case note.',
     href: '/search-for-restricted-patient',
-    roles: null,
+    roles: ['SEARCH_RESTRICTED_PATIENT'],
     enabled: true,
   },
   {
@@ -24,7 +26,7 @@ export const tasks: TaskType[] = [
     description:
       'Move someone from either a prison or court to a hospital when detained under the Mental Health Act. This also changes them to a restricted patient.',
     href: '/search-for-prisoner',
-    roles: null,
+    roles: ['PRISON_RECEPTION'],
     enabled: true,
   },
   {
@@ -32,13 +34,18 @@ export const tasks: TaskType[] = [
     heading: 'Remove someone from restricted patients',
     description: 'Remove someone from restricted patients if they have been released from a hospital to the community.',
     href: '/search-for-a-restricted-patient',
-    roles: null,
+    roles: ['REMOVE_RESTRICTED_PATIENT'],
     enabled: true,
   },
 ]
 
-export default (_req: Request, res: Response): void => {
-  return res.render('pages/homepage', {
-    tasks,
-  })
+export default class HomepageRoutes {
+  constructor(private readonly userService: UserService) {}
+
+  view = async (req: Request, res: Response): Promise<void> => {
+    const userRoles = await this.userService.getUserRoles(res.locals.user.token)
+    return res.render('pages/homepage', {
+      tasks: tasks.filter(task => task.enabled).filter(task => hasAnyRole(task.roles, userRoles)),
+    })
+  }
 }

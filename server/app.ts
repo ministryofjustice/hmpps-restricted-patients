@@ -9,8 +9,6 @@ import nunjucksSetup from './utils/nunjucksSetup'
 import errorHandler from './errorHandler'
 import standardRouter from './routes/standardRouter'
 
-import homepageController from './controllers/homepage'
-
 import setUpWebSession from './middleware/setUpWebSession'
 import setUpStaticResources from './middleware/setUpStaticResources'
 import setUpWebSecurity from './middleware/setUpWebSecurity'
@@ -45,7 +43,6 @@ export default function createApp(services: Services): express.Application {
   app.use(authorisationMiddleware())
 
   app.use(indexRoutes(standardRouter(services.userService), services))
-  app.get('/$', homepageController)
   app.get('/back-to-start', async (req, res) => {
     const { journeyStartUrl = '/' } = req.session
     delete req.session.journeyStartUrl

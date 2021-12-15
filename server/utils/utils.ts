@@ -26,8 +26,12 @@ export const possessive = (string: string): string => {
   return `${string}${string.toLowerCase().endsWith('s') ? '’' : '’s'}`
 }
 
+export const hasAnyRole = (requiredRoles: string[], userRoles: string[]): boolean =>
+  !requiredRoles || (!!userRoles && requiredRoles.some(role => userRoles.includes(role)))
+
 export default {
   convertToTitleCase,
   possessive,
   addSelect,
+  hasAnyRole,
 }
