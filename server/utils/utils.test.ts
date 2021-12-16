@@ -1,4 +1,4 @@
-import { convertToTitleCase, possessive } from './utils'
+import { convertToTitleCase, possessive, hasAnyRole } from './utils'
 
 describe('Convert to title case', () => {
   it('null string', () => {
@@ -39,5 +39,19 @@ describe('Possessive', () => {
   })
   it('Converts name with S correctly', () => {
     expect(possessive('David Jones')).toEqual('David Jones’')
+  })
+})
+
+describe('hasAnyRole', () => {
+  it('returns true when they have one of the required roles', () => {
+    expect(hasAnyRole(['ROLE_ONE', 'ROLE_TWO'], ['ROLE_ONE'])).toEqual(true)
+  })
+  it('returns false when they have none of the required roles', () => {
+    expect(hasAnyRole(['ROLE_ONE', 'ROLE_TWO'], ['ROLE_THREE', 'ROLE_FOUR'])).toEqual(false)
+    expect(hasAnyRole(['ROLE_ONE', 'ROLE_TWO'], null)).toEqual(false)
+  })
+  it('returns true if there are no required roles', () => {
+    expect(hasAnyRole(null, null)).toEqual(true)
+    expect(hasAnyRole(null, ['ROLE_ONE'])).toEqual(true)
   })
 })
