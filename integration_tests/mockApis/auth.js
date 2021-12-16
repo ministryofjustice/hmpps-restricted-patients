@@ -121,7 +121,7 @@ const stubUser = () =>
     },
   })
 
-const stubUserRoles = () =>
+const stubUserRoles = (roles = []) =>
   stubFor({
     request: {
       method: 'GET',
@@ -132,7 +132,7 @@ const stubUserRoles = () =>
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
       },
-      jsonBody: [{ roleId: 'SOME_USER_ROLE' }],
+      jsonBody: roles,
     },
   })
 
@@ -141,4 +141,5 @@ module.exports = {
   stubPing: (status = 200) => Promise.all([ping(status), tokenVerification.stubPing(status)]),
   stubLogin: () => Promise.all([favicon(), redirect(), logout(), token(), tokenVerification.stubVerifyToken()]),
   stubUser: () => Promise.all([stubUser(), stubUserRoles()]),
+  stubUserRoles,
 }

@@ -4,6 +4,7 @@ context('Homepage', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubAuthUser')
+    cy.task('stubUserRoles', [])
   })
 
   describe('Tasks', () => {
@@ -11,20 +12,49 @@ context('Homepage', () => {
       cy.task('stubLogin')
       cy.login()
     })
+    it('should not show any tasks if no roles are present', () => {
+      const page = homepage.goTo()
+
+      page.searchRestrictedPatient().should('not.exist')
+      page.moveToHospital().should('not.exist')
+      page.removeFromRestrictedPatients().should('not.exist')
+    })
     it('should show search restricted patient', () => {
+      cy.task('stubUserRoles', [{ roleCode: 'SEARCH_RESTRICTED_PATIENT' }])
       const page = homepage.goTo()
 
       page.searchRestrictedPatient().should('exist')
+      page.moveToHospital().should('not.exist')
+      page.removeFromRestrictedPatients().should('not.exist')
     })
     it('should show move to hospital', () => {
+      cy.task('stubUserRoles', [{ roleCode: 'PRISON_RECEPTION' }])
+
       const page = homepage.goTo()
 
       page.moveToHospital().should('exist')
+      page.searchRestrictedPatient().should('not.exist')
+      page.removeFromRestrictedPatients().should('not.exist')
     })
     it('should show remove from restricted patients', () => {
+      cy.task('stubUserRoles', [{ roleCode: 'REMOVE_RESTRICTED_PATIENT' }])
       const page = homepage.goTo()
 
       page.removeFromRestrictedPatients().should('exist')
+      page.moveToHospital().should('not.exist')
+      page.searchRestrictedPatient().should('not.exist')
+    })
+    it('should show all tasks', () => {
+      cy.task('stubUserRoles', [
+        { roleCode: 'REMOVE_RESTRICTED_PATIENT' },
+        { roleCode: 'PRISON_RECEPTION' },
+        { roleCode: 'SEARCH_RESTRICTED_PATIENT' },
+      ])
+      const page = homepage.goTo()
+
+      page.removeFromRestrictedPatients().should('exist')
+      page.moveToHospital().should('exist')
+      page.searchRestrictedPatient().should('exist')
     })
   })
 
