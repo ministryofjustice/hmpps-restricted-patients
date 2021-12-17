@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import UserService from '../../services/userService'
 import { hasAnyRole } from '../../utils/utils'
+import config from '../../config'
 
 type TaskType = {
   id: string
@@ -44,8 +45,15 @@ export default class HomepageRoutes {
 
   view = async (req: Request, res: Response): Promise<void> => {
     const userRoles = await this.userService.getUserRoles(res.locals.user.token)
+    const availableTasks = tasks.filter(task => task.enabled).filter(task => hasAnyRole(task.roles, userRoles))
+
+    if (!availableTasks.length)
+      return res.render('pages/error', {
+        title: 'You do not have permission to view this page',
+        url: config.pshUrl,
+      })
     return res.render('pages/homepage', {
-      tasks: tasks.filter(task => task.enabled).filter(task => hasAnyRole(task.roles, userRoles)),
+      tasks: availableTasks,
     })
   }
 }

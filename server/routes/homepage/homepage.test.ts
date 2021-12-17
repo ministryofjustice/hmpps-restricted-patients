@@ -58,16 +58,13 @@ describe('', () => {
         expect(res.text).not.toContain('Move someone to a hospital')
       })
   })
-  it('should get the home page with no tiles if none of the roles are present', () => {
+  it('should redirect to DPS homepage none of the roles are present', () => {
     userService.getUserRoles.mockResolvedValue([])
     return request(app)
       .get('/')
       .expect('Content-Type', /html/)
       .expect(res => {
-        expect(res.text).toContain('Manage restricted patients')
-        expect(res.text).not.toContain('Search for a restricted patient')
-        expect(res.text).not.toContain('Remove someone from restricted patients')
-        expect(res.text).not.toContain('Move someone to a hospital')
+        expect(res.text).toContain('You do not have permission to view this page')
       })
   })
 })

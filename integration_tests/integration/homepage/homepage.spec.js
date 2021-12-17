@@ -4,7 +4,6 @@ context('Homepage', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubAuthUser')
-    cy.task('stubUserRoles', [])
   })
 
   describe('Tasks', () => {
@@ -12,12 +11,10 @@ context('Homepage', () => {
       cy.task('stubLogin')
       cy.login()
     })
-    it('should not show any tasks if no roles are present', () => {
-      const page = homepage.goTo()
-
-      page.searchRestrictedPatient().should('not.exist')
-      page.moveToHospital().should('not.exist')
-      page.removeFromRestrictedPatients().should('not.exist')
+    it('should show an error page with link to the DPS homepage if there are no roles present', () => {
+      cy.task('stubUserRoles', [])
+      cy.visit(`/`)
+      cy.get('h1').should('contain', 'You do not have permission to view this page')
     })
     it('should show search restricted patient', () => {
       cy.task('stubUserRoles', [{ roleCode: 'SEARCH_RESTRICTED_PATIENT' }])
@@ -59,6 +56,11 @@ context('Homepage', () => {
   })
 
   it('should display the feedback banner with the correct href', () => {
+    cy.task('stubUserRoles', [
+      { roleCode: 'REMOVE_RESTRICTED_PATIENT' },
+      { roleCode: 'PRISON_RECEPTION' },
+      { roleCode: 'SEARCH_RESTRICTED_PATIENT' },
+    ])
     cy.task('stubLogin')
     cy.login()
     const page = homepage.goTo()
