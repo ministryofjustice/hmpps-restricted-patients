@@ -19,7 +19,7 @@
   position: relative;
 
   .govuk-form-group--error & {
-    border: $govuk-border-width-form-element-error solid $govuk-error-colour;
+    border-color: $govuk-error-colour;
 
     &:focus {
       border-color: $govuk-input-border-colour;
