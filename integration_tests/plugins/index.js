@@ -14,6 +14,7 @@ module.exports = on => {
     stubLogin: caseLoads => Promise.all([auth.stubLogin(), prisonApi.stubUserCaseloads(caseLoads)]),
 
     stubAuthUser: auth.stubUser,
+    stubUserRoles: auth.stubUserRoles,
     stubAuthPing: status => auth.stubPing(status),
 
     stubTokenVerificationPing: tokenVerification.stubPing,

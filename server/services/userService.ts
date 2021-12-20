@@ -24,4 +24,8 @@ export default class UserService {
       activeCaseLoad: allCaseLoads.find((caseLoad: CaseLoad) => caseLoad.currentlyActive),
     }
   }
+
+  async getUserRoles(token: string): Promise<string[]> {
+    return this.hmppsAuthClient.getUserRoles(token)
+  }
 }
