@@ -15,6 +15,11 @@ context('Remove restricted patient', () => {
     cy.task('reset')
     cy.task('stubLogin')
     cy.task('stubAuthUser')
+    cy.task('stubUserRoles', [
+      { roleCode: 'REMOVE_RESTRICTED_PATIENT' },
+      { roleCode: 'PRISON_RECEPTION' },
+      { roleCode: 'SEARCH_RESTRICTED_PATIENT' },
+    ])
     cy.task('stubRestrictedPatientSearch', {
       query: {
         equalToJson: {
