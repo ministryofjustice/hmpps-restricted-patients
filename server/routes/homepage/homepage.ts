@@ -48,7 +48,7 @@ export default class HomepageRoutes {
     const availableTasks = tasks.filter(task => task.enabled).filter(task => hasAnyRole(task.roles, userRoles))
 
     if (!availableTasks.length)
-      return res.render('pages/error', {
+      return res.status(401).render('pages/error', {
         title: 'You do not have permission to view this page',
         url: config.pshUrl,
       })

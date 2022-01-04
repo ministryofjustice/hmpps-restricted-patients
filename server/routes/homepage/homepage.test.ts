@@ -58,11 +58,12 @@ describe('', () => {
         expect(res.text).not.toContain('Move someone to a hospital')
       })
   })
-  it('should redirect to DPS homepage none of the roles are present', () => {
+  it('should give a 401 and error page when none of the roles are present', () => {
     userService.getUserRoles.mockResolvedValue([])
     return request(app)
       .get('/')
       .expect('Content-Type', /html/)
+      .expect(401)
       .expect(res => {
         expect(res.text).toContain('You do not have permission to view this page')
       })
