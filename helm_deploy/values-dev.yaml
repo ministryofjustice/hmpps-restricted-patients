@@ -6,7 +6,6 @@ generic-service:
 
   ingress:
     host: manage-restricted-patients-dev.hmpps.service.justice.gov.uk
-    contextColour: green
 
   env:
     INGRESS_URL: https://manage-restricted-patients-dev.hmpps.service.justice.gov.uk
