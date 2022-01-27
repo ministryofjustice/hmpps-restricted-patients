@@ -7,6 +7,8 @@ declare module 'express-session' {
     userDetails: {
       activeCaseLoadId: string
     }
+    newMovePrisonerJourney: boolean
+    newRemoveRestrictedPatientJourney: boolean
   }
 }
 

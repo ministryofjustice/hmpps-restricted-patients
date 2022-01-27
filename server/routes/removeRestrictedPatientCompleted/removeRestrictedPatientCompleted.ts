@@ -8,6 +8,9 @@ export default class RemoveRestrictedPatientCompletedRoutes {
     const { prisonerNumber } = req.params
     const { user } = res.locals
 
+    if (!req.session.newRemoveRestrictedPatientJourney) return res.render('pages/notFound.njk')
+    delete req.session.newRemoveRestrictedPatientJourney
+
     const prisoner = await this.prisonerSearchService.getPrisonerDetails(prisonerNumber, user)
 
     return res.render('pages/removeRestrictedPatient/removeRestrictedPatientCompleted', {
