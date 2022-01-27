@@ -11,7 +11,11 @@ let app: Express
 
 describe('GET /person-removed', () => {
   beforeEach(() => {
-    app = appWithAllRoutes({ production: false }, { prisonerSearchService }, { newPrisonerJourney: true })
+    app = appWithAllRoutes(
+      { production: false },
+      { prisonerSearchService },
+      { newRemoveRestrictedPatientJourney: true }
+    )
 
     prisonerSearchService.getPrisonerDetails.mockResolvedValue({
       assignedLivingUnit: {

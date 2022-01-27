@@ -50,7 +50,7 @@ export default class PrisonerSelectRoutes {
 
     if (error) return this.renderView(req, res, { error })
 
-    req.session.newPrisonerJourney = true
+    req.session.newMovePrisonerJourney = true
 
     return res.redirect(`/confirm-move/${prisonerNumber}/${hospital}`)
   }

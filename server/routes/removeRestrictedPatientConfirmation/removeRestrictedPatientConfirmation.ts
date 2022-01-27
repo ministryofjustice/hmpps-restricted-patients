@@ -21,7 +21,7 @@ export default class RemoveRestrictedPatientConfirmationRoutes {
     const { prisonerNumber } = req.params
     const { user } = res.locals
 
-    req.session.newPrisonerJourney = true
+    req.session.newRemoveRestrictedPatientJourney = true
 
     try {
       await this.removeRestrictedPatientService.removeRestrictedPatient(prisonerNumber, user)

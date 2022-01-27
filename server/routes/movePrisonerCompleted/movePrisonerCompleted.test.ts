@@ -17,7 +17,7 @@ describe('GET /prisoner-moved-to-hospital', () => {
     app = appWithAllRoutes(
       { production: false },
       { prisonerSearchService, movePrisonerService },
-      { newPrisonerJourney: true }
+      { newMovePrisonerJourney: true }
     )
 
     movePrisonerService.getHospital.mockResolvedValue({
