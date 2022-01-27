@@ -7,6 +7,7 @@ declare module 'express-session' {
     userDetails: {
       activeCaseLoadId: string
     }
+    newPrisonerJourney: true
   }
 }
 

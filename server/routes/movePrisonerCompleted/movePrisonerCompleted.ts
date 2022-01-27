@@ -23,5 +23,9 @@ export default class MovePrisonerCompletedRoutes {
     })
   }
 
-  view = async (req: Request, res: Response): Promise<void> => this.renderView(req, res)
+  view = async (req: Request, res: Response): Promise<void> => {
+    if (!req.session.newPrisonerJourney) return res.render('pages/notFound.njk')
+    delete req.session.newPrisonerJourney
+    return this.renderView(req, res)
+  }
 }
