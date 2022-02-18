@@ -15,7 +15,7 @@ context('View restricted patients', () => {
     cy.task('stubAuthUser')
     cy.task('stubUserRoles', [
       { roleCode: 'REMOVE_RESTRICTED_PATIENT' },
-      { roleCode: 'PRISON_RECEPTION' },
+      { roleCode: 'TRANSFER_RESTRICTED_PATIENT' },
       { roleCode: 'SEARCH_RESTRICTED_PATIENT' },
     ])
     cy.task('stubRestrictedPatientSearch', {

@@ -21,7 +21,7 @@ describe('', () => {
   it('should get the home page with all tiles if the roles are present', () => {
     userService.getUserRoles.mockResolvedValue([
       'SEARCH_RESTRICTED_PATIENT',
-      'PRISON_RECEPTION',
+      'TRANSFER_RESTRICTED_PATIENT',
       'REMOVE_RESTRICTED_PATIENT',
     ])
     return request(app)

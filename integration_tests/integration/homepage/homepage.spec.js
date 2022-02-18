@@ -7,7 +7,7 @@ context('Homepage', () => {
     cy.task('stubAuthUser')
     cy.task('stubUserRoles', [
       { roleCode: 'REMOVE_RESTRICTED_PATIENT' },
-      { roleCode: 'PRISON_RECEPTION' },
+      { roleCode: 'TRANSFER_RESTRICTED_PATIENT' },
       { roleCode: 'SEARCH_RESTRICTED_PATIENT' },
     ])
     cy.login()
@@ -27,7 +27,7 @@ context('Homepage', () => {
       page.removeFromRestrictedPatients().should('not.exist')
     })
     it('should show move to hospital', () => {
-      cy.task('stubUserRoles', [{ roleCode: 'PRISON_RECEPTION' }])
+      cy.task('stubUserRoles', [{ roleCode: 'TRANSFER_RESTRICTED_PATIENT' }])
 
       const page = homepage.goTo()
 
