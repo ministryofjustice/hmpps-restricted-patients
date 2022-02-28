@@ -93,7 +93,7 @@ export default {
     },
   },
   analytics: {
-    googleAnalyticsId: process.env.GOOGLE_ANALYTICS_ID,
+    googleAnalyticsId: get('GOOGLE_ANALYTICS_ID', ''),
     tagManagerContainerId: get('TAG_MANAGER_CONTAINER_ID', ''),
   },
   domain: get('INGRESS_URL', 'http://localhost:3000', requiredInProduction),
