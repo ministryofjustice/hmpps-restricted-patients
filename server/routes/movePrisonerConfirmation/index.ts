@@ -9,13 +9,19 @@ import PrisonerSearchService from '../../services/prisonerSearchService'
 export default function movePrisonerConfirmationRoutes({
   movePrisonerService,
   prisonerSearchService,
+  raiseAnalyticsEvent,
 }: {
   movePrisonerService: MovePrisonerService
   prisonerSearchService: PrisonerSearchService
+  raiseAnalyticsEvent: (cat: string, action: string, label: string) => void
 }): Router {
   const router = express.Router({ mergeParams: true })
 
-  const movePrisonerConfirmation = new MovePrisonerConfirmationRoutes(movePrisonerService, prisonerSearchService)
+  const movePrisonerConfirmation = new MovePrisonerConfirmationRoutes(
+    movePrisonerService,
+    prisonerSearchService,
+    raiseAnalyticsEvent
+  )
 
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
   const post = (path: string, handler: RequestHandler) => router.post(path, asyncMiddleware(handler))
