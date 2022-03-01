@@ -30,7 +30,7 @@ export default class RemoveRestrictedPatientConfirmationRoutes {
       const patient = await this.removeRestrictedPatientService.getRestrictedPatient(prisonerNumber, user)
       await this.removeRestrictedPatientService.removeRestrictedPatient(prisonerNumber, user)
 
-      this.raiseAnalyticsEvent(
+      await this.raiseAnalyticsEvent(
         'Restricted Patients',
         `Restricted patient removed`,
         `Restricted patient removed from ${patient.hospital}`

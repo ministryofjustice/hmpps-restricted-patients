@@ -36,7 +36,7 @@ export default class MovePrisonerConfirmationRoutes {
 
     try {
       await this.movePrisonerService.dischargePatientToHospital(prisonerNumber, currentAgencyId, hospitalId, user)
-      this.raiseAnalyticsEvent(
+      await this.raiseAnalyticsEvent(
         'Restricted Patients',
         `Prisoner moved from to hospital`,
         `${currentAgencyId} to ${hospitalId}`
