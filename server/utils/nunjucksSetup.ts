@@ -41,6 +41,14 @@ export default function nunjucksSetup(app: express.Express, path: pathModule.Pla
     }
   )
 
+  // Expose the google tag manager container ID to the nunjucks environment
+  const {
+    analytics: { tagManagerContainerId },
+  } = config
+
+  njkEnv.addGlobal('tagManagerContainerId', tagManagerContainerId.trim())
+  njkEnv.addGlobal('googleAnalyticsId', config.analytics.googleAnalyticsId)
+
   njkEnv.addFilter('initialiseName', (fullName: string) => {
     // this check is for the authError page
     if (!fullName) {
