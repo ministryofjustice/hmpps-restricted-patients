@@ -86,7 +86,11 @@ describe('POST /confirm-move', () => {
 
     await request(app).post('/confirm-move/A1234AA/SHEFF').send({ currentAgencyId: 'MDI' })
 
-    expect(raiseAnalyticsEvent).toBeCalledWith('Restricted Patients', 'Prisoner moved from to hospital', 'MDI to SHEFF')
+    expect(raiseAnalyticsEvent).toBeCalledWith(
+      'Restricted Patients',
+      'Prisoner moved to hospital',
+      'Prisoner moved from MDI to SHEFF'
+    )
   })
 
   it('should throw an error on failure', () => {
