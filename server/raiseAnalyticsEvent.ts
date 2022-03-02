@@ -1,4 +1,5 @@
-import ua from 'universal-analytics'
+// @ts-expect-error: No types available for ga-gtag module yet
+import { gtag, install } from 'ga-gtag'
 import config from './config'
 
 export const raiseAnalyticsEvent = (
@@ -8,15 +9,14 @@ export const raiseAnalyticsEvent = (
   value?: number
 ): void | Promise<void> => {
   if (!config.analytics.googleAnalyticsId) return Promise.resolve()
-  const ga = ua(config.analytics.googleAnalyticsId)
+  install(config.analytics.googleAnalyticsId)
   const data = {
-    ec: category,
-    ea: action,
-    el: label,
-    ev: value,
+    event_category: category,
+    event_label: label,
+    value,
   }
 
-  return ga.event(data).send()
+  return gtag('event', action, data)
 }
 
 export default {
