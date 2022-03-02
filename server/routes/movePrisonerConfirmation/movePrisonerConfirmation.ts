@@ -38,8 +38,8 @@ export default class MovePrisonerConfirmationRoutes {
       await this.movePrisonerService.dischargePatientToHospital(prisonerNumber, currentAgencyId, hospitalId, user)
       await this.raiseAnalyticsEvent(
         'Restricted Patients',
-        `Prisoner moved from to hospital`,
-        `${currentAgencyId} to ${hospitalId}`
+        `Prisoner moved to hospital`,
+        `Prisoner moved from ${currentAgencyId} to ${hospitalId}`
       )
       return res.redirect(`/prisoner-moved-to-hospital/${prisonerNumber}/${hospitalId}`)
     } catch (error) {
