@@ -7,16 +7,13 @@ import RemoveRestrictedPatientService from '../../services/removeRestrictedPatie
 
 export default function removeRestrictedPatientConfirmationRoutes({
   removeRestrictedPatientService,
-  raiseAnalyticsEvent,
 }: {
   removeRestrictedPatientService: RemoveRestrictedPatientService
-  raiseAnalyticsEvent: (cat: string, action: string, label: string) => void
 }): Router {
   const router = express.Router({ mergeParams: true })
 
   const removeRestrictedPatientConfirmation = new RemoveRestrictedPatientConfirmationRoutes(
-    removeRestrictedPatientService,
-    raiseAnalyticsEvent
+    removeRestrictedPatientService
   )
 
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))

@@ -2,12 +2,8 @@ import { Express } from 'express'
 import request from 'supertest'
 import RemoveRestrictedPatientService, { RestrictedPatientDetails } from '../../services/removeRestrictedPatientService'
 import appWithAllRoutes from '../testutils/appSetup'
-import { raiseAnalyticsEvent } from '../../raiseAnalyticsEvent'
 
 jest.mock('../../services/removeRestrictedPatientService')
-jest.mock('../../raiseAnalyticsEvent', () => ({
-  raiseAnalyticsEvent: jest.fn(),
-}))
 
 const removeRestrictedPatientService = new RemoveRestrictedPatientService(
   null
@@ -55,18 +51,6 @@ describe('/remove-from-restricted-patients', () => {
           .post('/remove-from-restricted-patients/A1234AA')
           .expect('Location', '/person-removed/A1234AA')
       })
-    })
-
-    it('should raise an analytics event', async () => {
-      removeRestrictedPatientService.removeRestrictedPatient.mockResolvedValue({})
-
-      await request(app).post('/remove-from-restricted-patients/A1234AA').expect('Location', '/person-removed/A1234AA')
-
-      expect(raiseAnalyticsEvent).toBeCalledWith(
-        'Restricted Patients',
-        'Restricted patient removed',
-        'Restricted patient removed from Sheffield Hospital'
-      )
     })
 
     describe('when there has been an error', () => {

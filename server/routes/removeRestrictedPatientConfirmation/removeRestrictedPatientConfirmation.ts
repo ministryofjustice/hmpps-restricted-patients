@@ -2,10 +2,7 @@ import { Request, Response } from 'express'
 import RemoveRestrictedPatientService from '../../services/removeRestrictedPatientService'
 
 export default class RemoveRestrictedPatientConfirmationRoutes {
-  constructor(
-    private readonly removeRestrictedPatientService: RemoveRestrictedPatientService,
-    private readonly raiseAnalyticsEvent: (cat: string, action: string, label: string) => void
-  ) {}
+  constructor(private readonly removeRestrictedPatientService: RemoveRestrictedPatientService) {}
 
   private renderView = async (req: Request, res: Response): Promise<void> => {
     const { prisonerNumber } = req.params
@@ -27,14 +24,7 @@ export default class RemoveRestrictedPatientConfirmationRoutes {
     req.session.newRemoveRestrictedPatientJourney = true
 
     try {
-      const patient = await this.removeRestrictedPatientService.getRestrictedPatient(prisonerNumber, user)
       await this.removeRestrictedPatientService.removeRestrictedPatient(prisonerNumber, user)
-
-      await this.raiseAnalyticsEvent(
-        'Restricted Patients',
-        `Restricted patient removed`,
-        `Restricted patient removed from ${patient.hospital}`
-      )
 
       return res.redirect(`/person-removed/${prisonerNumber}`)
     } catch (error) {

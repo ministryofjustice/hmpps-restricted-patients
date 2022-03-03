@@ -5,8 +5,7 @@ import PrisonerSearchService from '../../services/prisonerSearchService'
 export default class MovePrisonerConfirmationRoutes {
   constructor(
     private readonly movePrisonerService: MovePrisonerService,
-    private readonly prisonerSearchService: PrisonerSearchService,
-    private readonly raiseAnalyticsEvent: (cat: string, action: string, label: string) => void
+    private readonly prisonerSearchService: PrisonerSearchService
   ) {}
 
   private renderView = async (req: Request, res: Response): Promise<void> => {
@@ -36,11 +35,7 @@ export default class MovePrisonerConfirmationRoutes {
 
     try {
       await this.movePrisonerService.dischargePatientToHospital(prisonerNumber, currentAgencyId, hospitalId, user)
-      await this.raiseAnalyticsEvent(
-        'Restricted Patients',
-        `Prisoner moved to hospital`,
-        `Prisoner moved from ${currentAgencyId} to ${hospitalId}`
-      )
+
       return res.redirect(`/prisoner-moved-to-hospital/${prisonerNumber}/${hospitalId}`)
     } catch (error) {
       res.locals.redirectUrl = `/back-to-start`
