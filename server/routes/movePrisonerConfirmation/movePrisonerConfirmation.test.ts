@@ -3,13 +3,9 @@ import request from 'supertest'
 import appWithAllRoutes from '../testutils/appSetup'
 import PrisonerSearchService, { PrisonerResultSummary } from '../../services/prisonerSearchService'
 import MovePrisonerService, { Hospital } from '../../services/movePrisonerService'
-import { raiseAnalyticsEvent } from '../../raiseAnalyticsEvent'
 
 jest.mock('../../services/prisonerSearchService')
 jest.mock('../../services/movePrisonerService')
-jest.mock('../../raiseAnalyticsEvent', () => ({
-  raiseAnalyticsEvent: jest.fn(),
-}))
 
 const prisonerSearchService = new PrisonerSearchService(null) as jest.Mocked<PrisonerSearchService>
 const movePrisonerService = new MovePrisonerService(null) as jest.Mocked<MovePrisonerService>
@@ -76,21 +72,6 @@ describe('POST /confirm-move', () => {
       .post('/confirm-move/A1234AA/SHEFF')
       .send({ currentAgencyId: 'MDI' })
       .expect('Location', '/prisoner-moved-to-hospital/A1234AA/SHEFF')
-  })
-  it('should raise an analytics event', async () => {
-    movePrisonerService.dischargePatientToHospital.mockResolvedValue({
-      restrictivePatient: {
-        supportingPrison: 'MDI',
-      },
-    })
-
-    await request(app).post('/confirm-move/A1234AA/SHEFF').send({ currentAgencyId: 'MDI' })
-
-    expect(raiseAnalyticsEvent).toBeCalledWith(
-      'Restricted Patients',
-      'Prisoner moved to hospital',
-      'Prisoner moved from MDI to SHEFF'
-    )
   })
 
   it('should throw an error on failure', () => {

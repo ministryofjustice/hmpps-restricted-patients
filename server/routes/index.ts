@@ -12,7 +12,6 @@ import restrictedPatientSelectRoutes from './restrictedPatientSelect'
 import removeRestrictedPatientConfirmationRoutes from './removeRestrictedPatientConfirmation'
 import removeRestrictedPatientCompletedRoutes from './removeRestrictedPatientCompleted'
 import homepageRoutes from './homepage'
-import { raiseAnalyticsEvent } from '../raiseAnalyticsEvent'
 
 import { Services } from '../services'
 
@@ -30,10 +29,7 @@ export default function routes(
   router.use('/select-prisoner', prisonerSelectRoutes({ prisonerSearchService }))
   router.use('/prisoner', prisonerRoutes({ prisonerSearchService }))
   router.use('/move-to-hospital', movePrisonerRoutes({ movePrisonerService, prisonerSearchService }))
-  router.use(
-    '/confirm-move',
-    movePrisonerConfirmationRoutes({ movePrisonerService, prisonerSearchService, raiseAnalyticsEvent })
-  )
+  router.use('/confirm-move', movePrisonerConfirmationRoutes({ movePrisonerService, prisonerSearchService }))
   router.use('/prisoner-moved-to-hospital', movePrisonerCompletedRoutes({ movePrisonerService, prisonerSearchService }))
   router.use('/search-for-restricted-patient', restrictedPatientSearchRoutes('/viewing-restricted-patients'))
   router.use('/search-for-a-restricted-patient', restrictedPatientSearchRoutes('/select-restricted-patient'))
@@ -41,7 +37,7 @@ export default function routes(
   router.use('/select-restricted-patient', restrictedPatientSelectRoutes({ restrictedPatientSearchService }))
   router.use(
     '/remove-from-restricted-patients',
-    removeRestrictedPatientConfirmationRoutes({ removeRestrictedPatientService, raiseAnalyticsEvent })
+    removeRestrictedPatientConfirmationRoutes({ removeRestrictedPatientService })
   )
   router.use('/person-removed', removeRestrictedPatientCompletedRoutes({ prisonerSearchService }))
   router.use('/', homepageRoutes({ userService }))
