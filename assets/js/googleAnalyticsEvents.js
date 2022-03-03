@@ -2,10 +2,12 @@ $(function () {
   const $pathname = window.location.pathname
 
   function sendEvent(action, category, label) {
-    window.gtag('event', action, {
-      event_category: category,
-      event_label: label,
-    })
+    if (typeof window !== 'undefined') {
+      window.gtag('event', action, {
+        event_category: category,
+        event_label: label,
+      })
+    }
   }
 
   if ($pathname.includes('prisoner-moved-to-hospital')) {
