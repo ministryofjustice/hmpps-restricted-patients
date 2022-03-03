@@ -17,9 +17,9 @@
     <script async src="https://www.googletagmanager.com/gtag/js?id={{ googleAnalyticsId }}" nonce="{{ cspNonce }}"></script>
     <script nonce="{{ cspNonce }}">
       window.dataLayer = window.dataLayer || [];
-      function gtag(){window.dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', '{{ googleAnalyticsId }}', { 'send_page_view': false }); // Avoid duplicate page view
+      window.gtag = function gtag(){window.dataLayer.push(arguments);}
+      window.gtag('js', new Date());
+      window.gtag('config', '{{ googleAnalyticsId }}', { 'send_page_view': false }); // Avoid duplicate page view
     </script>
   {% endif %}
   <!--[if !IE 8]><!-->

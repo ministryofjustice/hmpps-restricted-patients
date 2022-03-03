@@ -98,6 +98,8 @@ context('Move prisoner', () => {
   })
 
   it('Completes a move prisoner journey', () => {
+    // eslint-disable-next-line no-unused-vars
+    cy.stub().as('gtag')
     cy.visit('/search-for-prisoner')
     const prisonerSearchPage = PrisonerSearchPage.verifyOnPage()
     const prisonerSearchPageForm = prisonerSearchPage.form()

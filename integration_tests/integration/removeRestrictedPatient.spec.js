@@ -83,6 +83,8 @@ context('Remove restricted patient', () => {
   })
 
   it('Progresses through the removal of a restricted patient journey', () => {
+    // eslint-disable-next-line no-unused-vars
+    cy.stub().as('gtag')
     cy.visit('/search-for-a-restricted-patient')
     const restrictedPatientSearchPage = RestrictedPatientSearchPage.verifyOnPage()
     const restrictedPatientSearchPageForm = restrictedPatientSearchPage.form()

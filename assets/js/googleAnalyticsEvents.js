@@ -2,7 +2,7 @@ $(function () {
   const $pathname = window.location.pathname
 
   function sendEvent(action, category, label) {
-    gtag('event', action, {
+    window.gtag('event', action, {
       event_category: category,
       event_label: label,
     })
