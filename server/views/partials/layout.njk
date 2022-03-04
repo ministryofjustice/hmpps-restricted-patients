@@ -12,16 +12,6 @@
       })(window,document,'script','dataLayer','{{ tagManagerContainerId }}');</script>
     <!-- End Google Tag Manager -->
   {% endif %}
-    {% if googleAnalyticsId %}
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id={{ googleAnalyticsId }}" nonce="{{ cspNonce }}"></script>
-    <script nonce="{{ cspNonce }}">
-      window.dataLayer = window.dataLayer || [];
-      window.gtag = function gtag(){window.dataLayer.push(arguments);}
-      window.gtag('js', new Date());
-      window.gtag('config', '{{ googleAnalyticsId }}', { 'send_page_view': false }); // Avoid duplicate page view
-    </script>
-  {% endif %}
   <!--[if !IE 8]><!-->
   <link href="/assets/stylesheets/application.css?{{ version }}" rel="stylesheet"/>
   <!--<![endif]-->
