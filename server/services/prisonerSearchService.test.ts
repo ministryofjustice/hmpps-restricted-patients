@@ -107,7 +107,7 @@ describe('prisonerSearchService', () => {
           prisonName: 'HMP Moorland',
         } as PrisonerSearchSummary,
       ])
-      expect(PrisonerSearchClient).toBeCalledWith(user.token)
+      expect(PrisonerSearchClient).toBeCalledWith(token)
       expect(search).toBeCalledWith({ prisonerIdentifier: 'A1234AA', prisonIds })
     })
 
@@ -131,7 +131,7 @@ describe('prisonerSearchService', () => {
           prisonName: 'HMP Moorland',
         } as PrisonerSearchSummary,
       ])
-      expect(PrisonerSearchClient).toBeCalledWith(user.token)
+      expect(PrisonerSearchClient).toBeCalledWith(token)
       expect(search).toBeCalledWith({ lastName: 'Smith', firstName: 'John', prisonIds })
     })
 
