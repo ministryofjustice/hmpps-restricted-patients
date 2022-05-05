@@ -112,7 +112,8 @@
     "passport-oauth2": "^1.6.1",
     "redis": "^3.1.2",
     "reflect-metadata": "^0.1.13",
-    "superagent": "^6.1.0"
+    "superagent": "^6.1.0",
+    "moment": "^2.29.2"
   },
   "devDependencies": {
     "@types/bunyan": "^1.8.8",
