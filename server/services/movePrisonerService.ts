@@ -1,3 +1,4 @@
+import moment from 'moment'
 import PrisonApiClient, { Prison } from '../data/prisonApiClient'
 import RestrictedPatientApiClient from '../data/restrictedPatientApiClient'
 import HmppsAuthClient, { User } from '../data/hmppsAuthClient'
@@ -45,7 +46,7 @@ export default class MovePrisonerService {
     const client = new RestrictedPatientApiClient(user.token)
     const request = {
       offenderNo: prisonerNumber,
-      dischargeTime: new Date(Date.now()),
+      dischargeTime: moment().utc(true).toDate(),
       fromLocationId: currentPrisonId,
       hospitalLocationCode: hospitalId,
     }
