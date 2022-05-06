@@ -1,4 +1,3 @@
-import moment from 'moment'
 import MovePrisonerService, { Hospital } from './movePrisonerService'
 import PrisonApiClient from '../data/prisonApiClient'
 import HmppsAuthClient, { User } from '../data/hmppsAuthClient'
@@ -123,7 +122,6 @@ describe('movePrisonerService', () => {
           supportingPrison: 'MDI',
         },
       })
-      jest.spyOn(global.Date, 'now').mockImplementationOnce(() => moment('2019-05-14T11:01:58.135Z').toDate().valueOf())
     })
 
     it('makes the correct calls and returns the recieved data', async () => {
@@ -131,7 +129,6 @@ describe('movePrisonerService', () => {
 
       expect(dischargePatient).toBeCalledWith({
         offenderNo: 'A1234AA',
-        dischargeTime: moment('2019-05-14T11:01:58.135Z').utc(true).toDate(),
         fromLocationId: 'MDI',
         hospitalLocationCode: 'SHEFF',
       })
