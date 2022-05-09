@@ -6,7 +6,6 @@ import RestrictedPatientResult from './restrictedPatientResult'
 export interface RestrictedPatientDischargeToHospitalRequest {
   offenderNo: string
   commentText?: string
-  dischargeTime: Date
   fromLocationId: string
   hospitalLocationCode: string
   supportingPrisonId?: string

@@ -45,7 +45,6 @@ export default class MovePrisonerService {
     const client = new RestrictedPatientApiClient(user.token)
     const request = {
       offenderNo: prisonerNumber,
-      dischargeTime: new Date(Date.now()),
       fromLocationId: currentPrisonId,
       hospitalLocationCode: hospitalId,
     }
