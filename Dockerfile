@@ -2,7 +2,7 @@
 ARG BUILD_NUMBER=1_0_0
 ARG GIT_REF=not-available
 
-FROM node:14.17-buster-slim as base
+FROM node:16.15-bullseye-slim as base
 
 LABEL maintainer="HMPPS Digital Studio <info@digital.justice.gov.uk>"
 
