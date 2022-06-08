@@ -30,13 +30,15 @@ export default function setUpAuth(): Router {
 
   const authLogoutUrl = `${config.apis.hmppsAuth.externalUrl}/logout?client_id=${config.apis.hmppsAuth.apiClientId}&redirect_uri=${config.domain}`
 
-  router.use('/logout', (req, res) => {
+  router.use('/logout', (req, res, next) => {
     if (req.user) {
-      req.logout()
-      req.session.destroy(() => res.redirect(authLogoutUrl))
-      return
+      req.logout(err => {
+        if (err) return next(err)
+        return req.session.destroy(() => res.redirect(authLogoutUrl))
+      })
+    } else {
+      res.redirect(authLogoutUrl)
     }
-    res.redirect(authLogoutUrl)
   })
 
   router.use((req, res, next) => {
