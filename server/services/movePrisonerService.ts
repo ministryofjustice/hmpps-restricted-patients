@@ -22,9 +22,9 @@ export default class MovePrisonerService {
       client.getAgenciesByType('HSHOSP'),
     ])
 
-    const sortedHospitals = [...hospitalType, ...hshospType].sort((a: Hospital, b: Hospital) =>
-      a.description.localeCompare(b.description)
-    )
+    const sortedHospitals = [...hospitalType, ...hshospType]
+      .filter(h => h.active)
+      .sort((a: Hospital, b: Hospital) => a.description.localeCompare(b.description))
 
     return sortedHospitals
   }

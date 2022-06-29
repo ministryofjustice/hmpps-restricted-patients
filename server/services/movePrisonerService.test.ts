@@ -52,6 +52,13 @@ describe('movePrisonerService', () => {
             agencyType: 'HOSP',
             active: true,
           } as Hospital,
+          {
+            agencyId: 'BURNLY',
+            description: 'Burnley Hospital',
+            longDescription: 'Burnley Teaching Hospital',
+            agencyType: 'HOSP',
+            active: false,
+          } as unknown as Hospital,
         ])
         .mockResolvedValueOnce([
           {
