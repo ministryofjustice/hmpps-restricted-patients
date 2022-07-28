@@ -5,13 +5,16 @@ import config from '../config'
 
 export type RedisClient = ReturnType<typeof createClient>
 
-export const createRedisClient = (): RedisClient => {
+const url =
+  config.redis.tls_enabled === 'true'
+    ? `rediss://${config.redis.host}:${config.redis.port}`
+    : `redis://${config.redis.host}:${config.redis.port}`
+
+export const createRedisClient = (legacyMode = false): RedisClient => {
   const client = createClient({
-    port: config.redis.port,
+    url,
     password: config.redis.password,
-    host: config.redis.host,
-    tls: config.redis.tls_enabled === 'true' ? {} : false,
-    prefix: 'systemToken:',
+    legacyMode,
   })
 
   client.on('error', (e: Error) => logger.error('Redis client error', e))
