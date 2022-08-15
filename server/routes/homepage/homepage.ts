@@ -33,7 +33,7 @@ export const tasks: TaskType[] = [
   {
     id: 'remove-from-restricted-patients',
     heading: 'Remove someone from restricted patients',
-    description: 'Remove someone from restricted patients if they have been released from a hospital to the community.',
+    description: 'Remove someone from restricted patients when they are no longer the responsibility of a prison.',
     href: '/search-for-a-restricted-patient',
     roles: ['REMOVE_RESTRICTED_PATIENT'],
     enabled: true,
