@@ -9,6 +9,7 @@ context('Homepage', () => {
       { roleCode: 'REMOVE_RESTRICTED_PATIENT' },
       { roleCode: 'TRANSFER_RESTRICTED_PATIENT' },
       { roleCode: 'SEARCH_RESTRICTED_PATIENT' },
+      { roleCode: 'RESTRICTED_PATIENT_MIGRATION' },
     ])
     cy.login()
   })
@@ -24,6 +25,7 @@ context('Homepage', () => {
 
       page.searchRestrictedPatient().should('exist')
       page.moveToHospital().should('not.exist')
+      page.migrateIntoHospital().should('not.exist')
       page.removeFromRestrictedPatients().should('not.exist')
     })
     it('should show move to hospital', () => {
@@ -32,6 +34,17 @@ context('Homepage', () => {
       const page = homepage.goTo()
 
       page.moveToHospital().should('exist')
+      page.migrateIntoHospital().should('not.exist')
+      page.searchRestrictedPatient().should('not.exist')
+      page.removeFromRestrictedPatients().should('not.exist')
+    })
+    it('should show migrate into hospital', () => {
+      cy.task('stubUserRoles', [{ roleCode: 'RESTRICTED_PATIENT_MIGRATION' }])
+
+      const page = homepage.goTo()
+
+      page.moveToHospital().should('not.exist')
+      page.migrateIntoHospital().should('exist')
       page.searchRestrictedPatient().should('not.exist')
       page.removeFromRestrictedPatients().should('not.exist')
     })
@@ -41,6 +54,7 @@ context('Homepage', () => {
 
       page.removeFromRestrictedPatients().should('exist')
       page.moveToHospital().should('not.exist')
+      page.migrateIntoHospital().should('not.exist')
       page.searchRestrictedPatient().should('not.exist')
     })
     it('should show all tasks', () => {
@@ -48,6 +62,7 @@ context('Homepage', () => {
 
       page.removeFromRestrictedPatients().should('exist')
       page.moveToHospital().should('exist')
+      page.migrateIntoHospital().should('exist')
       page.searchRestrictedPatient().should('exist')
     })
   })

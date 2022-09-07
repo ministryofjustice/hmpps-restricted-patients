@@ -38,6 +38,15 @@ export const tasks: TaskType[] = [
     roles: ['REMOVE_RESTRICTED_PATIENT'],
     enabled: true,
   },
+  {
+    id: 'migrate-into-hospital',
+    heading: 'Migrate released prisoner into hospital',
+    description:
+      'Migrate a released prisoner into the restricted patients service.  This amend a prisoner record who has previously been released using NOMIS to be a restricted patient and alters their last movement to include the hospital location.',
+    href: '/search-for-released-prisoner',
+    roles: ['RESTRICTED_PATIENT_MIGRATION'],
+    enabled: true,
+  },
 ]
 
 export default class HomepageRoutes {

@@ -23,6 +23,7 @@ describe('', () => {
       'SEARCH_RESTRICTED_PATIENT',
       'TRANSFER_RESTRICTED_PATIENT',
       'REMOVE_RESTRICTED_PATIENT',
+      'RESTRICTED_PATIENT_MIGRATION',
     ])
     return request(app)
       .get('/')
@@ -30,6 +31,7 @@ describe('', () => {
       .expect(res => {
         expect(res.text).toContain('Manage restricted patients')
         expect(res.text).toContain('Move someone to a hospital')
+        expect(res.text).toContain('Migrate released prisoner into hospital')
         expect(res.text).toContain('Search for a restricted patient')
         expect(res.text).toContain('Remove someone from restricted patients')
       })
@@ -44,6 +46,7 @@ describe('', () => {
         expect(res.text).toContain('Search for a restricted patient')
         expect(res.text).toContain('Remove someone from restricted patients')
         expect(res.text).not.toContain('Move someone to a hospital')
+        expect(res.text).not.toContain('Migrate released prisoner into hospital')
       })
   })
   it('should get the home page with appropriate tiles if not all of the roles are present', () => {
@@ -56,6 +59,7 @@ describe('', () => {
         expect(res.text).toContain('Search for a restricted patient')
         expect(res.text).not.toContain('Remove someone from restricted patients')
         expect(res.text).not.toContain('Move someone to a hospital')
+        expect(res.text).not.toContain('Migrate released prisoner into hospital')
       })
   })
   it('should give a 401 and error page when none of the roles are present', () => {
