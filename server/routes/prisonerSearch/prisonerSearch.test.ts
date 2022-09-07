@@ -18,7 +18,7 @@ describe('GET /search-for-prisoner', () => {
       .get('/search-for-prisoner')
       .expect('Content-Type', /html/)
       .expect(res => {
-        expect(res.text).toContain('Search for a prisoner')
+        expect(res.text).toContain('Search for a prisoner to move')
       })
   })
 })
@@ -36,7 +36,7 @@ describe('POST /search-for-prisoner', () => {
       .post('/search-for-prisoner')
       .expect('Content-Type', /html/)
       .expect(res => {
-        expect(res.text).toContain('Error: Search for a prisoner')
+        expect(res.text).toContain('Error: Search for a prisoner to move')
         expect(res.text).toContain('There is a problem')
         expect(res.text).toContain('Enter a prisoner’s name or number')
       })
