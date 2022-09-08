@@ -44,11 +44,6 @@ export default class PrisonerSelectRoutes {
 
     if (error) return this.renderView(req, res, { error, searchTerm })
 
-    return res.redirect(
-      url.format({
-        pathname: '/select-prisoner',
-        query: { searchTerm },
-      })
-    )
+    return res.redirect(`/select-prisoner?${new URLSearchParams({ searchTerm })}`)
   }
 }
