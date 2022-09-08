@@ -53,7 +53,7 @@ describe('/search-for-a-restricted-patient', () => {
         .get('/search-for-a-restricted-patient')
         .expect('Content-Type', /html/)
         .expect(res => {
-          expect(res.text).toContain('Search for a restricted patient')
+          expect(res.text).toContain('Search for a restricted patient to remove')
           expect(res.text).toContain('Enter a restricted patient’s name or prison number')
         })
     })
@@ -72,7 +72,7 @@ describe('/search-for-a-restricted-patient', () => {
         .post('/search-for-a-restricted-patient')
         .expect('Content-Type', /html/)
         .expect(res => {
-          expect(res.text).toContain('Error: Search for a restricted patient')
+          expect(res.text).toContain('Error: Search for a restricted patient to remove')
           expect(res.text).toContain('There is a problem')
           expect(res.text).toContain('Enter a restricted patient’s name or prison number')
         })
