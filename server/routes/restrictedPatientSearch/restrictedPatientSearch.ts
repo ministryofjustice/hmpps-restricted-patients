@@ -26,6 +26,6 @@ export default class RestrictedPatientSearchRoutes {
 
     if (error) return this.renderView(req, res, error)
 
-    return res.redirect(`this.searchResultsPath?${new URLSearchParams({ searchTerm })}`)
+    return res.redirect(`${this.searchResultsPath}?${new URLSearchParams({ searchTerm })}`)
   }
 }
