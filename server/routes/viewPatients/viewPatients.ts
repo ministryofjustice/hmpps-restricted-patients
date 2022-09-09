@@ -1,4 +1,3 @@
-import url from 'url'
 import { Request, Response } from 'express'
 import RestrictedPatientSearchService, {
   RestrictedPatientSearchSummary,

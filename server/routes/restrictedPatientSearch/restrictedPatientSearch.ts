@@ -1,4 +1,3 @@
-import url from 'url'
 import { Request, Response } from 'express'
 import validateForm from './restrictedPatientSearchValidation'
 import { FormError } from '../../@types/template'
