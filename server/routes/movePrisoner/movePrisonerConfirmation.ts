@@ -36,7 +36,7 @@ export default class MovePrisonerConfirmationRoutes {
     try {
       await this.movePrisonerService.dischargePatientToHospital(prisonerNumber, currentAgencyId, hospitalId, user)
 
-      return res.redirect(`/prisoner-moved-to-hospital/${prisonerNumber}/${hospitalId}`)
+      return res.redirect(`/move-to-hospital/prisoner-moved-to-hospital/${prisonerNumber}/${hospitalId}`)
     } catch (error) {
       res.locals.redirectUrl = `/back-to-start`
       throw error

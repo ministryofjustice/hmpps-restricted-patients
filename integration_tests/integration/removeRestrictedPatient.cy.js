@@ -91,7 +91,7 @@ context('Remove restricted patient', () => {
     restrictedPatientSearchPageForm.submit().click()
 
     cy.location().should(loc => {
-      expect(loc.pathname).to.eq('/select-restricted-patient')
+      expect(loc.pathname).to.eq('/move-to-hospital/select-restricted-patient')
       expect(loc.search).to.eq('?searchTerm=A1234AA')
     })
 

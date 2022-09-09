@@ -26,7 +26,7 @@ export const tasks: TaskType[] = [
     heading: 'Move someone to a hospital',
     description:
       'Move someone from either a prison or court to a hospital when detained under the Mental Health Act. This also changes them to a restricted patient.',
-    href: '/search-for-prisoner',
+    href: '/move-to-hospital/search-for-prisoner',
     roles: ['TRANSFER_RESTRICTED_PATIENT'],
     enabled: true,
   },

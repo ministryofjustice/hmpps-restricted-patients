@@ -18,6 +18,6 @@ export default class PrisonerSearchRoutes {
 
     if (error) return this.renderView(req, res, error)
 
-    return res.redirect(`/select-prisoner?${new URLSearchParams({ searchTerm })}`)
+    return res.redirect(`/move-to-hospital/select-prisoner?${new URLSearchParams({ searchTerm })}`)
   }
 }
