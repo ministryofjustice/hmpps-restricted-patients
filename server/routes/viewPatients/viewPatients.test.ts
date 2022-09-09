@@ -21,7 +21,7 @@ afterEach(() => {
   jest.resetAllMocks()
 })
 
-describe('GET /viewing-restricted-patients', () => {
+describe('GET /view-restricted-patients', () => {
   describe('with results', () => {
     beforeEach(() => {
       restrictedPatientSearchService.search.mockResolvedValue([
@@ -43,9 +43,9 @@ describe('GET /viewing-restricted-patients', () => {
       ])
     })
 
-    it('should load the viewing restricted patients page', () => {
+    it('should load the view restricted patients page', () => {
       return request(app)
-        .get('/viewing-restricted-patients?searchTerm=Smith')
+        .get('/view-restricted-patients?searchTerm=Smith')
         .expect('Content-Type', /html/)
         .expect(res => {
           expect(res.text).toContain('Viewing restricted patients')
@@ -69,7 +69,7 @@ describe('GET /viewing-restricted-patients', () => {
 
     it('should load the search for a patient page', () => {
       return request(app)
-        .get('/viewing-restricted-patients?searchTerm=Smith')
+        .get('/view-restricted-patients?searchTerm=Smith')
         .expect('Content-Type', /html/)
         .expect(res => {
           expect(res.text).toContain('Viewing restricted patients')
@@ -79,17 +79,17 @@ describe('GET /viewing-restricted-patients', () => {
   })
 })
 
-describe('POST /viewing-restricted-patients', () => {
-  it('should redirect to viewing restricted patients page with the correct search text', () => {
+describe('POST /view-restricted-patients', () => {
+  it('should redirect to view restricted patients page with the correct search text', () => {
     return request(app)
-      .post('/viewing-restricted-patients')
+      .post('/view-restricted-patients')
       .send({ searchTerm: 'Smith' })
-      .expect('Location', '/viewing-restricted-patients?searchTerm=Smith')
+      .expect('Location', '/view-restricted-patients?searchTerm=Smith')
   })
 
   it('should render validation messages', () => {
     return request(app)
-      .post('/viewing-restricted-patients')
+      .post('/view-restricted-patients')
       .expect('Content-Type', /html/)
       .expect(res => {
         expect(res.text).toContain('Error: Viewing restricted patients')

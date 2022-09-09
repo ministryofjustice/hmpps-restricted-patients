@@ -16,7 +16,7 @@ describe('/search-for-restricted-patient', () => {
   describe('GET /search-for-restricted-patient', () => {
     it('should load the search for a restricted patient page', () => {
       return request(app)
-        .get('/search-for-restricted-patient')
+        .get('/view-restricted-patients/search-for-patient')
         .expect('Content-Type', /html/)
         .expect(res => {
           expect(res.text).toContain('Search for a restricted patient')
@@ -28,14 +28,14 @@ describe('/search-for-restricted-patient', () => {
   describe('POST /search-for-restricted-patient', () => {
     it('should redirect to select restricted patient page with the correct search text', () => {
       return request(app)
-        .post('/search-for-restricted-patient')
+        .post('/view-restricted-patients/search-for-patient')
         .send({ searchTerm: 'Smith' })
-        .expect('Location', '/viewing-restricted-patients?searchTerm=Smith')
+        .expect('Location', '/view-restricted-patients?searchTerm=Smith')
     })
 
     it('should render validation messages', () => {
       return request(app)
-        .post('/search-for-restricted-patient')
+        .post('/view-restricted-patients/search-for-patient')
         .expect('Content-Type', /html/)
         .expect(res => {
           expect(res.text).toContain('Error: Search for a restricted patient')

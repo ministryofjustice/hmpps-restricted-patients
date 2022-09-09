@@ -1,5 +1,6 @@
 const RestrictedPatientSearchPage = require('../pages/viewRestrictedPatients/restrictedPatientSearch.page')
 const ViewRestrictedPatientsPage = require('../pages/viewRestrictedPatients/viewRestrictedPatients.page')
+const homepage = require('../pages/homepage')
 
 const toOffender = $cell => ({
   name: $cell[1].textContent,
@@ -44,8 +45,16 @@ context('View restricted patients', () => {
     cy.login()
   })
 
+  it('should show search restricted patient', () => {
+    cy.task('stubUserRoles', [{ roleCode: 'SEARCH_RESTRICTED_PATIENT' }])
+    const page = homepage.goTo()
+
+    page.searchRestrictedPatient().click()
+    RestrictedPatientSearchPage.verifyOnPage()
+  })
+
   it('should display the feedback banner with the correct href', () => {
-    cy.visit('/search-for-restricted-patient')
+    cy.visit('/view-restricted-patients/search-for-patient')
     const restrictedPatientSearchPage = RestrictedPatientSearchPage.verifyOnPage()
 
     restrictedPatientSearchPage
@@ -54,12 +63,14 @@ context('View restricted patients', () => {
       .should('contain', 'Give feedback on Digital Prison Services (opens in a new tab)')
       .should('have.attr', 'href')
       .then(href => {
-        expect(href).to.equal('https://eu.surveymonkey.com/r/GYB8Y9Q?source=localhost/search-for-restricted-patient')
+        expect(href).to.equal(
+          'https://eu.surveymonkey.com/r/GYB8Y9Q?source=localhost/view-restricted-patients/search-for-patient'
+        )
       })
   })
 
   it('Shows Restricted Patients', () => {
-    cy.visit('/search-for-restricted-patient')
+    cy.visit('/view-restricted-patients/search-for-patient')
     const restrictedPatientSearchPage = RestrictedPatientSearchPage.verifyOnPage()
     const restrictedPatientSearchPageForm = restrictedPatientSearchPage.form()
 
@@ -67,7 +78,7 @@ context('View restricted patients', () => {
     restrictedPatientSearchPageForm.submit().click()
 
     cy.location().should(loc => {
-      expect(loc.pathname).to.eq('/viewing-restricted-patients')
+      expect(loc.pathname).to.eq('/view-restricted-patients')
       expect(loc.search).to.eq('?searchTerm=A1234AA')
     })
 
@@ -102,7 +113,7 @@ context('View restricted patients', () => {
         },
       })
 
-      cy.visit('/search-for-restricted-patient')
+      cy.visit('/view-restricted-patients/search-for-patient')
       const restrictedPatientSearchPage = RestrictedPatientSearchPage.verifyOnPage()
       const restrictedPatientSearchPageForm = restrictedPatientSearchPage.form()
 
@@ -124,7 +135,7 @@ context('View restricted patients', () => {
         },
       })
 
-      cy.visit('/search-for-restricted-patient')
+      cy.visit('/view-restricted-patients/search-for-patient')
       const restrictedPatientSearchPage = RestrictedPatientSearchPage.verifyOnPage()
       const restrictedPatientSearchPageForm = restrictedPatientSearchPage.form()
 
