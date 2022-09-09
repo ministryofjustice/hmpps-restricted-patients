@@ -1,4 +1,3 @@
-import url from 'url'
 import { Request, Response } from 'express'
 import validateForm from './restrictedPatientSearchValidation'
 import { FormError } from '../../@types/template'
@@ -26,11 +25,6 @@ export default class RestrictedPatientSearchRoutes {
 
     if (error) return this.renderView(req, res, error)
 
-    return res.redirect(
-      url.format({
-        pathname: this.searchResultsPath,
-        query: { searchTerm },
-      })
-    )
+    return res.redirect(`${this.searchResultsPath}?${new URLSearchParams({ searchTerm })}`)
   }
 }

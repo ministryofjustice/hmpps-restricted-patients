@@ -1,4 +1,3 @@
-import url from 'url'
 import { Request, Response } from 'express'
 import { FormError } from '../../@types/template'
 import PrisonerSearchService, { PrisonerSearchSummary } from '../../services/prisonerSearchService'
@@ -44,11 +43,6 @@ export default class PrisonerSelectRoutes {
 
     if (error) return this.renderView(req, res, { error, searchTerm })
 
-    return res.redirect(
-      url.format({
-        pathname: '/select-prisoner',
-        query: { searchTerm },
-      })
-    )
+    return res.redirect(`/select-prisoner?${new URLSearchParams({ searchTerm })}`)
   }
 }

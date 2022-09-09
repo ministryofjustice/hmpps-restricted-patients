@@ -1,4 +1,3 @@
-import url from 'url'
 import { Request, Response } from 'express'
 import RestrictedPatientSearchService, {
   RestrictedPatientSearchSummary,
@@ -43,11 +42,6 @@ export default class ViewPatientsRoutes {
 
     if (error) return this.renderView(req, res, { error, searchTerm })
 
-    return res.redirect(
-      url.format({
-        pathname: '/viewing-restricted-patients',
-        query: { searchTerm },
-      })
-    )
+    return res.redirect(`/viewing-restricted-patients?${new URLSearchParams({ searchTerm })}`)
   }
 }
