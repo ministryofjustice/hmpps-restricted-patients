@@ -49,7 +49,7 @@ describe('/remove-from-restricted-patients', () => {
       it('should redirect to the person moved confirmation page', () => {
         return request(app)
           .post('/remove-from-restricted-patients/A1234AA')
-          .expect('Location', '/person-removed/A1234AA')
+          .expect('Location', '/remove-from-restricted-patients/patient-removed/A1234AA')
       })
     })
 
