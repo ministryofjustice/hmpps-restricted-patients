@@ -17,7 +17,7 @@ export const tasks: TaskType[] = [
     id: 'search-restricted-patient',
     heading: 'Search for a restricted patient',
     description: 'Search for a restricted patient to view their details or add a case note.',
-    href: '/search-for-restricted-patient',
+    href: '/view-restricted-patients/search-for-patient',
     roles: ['SEARCH_RESTRICTED_PATIENT'],
     enabled: true,
   },

@@ -24,10 +24,9 @@ export default function routes(
   router.use('/prisoner', prisonerRoutes({ prisonerSearchService }))
 
   router.use('/move-to-hospital', movePrisonerRoutes({ movePrisonerService, prisonerSearchService }))
+  router.use('/view-restricted-patients', viewPatientsRoutes({ restrictedPatientSearchService }))
 
-  router.use('/search-for-restricted-patient', restrictedPatientSearchRoutes('/viewing-restricted-patients'))
   router.use('/search-for-a-restricted-patient', restrictedPatientSearchRoutes('/select-restricted-patient'))
-  router.use('/viewing-restricted-patients', viewPatientsRoutes({ restrictedPatientSearchService }))
   router.use('/select-restricted-patient', restrictedPatientSelectRoutes({ restrictedPatientSearchService }))
   router.use(
     '/remove-from-restricted-patients',

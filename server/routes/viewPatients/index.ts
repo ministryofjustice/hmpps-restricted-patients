@@ -4,6 +4,7 @@ import asyncMiddleware from '../../middleware/asyncMiddleware'
 import RestrictedPatientSearchService from '../../services/restrictedPatientSearchService'
 
 import ViewPatientsRoutes from './viewPatients'
+import RestrictedPatientSearchRoutes from '../restrictedPatientSearch/restrictedPatientSearch'
 
 export default function viewPatientsRoutes({
   restrictedPatientSearchService,
@@ -13,9 +14,13 @@ export default function viewPatientsRoutes({
   const router = express.Router()
 
   const viewPatients = new ViewPatientsRoutes(restrictedPatientSearchService)
+  const restrictedPatientSearch = new RestrictedPatientSearchRoutes('/view-restricted-patients')
 
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
   const post = (path: string, handler: RequestHandler) => router.post(path, asyncMiddleware(handler))
+
+  get('/search-for-patient', restrictedPatientSearch.view)
+  post('/search-for-patient', restrictedPatientSearch.submit)
 
   get('/', viewPatients.view)
   post('/', viewPatients.submit)

@@ -6,7 +6,7 @@ export default class RestrictedPatientSearchRoutes {
   constructor(private readonly searchResultsPath: string) {}
 
   private pages = {
-    '/viewing-restricted-patients': 'pages/restrictedPatientSearch',
+    '/view-restricted-patients': 'pages/restrictedPatientSearch',
     '/select-restricted-patient': 'pages/removeRestrictedPatientSearch',
   }
 
