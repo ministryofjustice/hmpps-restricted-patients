@@ -69,7 +69,7 @@ describe('POST /move-to-hospital', () => {
     return request(app)
       .post('/move-to-hospital/A1234AA')
       .send({ hospital: 'SHEFF' })
-      .expect('Location', '/confirm-move/A1234AA/SHEFF')
+      .expect('Location', '/move-to-hospital/confirm-move/A1234AA/SHEFF')
   })
 
   it('should render validation messages', () => {

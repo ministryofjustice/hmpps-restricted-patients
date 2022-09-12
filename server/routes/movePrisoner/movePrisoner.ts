@@ -52,6 +52,6 @@ export default class PrisonerSelectRoutes {
 
     req.session.newMovePrisonerJourney = true
 
-    return res.redirect(`/confirm-move/${prisonerNumber}/${hospital}`)
+    return res.redirect(`/move-to-hospital/confirm-move/${prisonerNumber}/${hospital}`)
   }
 }

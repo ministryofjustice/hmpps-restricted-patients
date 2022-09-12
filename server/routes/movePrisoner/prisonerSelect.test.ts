@@ -44,7 +44,7 @@ describe('GET /select-prisoner', () => {
 
     it('should load the search for a prisoner page', () => {
       return request(app)
-        .get('/select-prisoner?searchTerm=Smith')
+        .get('/move-to-hospital/select-prisoner?searchTerm=Smith')
         .expect('Content-Type', /html/)
         .expect(res => {
           expect(res.text).toContain('Select a prisoner')
@@ -56,7 +56,7 @@ describe('GET /select-prisoner', () => {
           expect(res.text).toContain('1-2-015')
           expect(res.text).toContain('Controlled unlock')
           expect(res.text).toContain(
-            '<a href="/move-to-hospital/A1234AA?journeyStartUrl=/select-prisoner?searchTerm=Smith" class="govuk-link" data-test="prisoner-move-to-hospital-link"><span class="govuk-visually-hidden">Smith, John - </span>Move to a hospital</a>'
+            '<a href="/move-to-hospital/A1234AA?journeyStartUrl=/move-to-hospital/select-prisoner?searchTerm=Smith" class="govuk-link" data-test="prisoner-move-to-hospital-link"><span class="govuk-visually-hidden">Smith, John - </span>Move to a hospital</a>'
           )
         })
     })
@@ -69,7 +69,7 @@ describe('GET /select-prisoner', () => {
 
     it('should load the search for a prisoner page', () => {
       return request(app)
-        .get('/select-prisoner?searchTerm=Smith')
+        .get('/move-to-hospital/select-prisoner?searchTerm=Smith')
         .expect('Content-Type', /html/)
         .expect(res => {
           expect(res.text).toContain('Select a prisoner')
@@ -82,14 +82,14 @@ describe('GET /select-prisoner', () => {
 describe('POST /select-prisoner', () => {
   it('should redirect to select prisoner page with the correct search text', () => {
     return request(app)
-      .post('/select-prisoner')
+      .post('/move-to-hospital/select-prisoner')
       .send({ searchTerm: 'Smith' })
-      .expect('Location', '/select-prisoner?searchTerm=Smith')
+      .expect('Location', '/move-to-hospital/select-prisoner?searchTerm=Smith')
   })
 
   it('should render validation messages', () => {
     return request(app)
-      .post('/select-prisoner')
+      .post('/move-to-hospital/select-prisoner')
       .expect('Content-Type', /html/)
       .expect(res => {
         expect(res.text).toContain('Error: Select a prisoner')

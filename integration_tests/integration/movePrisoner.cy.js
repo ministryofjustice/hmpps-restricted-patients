@@ -4,6 +4,7 @@ const MovePrisonerSelectHospitalPage = require('../pages/movePrisoner/movePrison
 const MovePrisonerConfirmationPage = require('../pages/movePrisoner/movePrisonerConfirmation.page')
 const MovePrisonerCompletedPage = require('../pages/movePrisoner/movePrisonerCompleted.page')
 const ErrorPage = require('../pages/error.page')
+const homepage = require('../pages/homepage')
 
 const toOffender = $cell => ({
   name: $cell[1].textContent,
@@ -83,8 +84,14 @@ context('Move prisoner', () => {
     cy.login()
   })
 
+  it('should display the search for prisoner page from the homepage', () => {
+    const page = homepage.goTo()
+    page.moveToHospital().click()
+    PrisonerSearchPage.verifyOnPage()
+  })
+
   it('should display the feedback banner with the correct href', () => {
-    cy.visit('/search-for-prisoner')
+    cy.visit('/move-to-hospital/search-for-prisoner')
     const prisonerSearchPage = PrisonerSearchPage.verifyOnPage()
 
     prisonerSearchPage
@@ -93,12 +100,14 @@ context('Move prisoner', () => {
       .should('contain', 'Give feedback on Digital Prison Services (opens in a new tab)')
       .should('have.attr', 'href')
       .then(href => {
-        expect(href).to.equal('https://eu.surveymonkey.com/r/GYB8Y9Q?source=localhost/search-for-prisoner')
+        expect(href).to.equal(
+          'https://eu.surveymonkey.com/r/GYB8Y9Q?source=localhost/move-to-hospital/search-for-prisoner'
+        )
       })
   })
 
   it('Completes a move prisoner journey', () => {
-    cy.visit('/search-for-prisoner')
+    cy.visit('/move-to-hospital/search-for-prisoner')
     const prisonerSearchPage = PrisonerSearchPage.verifyOnPage()
     const prisonerSearchPageForm = prisonerSearchPage.form()
 
@@ -106,7 +115,7 @@ context('Move prisoner', () => {
     prisonerSearchPageForm.submit().click()
 
     cy.location().should(loc => {
-      expect(loc.pathname).to.eq('/select-prisoner')
+      expect(loc.pathname).to.eq('/move-to-hospital/select-prisoner')
       expect(loc.search).to.eq('?searchTerm=A1234AA')
     })
 
@@ -158,7 +167,7 @@ context('Move prisoner', () => {
     it('Displays no results message', () => {
       cy.task('stubSearch', { results: [] })
 
-      cy.visit('/search-for-prisoner')
+      cy.visit('/move-to-hospital/search-for-prisoner')
       const prisonerSearchPage = PrisonerSearchPage.verifyOnPage()
       const prisonerSearchPageForm = prisonerSearchPage.form()
 
@@ -172,7 +181,7 @@ context('Move prisoner', () => {
     })
 
     it('Handles search again validation', () => {
-      cy.visit('/search-for-prisoner')
+      cy.visit('/move-to-hospital/search-for-prisoner')
       const prisonerSearchPage = PrisonerSearchPage.verifyOnPage()
       const prisonerSearchPageForm = prisonerSearchPage.form()
 
@@ -196,7 +205,7 @@ context('Move prisoner', () => {
 
   describe('Select hospital page', () => {
     it('Handles select hospital validation', () => {
-      cy.visit('/search-for-prisoner')
+      cy.visit('/move-to-hospital/search-for-prisoner')
       const prisonerSearchPage = PrisonerSearchPage.verifyOnPage()
       const prisonerSearchPageForm = prisonerSearchPage.form()
 
@@ -221,7 +230,7 @@ context('Move prisoner', () => {
     })
 
     it('Show select hospital validation after entering, selecting and then deleting a hospital selection', () => {
-      cy.visit('/search-for-prisoner')
+      cy.visit('/move-to-hospital/search-for-prisoner')
       const prisonerSearchPage = PrisonerSearchPage.verifyOnPage()
       const prisonerSearchPageForm = prisonerSearchPage.form()
 
@@ -247,7 +256,7 @@ context('Move prisoner', () => {
     })
 
     it('Redirects back to search results when clicking cancel', () => {
-      cy.visit('/search-for-prisoner')
+      cy.visit('/move-to-hospital/search-for-prisoner')
       const prisonerSearchPage = PrisonerSearchPage.verifyOnPage()
       const prisonerSearchPageForm = prisonerSearchPage.form()
 
@@ -264,7 +273,7 @@ context('Move prisoner', () => {
       movePrisonerSelectHospitalPageForm.cancel().click()
 
       cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/select-prisoner')
+        expect(loc.pathname).to.eq('/move-to-hospital/select-prisoner')
         expect(loc.search).to.eq('?searchTerm=A1234AA')
       })
     })
@@ -272,7 +281,7 @@ context('Move prisoner', () => {
 
   describe('Confirm move page', () => {
     it('Redirects back to search results when clicking cancel', () => {
-      cy.visit('/search-for-prisoner')
+      cy.visit('/move-to-hospital/search-for-prisoner')
       const prisonerSearchPage = PrisonerSearchPage.verifyOnPage()
       const prisonerSearchPageForm = prisonerSearchPage.form()
 
@@ -295,7 +304,7 @@ context('Move prisoner', () => {
       movePrisonerConfirmationPageForm.cancel().click()
 
       cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/select-prisoner')
+        expect(loc.pathname).to.eq('/move-to-hospital/select-prisoner')
         expect(loc.search).to.eq('?searchTerm=A1234AA')
       })
     })
@@ -308,7 +317,7 @@ context('Move prisoner', () => {
         },
       })
 
-      cy.visit('/search-for-prisoner')
+      cy.visit('/move-to-hospital/search-for-prisoner')
       const prisonerSearchPage = PrisonerSearchPage.verifyOnPage()
       const prisonerSearchPageForm = prisonerSearchPage.form()
 
@@ -334,7 +343,7 @@ context('Move prisoner', () => {
       errorPage.form().continue().click()
 
       cy.location().should(loc => {
-        expect(loc.pathname).to.eq('/select-prisoner')
+        expect(loc.pathname).to.eq('/move-to-hospital/select-prisoner')
         expect(loc.search).to.eq('?searchTerm=A1234AA')
       })
     })
