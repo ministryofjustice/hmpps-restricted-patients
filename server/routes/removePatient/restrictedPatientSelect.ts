@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import RestrictedPatientSearchService, {
   RestrictedPatientSearchSummary,
 } from '../../services/restrictedPatientSearchService'
-import validateForm from '../restrictedPatientSearch/restrictedPatientSearchValidation'
+import validateForm from '../searchPatients/restrictedPatientSearchValidation'
 import { FormError } from '../../@types/template'
 
 type PageData = {

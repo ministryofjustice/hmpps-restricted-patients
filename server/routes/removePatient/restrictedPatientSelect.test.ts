@@ -45,7 +45,7 @@ describe('GET /select-restricted-patient', () => {
 
     it('should load the select restricted patients page', () => {
       return request(app)
-        .get('/select-restricted-patient?searchTerm=Smith')
+        .get('/remove-from-restricted-patients/select-patient?searchTerm=Smith')
         .expect('Content-Type', /html/)
         .expect(res => {
           expect(res.text).toContain('Select a restricted patient')
@@ -69,7 +69,7 @@ describe('GET /select-restricted-patient', () => {
 
     it('should load the page with a validation message', () => {
       return request(app)
-        .get('/select-restricted-patient?searchTerm=Smith')
+        .get('/remove-from-restricted-patients/select-patient?searchTerm=Smith')
         .expect('Content-Type', /html/)
         .expect(res => {
           expect(res.text).toContain('Select a restricted patient')
@@ -82,14 +82,14 @@ describe('GET /select-restricted-patient', () => {
 describe('POST /select-restricted-patient', () => {
   it('should redirect to select restricted patient page with the correct search text', () => {
     return request(app)
-      .post('/select-restricted-patient')
+      .post('/remove-from-restricted-patients/select-patient')
       .send({ searchTerm: 'Smith' })
       .expect('Location', '/select-restricted-patient?searchTerm=Smith')
   })
 
   it('should render validation messages', () => {
     return request(app)
-      .post('/select-restricted-patient')
+      .post('/remove-from-restricted-patients/select-patient')
       .expect('Content-Type', /html/)
       .expect(res => {
         expect(res.text).toContain('Error: Select a restricted patient')

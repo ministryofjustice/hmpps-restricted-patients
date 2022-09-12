@@ -7,7 +7,7 @@ export default class RestrictedPatientSearchRoutes {
 
   private pages = {
     '/view-restricted-patients': 'pages/restrictedPatientSearch',
-    '/select-restricted-patient': 'pages/removeRestrictedPatientSearch',
+    '/remove-from-restricted-patients/select-patient': 'pages/removeRestrictedPatientSearch',
   }
 
   private renderView = async (req: Request, res: Response, error?: FormError): Promise<void> => {

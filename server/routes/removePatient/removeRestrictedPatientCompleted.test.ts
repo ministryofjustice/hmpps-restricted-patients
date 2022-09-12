@@ -9,7 +9,7 @@ const prisonerSearchService = new PrisonerSearchService(null) as jest.Mocked<Pri
 
 let app: Express
 
-describe('GET /person-removed', () => {
+describe('GET /patient-removed', () => {
   beforeEach(() => {
     app = appWithAllRoutes(
       { production: false },
@@ -44,7 +44,7 @@ describe('GET /person-removed', () => {
   })
   it('should load the prisoner move completed page', () => {
     return request(app)
-      .get('/person-removed/A1234AA')
+      .get('/remove-from-restricted-patients/patient-removed/A1234AA')
       .expect('Content-Type', /html/)
       .expect(res => {
         expect(res.text).toContain('John Smith has been removed from restricted patients')
@@ -52,7 +52,7 @@ describe('GET /person-removed', () => {
   })
 })
 
-describe('GET /person-removed - no session item (user jumped to page)', () => {
+describe('GET /patient-removed - no session item (user jumped to page)', () => {
   beforeEach(() => {
     app = appWithAllRoutes({ production: false }, { prisonerSearchService })
 
@@ -83,7 +83,7 @@ describe('GET /person-removed - no session item (user jumped to page)', () => {
   })
   it('should load the prisoner move completed page', () => {
     return request(app)
-      .get('/person-removed/A1234AA')
+      .get('/remove-from-restricted-patients/patient-removed/A1234AA')
       .expect('Content-Type', /html/)
       .expect(res => {
         expect(res.text).toContain('Page not found')

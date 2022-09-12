@@ -4,7 +4,7 @@ import asyncMiddleware from '../../middleware/asyncMiddleware'
 import RestrictedPatientSearchService from '../../services/restrictedPatientSearchService'
 
 import ViewPatientsRoutes from './viewPatients'
-import RestrictedPatientSearchRoutes from '../restrictedPatientSearch/restrictedPatientSearch'
+import RestrictedPatientSearchRoutes from '../searchPatients/restrictedPatientSearch'
 
 export default function viewPatientsRoutes({
   restrictedPatientSearchService,
