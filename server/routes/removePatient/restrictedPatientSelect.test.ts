@@ -56,7 +56,7 @@ describe('GET /select-restricted-patient', () => {
           expect(res.text).toContain('Smith, John')
           expect(res.text).toContain('Yew Trees')
           expect(res.text).toContain(
-            '<a href="/remove-from-restricted-patients/A1234AA?journeyStartUrl=/select-restricted-patient?searchTerm=Smith" class="govuk-link" data-test="remove-restricted-patient-link"><span class="govuk-visually-hidden">Smith, John - </span>Remove as a restricted patient</a>'
+            '<a href="/remove-from-restricted-patients?prisonerNumber=A1234AA&journeyStartUrl=/select-restricted-patient?searchTerm=Smith" class="govuk-link" data-test="remove-restricted-patient-link"><span class="govuk-visually-hidden">Smith, John - </span>Remove as a restricted patient</a>'
           )
         })
     })

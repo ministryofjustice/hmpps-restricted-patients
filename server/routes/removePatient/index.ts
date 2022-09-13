@@ -35,10 +35,10 @@ export default function removePatientRoutes({
   get('/select-patient', select.view)
   post('/select-patient', select.submit)
 
-  get('/patient-removed/:prisonerNumber', completed.view)
+  get('/patient-removed', completed.view)
 
-  get('/:prisonerNumber', confirmation.view)
-  post('/:prisonerNumber', confirmation.submit)
+  get('/', confirmation.view)
+  post('/', confirmation.submit)
 
   return router
 }

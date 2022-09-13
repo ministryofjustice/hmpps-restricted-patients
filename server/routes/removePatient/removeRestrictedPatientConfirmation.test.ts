@@ -32,7 +32,7 @@ describe('/remove-from-restricted-patients', () => {
   describe('GET /remove-from-restricted-patients', () => {
     it('should load the remove from restricted patients selection playback page', () => {
       return request(app)
-        .get('/remove-from-restricted-patients/A1234AA')
+        .get('/remove-from-restricted-patients?prisonerNumber=A1234AA')
         .expect('Content-Type', /html/)
         .expect(res => {
           expect(res.text).toContain('You are removing John Smith from restricted patients')
@@ -48,8 +48,8 @@ describe('/remove-from-restricted-patients', () => {
 
       it('should redirect to the person moved confirmation page', () => {
         return request(app)
-          .post('/remove-from-restricted-patients/A1234AA')
-          .expect('Location', '/remove-from-restricted-patients/patient-removed/A1234AA')
+          .post('/remove-from-restricted-patients?prisonerNumber=A1234AA')
+          .expect('Location', '/remove-from-restricted-patients/patient-removed?prisonerNumber=A1234AA')
       })
     })
 
@@ -60,7 +60,7 @@ describe('/remove-from-restricted-patients', () => {
 
       it('should throw the error', () => {
         return request(app)
-          .post('/remove-from-restricted-patients/A1234AA')
+          .post('/remove-from-restricted-patients?prisonerNumber=A1234AA')
           .expect('Content-Type', /html/)
           .expect(res => {
             expect(res.text).toContain('Error: some error')

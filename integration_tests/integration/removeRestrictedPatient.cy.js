@@ -124,7 +124,7 @@ context('Remove restricted patient', () => {
     restrictedPatientSelectPage
       .removeRestrictedPatientLink()
       .should('have.attr', 'href')
-      .and('include', '/remove-from-restricted-patients/A1234AA')
+      .and('include', '/remove-from-restricted-patients?prisonerNumber=A1234AA')
 
     restrictedPatientSelectPage.removeRestrictedPatientLink().click()
 

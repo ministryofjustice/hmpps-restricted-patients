@@ -44,7 +44,7 @@ describe('GET /patient-removed', () => {
   })
   it('should load the prisoner move completed page', () => {
     return request(app)
-      .get('/remove-from-restricted-patients/patient-removed/A1234AA')
+      .get('/remove-from-restricted-patients/patient-removed?prisonerNumber=A1234AA')
       .expect('Content-Type', /html/)
       .expect(res => {
         expect(res.text).toContain('John Smith has been removed from restricted patients')
@@ -83,7 +83,7 @@ describe('GET /patient-removed - no session item (user jumped to page)', () => {
   })
   it('should load the prisoner move completed page', () => {
     return request(app)
-      .get('/remove-from-restricted-patients/patient-removed/A1234AA')
+      .get('/remove-from-restricted-patients/patient-removed?prisonerNumber=A1234AA')
       .expect('Content-Type', /html/)
       .expect(res => {
         expect(res.text).toContain('Page not found')
