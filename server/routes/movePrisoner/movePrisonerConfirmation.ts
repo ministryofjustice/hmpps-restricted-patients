@@ -9,7 +9,8 @@ export default class MovePrisonerConfirmationRoutes {
   ) {}
 
   private renderView = async (req: Request, res: Response): Promise<void> => {
-    const { prisonerNumber, hospitalId } = req.params
+    const prisonerNumber = req.query.prisonerNumber as string
+    const hospitalId = req.query.hospitalId as string
     const { user } = res.locals
 
     const [hospital, prisoner] = await Promise.all([
@@ -29,14 +30,17 @@ export default class MovePrisonerConfirmationRoutes {
   view = async (req: Request, res: Response): Promise<void> => this.renderView(req, res)
 
   submit = async (req: Request, res: Response): Promise<void> => {
-    const { prisonerNumber, hospitalId } = req.params
+    const prisonerNumber = req.query.prisonerNumber as string
+    const hospitalId = req.query.hospitalId as string
     const { currentAgencyId } = req.body
     const { user } = res.locals
 
     try {
       await this.movePrisonerService.dischargePatientToHospital(prisonerNumber, currentAgencyId, hospitalId, user)
 
-      return res.redirect(`/move-to-hospital/prisoner-moved-to-hospital/${prisonerNumber}/${hospitalId}`)
+      return res.redirect(
+        `/move-to-hospital/prisoner-moved-to-hospital?${new URLSearchParams({ prisonerNumber, hospitalId })}`
+      )
     } catch (error) {
       res.locals.redirectUrl = `/back-to-start`
       throw error

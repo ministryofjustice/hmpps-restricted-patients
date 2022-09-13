@@ -34,15 +34,15 @@ export default function movePrisonerRoutes({
   get('/select-prisoner', prisonerSelect.view)
   post('/select-prisoner', prisonerSelect.submit)
 
-  get('/select-prisoner/:prisonerNumber', movePrisoner.view)
+  get('/select-prisoner', movePrisoner.view)
 
-  get('/confirm-move/:prisonerNumber/:hospitalId', movePrisonerConfirmation.view)
-  post('/confirm-move/:prisonerNumber/:hospitalId', movePrisonerConfirmation.submit)
+  get('/confirm-move', movePrisonerConfirmation.view)
+  post('/confirm-move', movePrisonerConfirmation.submit)
 
-  get('/prisoner-moved-to-hospital/:prisonerNumber/:hospitalId', movePrisonerCompleted.view)
+  get('/prisoner-moved-to-hospital', movePrisonerCompleted.view)
 
-  get('/:prisonerNumber', movePrisoner.view)
-  post('/:prisonerNumber', movePrisoner.submit)
+  get('/', movePrisoner.view)
+  post('/', movePrisoner.submit)
 
   return router
 }

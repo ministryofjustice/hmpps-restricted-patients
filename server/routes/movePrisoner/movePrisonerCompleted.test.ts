@@ -54,7 +54,7 @@ describe('GET /prisoner-moved-to-hospital', () => {
   })
   it('should load the prisoner move completed page', () => {
     return request(app)
-      .get('/move-to-hospital/prisoner-moved-to-hospital/A1234AA/SHEFF')
+      .get('/move-to-hospital/prisoner-moved-to-hospital?prisonerNumber=A1234AA&hospitalId=SHEFF')
       .expect('Content-Type', /html/)
       .expect(res => {
         expect(res.text).toContain('John Smith has been moved to Sheffield Hospital')
@@ -100,7 +100,7 @@ describe('GET /prisoner-moved-to-hospital - no session item (user jumped to page
   })
   it('should load the prisoner move completed page', () => {
     return request(app)
-      .get('/move-to-hospital/prisoner-moved-to-hospital/A1234AA/SHEFF')
+      .get('/move-to-hospital/prisoner-moved-to-hospital?prisonerNumber=A1234AA&hospitalId=SHEFF')
       .expect('Content-Type', /html/)
       .expect(res => {
         expect(res.text).toContain('Page not found')

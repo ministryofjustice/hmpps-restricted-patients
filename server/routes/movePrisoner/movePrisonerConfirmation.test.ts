@@ -51,7 +51,7 @@ afterEach(() => {
 describe('GET /confirm-move', () => {
   it('should load the confirm move page', () => {
     return request(app)
-      .get('/move-to-hospital/confirm-move/A1234AA/SHEFF')
+      .get('/move-to-hospital/confirm-move?prisonerNumber=A1234AA&hospitalId=SHEFF')
       .expect('Content-Type', /html/)
       .expect(res => {
         expect(res.text).toContain('You are moving John Smith to Sheffield Hospital')
@@ -69,16 +69,16 @@ describe('POST /confirm-move', () => {
     })
 
     return request(app)
-      .post('/move-to-hospital/confirm-move/A1234AA/SHEFF')
+      .post('/move-to-hospital/confirm-move?prisonerNumber=A1234AA&hospitalId=SHEFF')
       .send({ currentAgencyId: 'MDI' })
-      .expect('Location', '/move-to-hospital/prisoner-moved-to-hospital/A1234AA/SHEFF')
+      .expect('Location', '/move-to-hospital/prisoner-moved-to-hospital?prisonerNumber=A1234AA&hospitalId=SHEFF')
   })
 
   it('should throw an error on failure', () => {
     movePrisonerService.dischargePatientToHospital.mockRejectedValue(new Error('some error'))
 
     return request(app)
-      .post('/move-to-hospital/confirm-move/A1234AA/SHEFF')
+      .post('/move-to-hospital/confirm-move?prisonerNumber=A1234AA&hospitalId=SHEFF')
       .expect('Content-Type', /html/)
       .expect(res => {
         expect(res.text).toContain('Error: some error')

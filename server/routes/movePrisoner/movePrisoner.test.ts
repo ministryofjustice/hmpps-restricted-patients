@@ -50,7 +50,7 @@ afterEach(() => {
 describe('GET /move-to-hospital', () => {
   it('should load the move prisoner to hospital page', () => {
     return request(app)
-      .get('/move-to-hospital/A1234AA')
+      .get('/move-to-hospital?prisonerNumber=A1234AA')
       .expect('Content-Type', /html/)
       .expect(res => {
         expect(res.text).toContain('Move John Smith to a hospital')
@@ -67,14 +67,14 @@ describe('GET /move-to-hospital', () => {
 describe('POST /move-to-hospital', () => {
   it('should redirect to confirm move page with correct url parameters', () => {
     return request(app)
-      .post('/move-to-hospital/A1234AA')
+      .post('/move-to-hospital?prisonerNumber=A1234AA')
       .send({ hospital: 'SHEFF' })
-      .expect('Location', '/move-to-hospital/confirm-move/A1234AA/SHEFF')
+      .expect('Location', '/move-to-hospital/confirm-move?prisonerNumber=A1234AA&hospitalId=SHEFF')
   })
 
   it('should render validation messages', () => {
     return request(app)
-      .post('/move-to-hospital/A1234AA')
+      .post('/move-to-hospital?prisonerNumber=A1234AA')
       .expect('Content-Type', /html/)
       .expect(res => {
         expect(res.text).toContain('Error: Move to a hospital')

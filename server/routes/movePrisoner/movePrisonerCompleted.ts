@@ -9,7 +9,8 @@ export default class MovePrisonerCompletedRoutes {
   ) {}
 
   private renderView = async (req: Request, res: Response): Promise<void> => {
-    const { prisonerNumber, hospitalId } = req.params
+    const prisonerNumber = req.query.prisonerNumber as string
+    const hospitalId = req.query.hospitalId as string
     const { user } = res.locals
 
     const [hospital, prisoner] = await Promise.all([

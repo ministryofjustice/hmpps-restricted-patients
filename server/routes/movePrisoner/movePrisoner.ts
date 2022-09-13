@@ -16,7 +16,7 @@ export default class PrisonerSelectRoutes {
   ) {}
 
   private renderView = async (req: Request, res: Response, pageData: PageData): Promise<void> => {
-    const { prisonerNumber } = req.params
+    const prisonerNumber = req.query.prisonerNumber as string
     const { user } = res.locals
     const { error } = pageData
 
@@ -43,7 +43,7 @@ export default class PrisonerSelectRoutes {
   view = async (req: Request, res: Response): Promise<void> => this.renderView(req, res, {})
 
   submit = async (req: Request, res: Response): Promise<void> => {
-    const { prisonerNumber } = req.params
+    const prisonerNumber = req.query.prisonerNumber as string
     const { hospital } = req.body
 
     const error = validateMovePrisonerForm({ hospital })
@@ -52,6 +52,8 @@ export default class PrisonerSelectRoutes {
 
     req.session.newMovePrisonerJourney = true
 
-    return res.redirect(`/move-to-hospital/confirm-move/${prisonerNumber}/${hospital}`)
+    return res.redirect(
+      `/move-to-hospital/confirm-move?${new URLSearchParams({ prisonerNumber, hospitalId: hospital })}`
+    )
   }
 }
