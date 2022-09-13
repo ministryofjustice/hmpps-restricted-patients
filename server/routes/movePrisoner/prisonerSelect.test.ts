@@ -56,7 +56,7 @@ describe('GET /select-prisoner', () => {
           expect(res.text).toContain('1-2-015')
           expect(res.text).toContain('Controlled unlock')
           expect(res.text).toContain(
-            '<a href="/move-to-hospital/A1234AA?journeyStartUrl=/move-to-hospital/select-prisoner?searchTerm=Smith" class="govuk-link" data-test="prisoner-move-to-hospital-link"><span class="govuk-visually-hidden">Smith, John - </span>Move to a hospital</a>'
+            '<a href="/move-to-hospital?prisonerNumber=A1234AA&journeyStartUrl=/move-to-hospital/select-prisoner?searchTerm=Smith" class="govuk-link" data-test="prisoner-move-to-hospital-link"><span class="govuk-visually-hidden">Smith, John - </span>Move to a hospital</a>'
           )
         })
     })
