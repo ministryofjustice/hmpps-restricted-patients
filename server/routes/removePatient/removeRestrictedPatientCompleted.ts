@@ -5,7 +5,7 @@ export default class RemoveRestrictedPatientCompletedRoutes {
   constructor(private readonly prisonerSearchService: PrisonerSearchService) {}
 
   view = async (req: Request, res: Response): Promise<void> => {
-    const { prisonerNumber } = req.params
+    const prisonerNumber = req.query.prisonerNumber as string
     const { user } = res.locals
 
     if (!req.session.newRemoveRestrictedPatientJourney) return res.render('pages/notFound.njk')
