@@ -13,7 +13,7 @@ const movePrisonerService = new MovePrisonerService(null) as jest.Mocked<MovePri
 let app: Express
 
 beforeEach(() => {
-  app = appWithAllRoutes({ production: false }, { prisonerSearchService, movePrisonerService })
+  app = appWithAllRoutes({ production: false, services: { prisonerSearchService, movePrisonerService } })
 
   movePrisonerService.getHospital.mockResolvedValue({
     agencyId: 'SHEFF',

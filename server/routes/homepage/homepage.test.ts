@@ -10,7 +10,7 @@ const userService = new UserService(null) as jest.Mocked<UserService>
 let app: Express
 
 beforeEach(() => {
-  app = appWithAllRoutes({ production: false }, { userService })
+  app = appWithAllRoutes({ production: false, services: { userService } })
 })
 
 afterEach(() => {

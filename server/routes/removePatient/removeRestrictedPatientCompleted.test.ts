@@ -11,11 +11,11 @@ let app: Express
 
 describe('GET /patient-removed', () => {
   beforeEach(() => {
-    app = appWithAllRoutes(
-      { production: false },
-      { prisonerSearchService },
-      { newRemoveRestrictedPatientJourney: true }
-    )
+    app = appWithAllRoutes({
+      production: false,
+      services: { prisonerSearchService },
+      session: { newRemoveRestrictedPatientJourney: true },
+    })
 
     prisonerSearchService.getPrisonerDetails.mockResolvedValue({
       assignedLivingUnit: {
@@ -54,7 +54,7 @@ describe('GET /patient-removed', () => {
 
 describe('GET /patient-removed - no session item (user jumped to page)', () => {
   beforeEach(() => {
-    app = appWithAllRoutes({ production: false }, { prisonerSearchService })
+    app = appWithAllRoutes({ production: false, services: { prisonerSearchService } })
 
     prisonerSearchService.getPrisonerDetails.mockResolvedValue({
       assignedLivingUnit: {

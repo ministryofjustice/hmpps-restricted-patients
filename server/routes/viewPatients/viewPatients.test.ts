@@ -14,7 +14,7 @@ const restrictedPatientSearchService =
 let app: Express
 
 beforeEach(() => {
-  app = appWithAllRoutes({ production: false }, { restrictedPatientSearchService })
+  app = appWithAllRoutes({ production: false, services: { restrictedPatientSearchService } })
 })
 
 afterEach(() => {
