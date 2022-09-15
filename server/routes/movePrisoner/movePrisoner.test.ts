@@ -1,6 +1,6 @@
 import { Express } from 'express'
 import request from 'supertest'
-import appWithAllRoutes from '../testutils/appSetup'
+import appWithAllRoutes, { mockJwtDecode } from '../testutils/appSetup'
 import PrisonerSearchService, { PrisonerResultSummary } from '../../services/prisonerSearchService'
 import MovePrisonerService, { Hospital } from '../../services/movePrisonerService'
 
@@ -13,7 +13,11 @@ const movePrisonerService = new MovePrisonerService(null) as jest.Mocked<MovePri
 let app: Express
 
 beforeEach(() => {
-  app = appWithAllRoutes({ production: false, services: { prisonerSearchService, movePrisonerService } })
+  app = appWithAllRoutes({
+    production: false,
+    services: { prisonerSearchService, movePrisonerService },
+    roles: ['TRANSFER_RESTRICTED_PATIENT'],
+  })
 
   movePrisonerService.getHospitals.mockResolvedValue([
     {
@@ -62,6 +66,16 @@ describe('GET /move-to-hospital', () => {
         expect(res.text).toContain('Controlled unlock')
       })
   })
+
+  it('should render not found page if user missing privileges', () => {
+    mockJwtDecode.mockImplementation(() => ({ authorities: ['SEARCH_RESTRICTED_PATIENT'] }))
+    return request(app)
+      .get('/move-to-hospital?prisonerNumber=A1234AA')
+      .expect('Content-Type', /html/)
+      .expect(res => {
+        expect(res.text).toContain('Page not found')
+      })
+  })
 })
 
 describe('POST /move-to-hospital', () => {
@@ -80,6 +94,16 @@ describe('POST /move-to-hospital', () => {
         expect(res.text).toContain('Error: Move to a hospital')
         expect(res.text).toContain('There is a problem')
         expect(res.text).toContain('Enter a hospital')
+      })
+  })
+
+  it('should render not found page if user missing privileges', () => {
+    mockJwtDecode.mockImplementation(() => ({ authorities: ['SEARCH_RESTRICTED_PATIENT'] }))
+    return request(app)
+      .post('/move-to-hospital?prisonerNumber=A1234AA')
+      .expect('Content-Type', /html/)
+      .expect(res => {
+        expect(res.text).toContain('Page not found')
       })
   })
 })

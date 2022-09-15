@@ -2,7 +2,7 @@ import 'reflect-metadata'
 import { Express } from 'express'
 import request from 'supertest'
 import PrisonerSearchService, { PrisonerSearchSummary } from '../../services/prisonerSearchService'
-import appWithAllRoutes from '../testutils/appSetup'
+import appWithAllRoutes, { mockJwtDecode } from '../testutils/appSetup'
 
 jest.mock('../../services/prisonerSearchService')
 
@@ -11,7 +11,11 @@ const prisonerSearchService = new PrisonerSearchService(null) as jest.Mocked<Pri
 let app: Express
 
 beforeEach(() => {
-  app = appWithAllRoutes({ production: false, services: { prisonerSearchService } })
+  app = appWithAllRoutes({
+    production: false,
+    services: { prisonerSearchService },
+    roles: ['TRANSFER_RESTRICTED_PATIENT'],
+  })
 })
 
 afterEach(() => {
@@ -60,6 +64,16 @@ describe('GET /select-prisoner', () => {
           )
         })
     })
+
+    it('should render not found page if user missing privileges', () => {
+      mockJwtDecode.mockImplementation(() => ({ authorities: ['SEARCH_RESTRICTED_PATIENT'] }))
+      return request(app)
+        .get('/move-to-hospital/select-prisoner?searchTerm=Smith')
+        .expect('Content-Type', /html/)
+        .expect(res => {
+          expect(res.text).toContain('Page not found')
+        })
+    })
   })
 
   describe('without results', () => {
@@ -95,6 +109,16 @@ describe('POST /select-prisoner', () => {
         expect(res.text).toContain('Error: Select a prisoner')
         expect(res.text).toContain('There is a problem')
         expect(res.text).toContain('Enter a prisoner’s name or number')
+      })
+  })
+
+  it('should render not found page if user missing privileges', () => {
+    mockJwtDecode.mockImplementation(() => ({ authorities: ['SEARCH_RESTRICTED_PATIENT'] }))
+    return request(app)
+      .post('/move-to-hospital/select-prisoner')
+      .expect('Content-Type', /html/)
+      .expect(res => {
+        expect(res.text).toContain('Page not found')
       })
   })
 })

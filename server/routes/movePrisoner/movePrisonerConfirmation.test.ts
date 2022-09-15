@@ -1,6 +1,6 @@
 import { Express } from 'express'
 import request from 'supertest'
-import appWithAllRoutes from '../testutils/appSetup'
+import appWithAllRoutes, { mockJwtDecode } from '../testutils/appSetup'
 import PrisonerSearchService, { PrisonerResultSummary } from '../../services/prisonerSearchService'
 import MovePrisonerService, { Hospital } from '../../services/movePrisonerService'
 
@@ -13,7 +13,11 @@ const movePrisonerService = new MovePrisonerService(null) as jest.Mocked<MovePri
 let app: Express
 
 beforeEach(() => {
-  app = appWithAllRoutes({ production: false, services: { prisonerSearchService, movePrisonerService } })
+  app = appWithAllRoutes({
+    production: false,
+    services: { prisonerSearchService, movePrisonerService },
+    roles: ['TRANSFER_RESTRICTED_PATIENT'],
+  })
 
   movePrisonerService.getHospital.mockResolvedValue({
     agencyId: 'SHEFF',
@@ -58,6 +62,16 @@ describe('GET /confirm-move', () => {
         expect(res.text).toContain('<input type="hidden" name="currentAgencyId" value="MDI"')
       })
   })
+
+  it('should render not found page if user missing privileges', () => {
+    mockJwtDecode.mockImplementation(() => ({ authorities: ['SEARCH_RESTRICTED_PATIENT'] }))
+    return request(app)
+      .get('/move-to-hospital/confirm-move?prisonerNumber=A1234AA&hospitalId=SHEFF')
+      .expect('Content-Type', /html/)
+      .expect(res => {
+        expect(res.text).toContain('Page not found')
+      })
+  })
 })
 
 describe('POST /confirm-move', () => {
@@ -82,6 +96,16 @@ describe('POST /confirm-move', () => {
       .expect('Content-Type', /html/)
       .expect(res => {
         expect(res.text).toContain('Error: some error')
+      })
+  })
+
+  it('should render not found page if user missing privileges', () => {
+    mockJwtDecode.mockImplementation(() => ({ authorities: ['SEARCH_RESTRICTED_PATIENT'] }))
+    return request(app)
+      .post('/move-to-hospital/confirm-move?prisonerNumber=A1234AA&hospitalId=SHEFF')
+      .expect('Content-Type', /html/)
+      .expect(res => {
+        expect(res.text).toContain('Page not found')
       })
   })
 })
