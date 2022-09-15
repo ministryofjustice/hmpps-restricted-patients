@@ -45,18 +45,20 @@ context('Login', () => {
     })
 
     it('should show change location link when user has more than 1 caseload', () => {
-      cy.task('stubLogin', [
-        {
-          caseLoadId: 'MDI',
-          description: 'Moorland',
-          currentlyActive: true,
-        },
-        {
-          caseLoadId: 'LEI',
-          description: 'Leeds',
-          currentlyActive: false,
-        },
-      ])
+      cy.task('stubLogin', {
+        caseLoads: [
+          {
+            caseLoadId: 'MDI',
+            description: 'Moorland',
+            currentlyActive: true,
+          },
+          {
+            caseLoadId: 'LEI',
+            description: 'Leeds',
+            currentlyActive: false,
+          },
+        ],
+      })
       cy.login()
 
       const page = IndexPage.goTo()

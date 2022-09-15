@@ -1,6 +1,6 @@
 import { Express } from 'express'
 import request from 'supertest'
-import appWithAllRoutes from '../testutils/appSetup'
+import appWithAllRoutes, { mockJwtDecode } from '../testutils/appSetup'
 import PrisonerSearchService, { PrisonerResultSummary } from '../../services/prisonerSearchService'
 import MovePrisonerService, { Hospital } from '../../services/movePrisonerService'
 
@@ -18,6 +18,7 @@ describe('GET /prisoner-moved-to-hospital', () => {
       production: false,
       services: { prisonerSearchService, movePrisonerService },
       session: { newMovePrisonerJourney: true },
+      roles: ['TRANSFER_RESTRICTED_PATIENT'],
     })
 
     movePrisonerService.getHospital.mockResolvedValue({
@@ -61,6 +62,16 @@ describe('GET /prisoner-moved-to-hospital', () => {
         expect(res.text).toContain('John Smith’s prison number is A1234AA')
       })
   })
+
+  it('should render not found page if user missing privileges', () => {
+    mockJwtDecode.mockImplementation(() => ({ authorities: ['SEARCH_RESTRICTED_PATIENT'] }))
+    return request(app)
+      .get('/move-to-hospital/prisoner-moved-to-hospital?prisonerNumber=A1234AA&hospitalId=SHEFF')
+      .expect('Content-Type', /html/)
+      .expect(res => {
+        expect(res.text).toContain('Page not found')
+      })
+  })
 })
 describe('GET /prisoner-moved-to-hospital - no session item (user jumped to page)', () => {
   beforeEach(() => {
@@ -99,6 +110,16 @@ describe('GET /prisoner-moved-to-hospital - no session item (user jumped to page
     jest.resetAllMocks()
   })
   it('should load the prisoner move completed page', () => {
+    return request(app)
+      .get('/move-to-hospital/prisoner-moved-to-hospital?prisonerNumber=A1234AA&hospitalId=SHEFF')
+      .expect('Content-Type', /html/)
+      .expect(res => {
+        expect(res.text).toContain('Page not found')
+      })
+  })
+
+  it('should render not found page if user missing privileges', () => {
+    mockJwtDecode.mockImplementation(() => ({ authorities: ['SEARCH_RESTRICTED_PATIENT'] }))
     return request(app)
       .get('/move-to-hospital/prisoner-moved-to-hospital?prisonerNumber=A1234AA&hospitalId=SHEFF')
       .expect('Content-Type', /html/)

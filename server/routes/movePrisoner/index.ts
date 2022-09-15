@@ -9,6 +9,7 @@ import MovePrisonerConfirmationRoutes from './movePrisonerConfirmation'
 import MovePrisonerCompletedRoutes from './movePrisonerCompleted'
 import PrisonerSearchRoutes from './prisonerSearch'
 import PrisonerSelectRoutes from './prisonerSelect'
+import authorisationMiddleware from '../../middleware/authorisationMiddleware'
 
 export default function movePrisonerRoutes({
   movePrisonerService,
@@ -18,6 +19,7 @@ export default function movePrisonerRoutes({
   prisonerSearchService: PrisonerSearchService
 }): Router {
   const router = express.Router({ mergeParams: true })
+  router.use(authorisationMiddleware(true, ['TRANSFER_RESTRICTED_PATIENT']))
 
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
   const post = (path: string, handler: RequestHandler) => router.post(path, asyncMiddleware(handler))

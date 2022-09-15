@@ -50,7 +50,7 @@ export default function createApp(services: Services): express.Application {
   app.use(setUpStaticResources())
   nunjucksSetup(app, path)
   app.use(setUpAuthentication())
-  app.use(authorisationMiddleware())
+  app.use(authorisationMiddleware(false))
 
   app.use(indexRoutes(standardRouter(services.userService), services))
   app.get('/back-to-start', async (req, res) => {

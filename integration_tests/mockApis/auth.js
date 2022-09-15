@@ -3,12 +3,12 @@ const jwt = require('jsonwebtoken')
 const { stubFor, getRequests } = require('./wiremock')
 const tokenVerification = require('./tokenVerification')
 
-const createToken = () => {
+const createToken = (roles = []) => {
   const payload = {
     user_name: 'USER1',
     scope: ['read'],
     auth_source: 'nomis',
-    authorities: [],
+    authorities: roles,
     jti: '83b50a10-cca6-41db-985f-e87efb303ddb',
     client_id: 'clientid',
   }
@@ -77,7 +77,7 @@ const logout = () =>
     },
   })
 
-const token = () =>
+const token = (roles = []) =>
   stubFor({
     request: {
       method: 'POST',
@@ -90,7 +90,7 @@ const token = () =>
         Location: 'http://localhost:3007/login/callback?code=codexxxx&state=stateyyyy',
       },
       jsonBody: {
-        access_token: createToken(),
+        access_token: createToken(roles),
         token_type: 'bearer',
         user_name: 'USER1',
         expires_in: 599,
@@ -139,7 +139,8 @@ const stubUserRoles = (roles = []) =>
 module.exports = {
   getLoginUrl,
   stubPing: (status = 200) => Promise.all([ping(status), tokenVerification.stubPing(status)]),
-  stubLogin: () => Promise.all([favicon(), redirect(), logout(), token(), tokenVerification.stubVerifyToken()]),
+  stubLogin: (roles = []) =>
+    Promise.all([favicon(), redirect(), logout(), token(roles), tokenVerification.stubVerifyToken()]),
   stubUser: () => Promise.all([stubUser(), stubUserRoles()]),
   stubUserRoles,
 }

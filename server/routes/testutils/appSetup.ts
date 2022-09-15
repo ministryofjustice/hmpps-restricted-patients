@@ -3,6 +3,7 @@ import express, { Express } from 'express'
 import cookieSession from 'cookie-session'
 import createError from 'http-errors'
 import path from 'path'
+import jwtDecode from 'jwt-decode'
 
 import allRoutes from '../index'
 import nunjucksSetup from '../../utils/nunjucksSetup'
@@ -64,6 +65,8 @@ class MockUserService extends UserService {
 }
 
 export const flashProvider = jest.fn()
+jest.mock('jwt-decode', () => jest.fn())
+export const mockJwtDecode = jwtDecode as jest.Mock
 
 function appSetup(
   services: Services,
@@ -115,12 +118,15 @@ export default function appWithAllRoutes({
   services = {},
   session = {},
   userSupplier = () => user,
+  roles = [],
 }: {
   production?: boolean
   services?: Partial<Services>
   session?: Record<string, unknown>
   userSupplier?: () => Express.User
+  roles?: string[]
 }): Express {
   auth.default.authenticationMiddleware = () => (req, res, next) => next()
+  mockJwtDecode.mockImplementation(() => ({ authorities: roles }))
   return appSetup(services as Services, production, session, userSupplier)
 }

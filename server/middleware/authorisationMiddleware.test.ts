@@ -38,7 +38,7 @@ describe('authorisationMiddleware', () => {
   it('should return next when no required roles', async () => {
     const res = createResWithToken({ authorities: [] })
 
-    await authorisationMiddleware()(req, res, next)
+    await authorisationMiddleware(false)(req, res, next)
 
     expect(next).toHaveBeenCalled()
     expect(res.redirect).not.toHaveBeenCalled()
@@ -47,7 +47,7 @@ describe('authorisationMiddleware', () => {
   it('should redirect when user has no authorised roles', async () => {
     const res = createResWithToken({ authorities: [] })
 
-    await authorisationMiddleware(['SOME_REQUIRED_ROLE'])(req, res, next)
+    await authorisationMiddleware(false, ['SOME_REQUIRED_ROLE'])(req, res, next)
 
     expect(next).not.toHaveBeenCalled()
     expect(res.redirect).toHaveBeenCalledWith('/authError')
@@ -56,7 +56,7 @@ describe('authorisationMiddleware', () => {
   it('should return next when user has authorised role', async () => {
     const res = createResWithToken({ authorities: ['SOME_REQUIRED_ROLE'] })
 
-    await authorisationMiddleware(['SOME_REQUIRED_ROLE'])(req, res, next)
+    await authorisationMiddleware(false, ['SOME_REQUIRED_ROLE'])(req, res, next)
 
     expect(next).toHaveBeenCalled()
     expect(res.redirect).not.toHaveBeenCalled()
