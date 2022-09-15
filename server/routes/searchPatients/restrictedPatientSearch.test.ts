@@ -1,18 +1,18 @@
 import { Express } from 'express'
 import request from 'supertest'
-import appWithAllRoutes from '../testutils/appSetup'
+import appWithAllRoutes, { mockJwtDecode } from '../testutils/appSetup'
 
 let app: Express
-
-beforeEach(() => {
-  app = appWithAllRoutes({ production: false })
-})
 
 afterEach(() => {
   jest.resetAllMocks()
 })
 
 describe('/search-for-restricted-patient', () => {
+  beforeEach(() => {
+    app = appWithAllRoutes({ production: false })
+  })
+
   describe('GET /search-for-restricted-patient', () => {
     it('should load the search for a restricted patient page', () => {
       return request(app)
@@ -47,6 +47,10 @@ describe('/search-for-restricted-patient', () => {
 })
 
 describe('/search-for-patient', () => {
+  beforeEach(() => {
+    app = appWithAllRoutes({ production: false, roles: ['REMOVE_RESTRICTED_PATIENT'] })
+  })
+
   describe('GET /search-for-patient', () => {
     it('should load the search for a restricted patient page', () => {
       return request(app)
@@ -55,6 +59,16 @@ describe('/search-for-patient', () => {
         .expect(res => {
           expect(res.text).toContain('Search for a restricted patient to remove')
           expect(res.text).toContain('Enter a restricted patient’s name or prison number')
+        })
+    })
+
+    it('should render not found page if user missing privileges', () => {
+      mockJwtDecode.mockImplementation(() => ({ authorities: ['SEARCH_RESTRICTED_PATIENT'] }))
+      return request(app)
+        .get('/remove-from-restricted-patients/search-for-patient')
+        .expect('Content-Type', /html/)
+        .expect(res => {
+          expect(res.text).toContain('Page not found')
         })
     })
   })
@@ -75,6 +89,16 @@ describe('/search-for-patient', () => {
           expect(res.text).toContain('Error: Search for a restricted patient to remove')
           expect(res.text).toContain('There is a problem')
           expect(res.text).toContain('Enter a restricted patient’s name or prison number')
+        })
+    })
+
+    it('should render not found page if user missing privileges', () => {
+      mockJwtDecode.mockImplementation(() => ({ authorities: ['SEARCH_RESTRICTED_PATIENT'] }))
+      return request(app)
+        .post('/remove-from-restricted-patients/search-for-patient')
+        .expect('Content-Type', /html/)
+        .expect(res => {
+          expect(res.text).toContain('Page not found')
         })
     })
   })

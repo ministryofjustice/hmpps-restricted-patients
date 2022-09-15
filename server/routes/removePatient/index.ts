@@ -9,6 +9,7 @@ import RestrictedPatientSelectRoutes from './restrictedPatientSelect'
 import RemoveRestrictedPatientCompletedRoutes from './removeRestrictedPatientCompleted'
 import RestrictedPatientSearchService from '../../services/restrictedPatientSearchService'
 import PrisonerSearchService from '../../services/prisonerSearchService'
+import authorisationMiddleware from '../../middleware/authorisationMiddleware'
 
 export default function removePatientRoutes({
   removeRestrictedPatientService,
@@ -20,6 +21,7 @@ export default function removePatientRoutes({
   prisonerSearchService: PrisonerSearchService
 }): Router {
   const router = express.Router({ mergeParams: true })
+  router.use(authorisationMiddleware(true, ['REMOVE_RESTRICTED_PATIENT']))
 
   const confirmation = new RemoveRestrictedPatientConfirmationRoutes(removeRestrictedPatientService)
   const search = new RestrictedPatientSearchRoutes('/remove-from-restricted-patients/select-patient')

@@ -1,6 +1,6 @@
 import { Express } from 'express'
 import request from 'supertest'
-import appWithAllRoutes from '../testutils/appSetup'
+import appWithAllRoutes, { mockJwtDecode } from '../testutils/appSetup'
 import PrisonerSearchService, { PrisonerResultSummary } from '../../services/prisonerSearchService'
 
 jest.mock('../../services/prisonerSearchService')
@@ -15,6 +15,7 @@ describe('GET /patient-removed', () => {
       production: false,
       services: { prisonerSearchService },
       session: { newRemoveRestrictedPatientJourney: true },
+      roles: ['REMOVE_RESTRICTED_PATIENT'],
     })
 
     prisonerSearchService.getPrisonerDetails.mockResolvedValue({
@@ -50,6 +51,16 @@ describe('GET /patient-removed', () => {
         expect(res.text).toContain('John Smith has been removed from restricted patients')
       })
   })
+
+  it('should render not found page if user missing privileges', () => {
+    mockJwtDecode.mockImplementation(() => ({ authorities: ['SEARCH_RESTRICTED_PATIENT'] }))
+    return request(app)
+      .get('/remove-from-restricted-patients/patient-removed?prisonerNumber=A1234AA')
+      .expect('Content-Type', /html/)
+      .expect(res => {
+        expect(res.text).toContain('Page not found')
+      })
+  })
 })
 
 describe('GET /patient-removed - no session item (user jumped to page)', () => {
@@ -82,6 +93,16 @@ describe('GET /patient-removed - no session item (user jumped to page)', () => {
     jest.resetAllMocks()
   })
   it('should load the prisoner move completed page', () => {
+    return request(app)
+      .get('/remove-from-restricted-patients/patient-removed?prisonerNumber=A1234AA')
+      .expect('Content-Type', /html/)
+      .expect(res => {
+        expect(res.text).toContain('Page not found')
+      })
+  })
+
+  it('should render not found page if user missing privileges', () => {
+    mockJwtDecode.mockImplementation(() => ({ authorities: ['SEARCH_RESTRICTED_PATIENT'] }))
     return request(app)
       .get('/remove-from-restricted-patients/patient-removed?prisonerNumber=A1234AA')
       .expect('Content-Type', /html/)
