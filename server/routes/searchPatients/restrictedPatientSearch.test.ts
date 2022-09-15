@@ -10,7 +10,7 @@ afterEach(() => {
 
 describe('/search-for-restricted-patient', () => {
   beforeEach(() => {
-    app = appWithAllRoutes({ production: false })
+    app = appWithAllRoutes({ production: false, roles: ['SEARCH_RESTRICTED_PATIENT'] })
   })
 
   describe('GET /search-for-restricted-patient', () => {
@@ -21,6 +21,16 @@ describe('/search-for-restricted-patient', () => {
         .expect(res => {
           expect(res.text).toContain('Search for a restricted patient')
           expect(res.text).toContain('Enter a restricted patient’s name or prison number')
+        })
+    })
+
+    it('should render not found page if user missing privileges', () => {
+      mockJwtDecode.mockImplementation(() => ({ authorities: ['REMOVE_RESTRICTED_PATIENT'] }))
+      return request(app)
+        .get('/view-restricted-patients/search-for-patient')
+        .expect('Content-Type', /html/)
+        .expect(res => {
+          expect(res.text).toContain('Page not found')
         })
     })
   })
@@ -41,6 +51,16 @@ describe('/search-for-restricted-patient', () => {
           expect(res.text).toContain('Error: Search for a restricted patient')
           expect(res.text).toContain('There is a problem')
           expect(res.text).toContain('Enter a restricted patient’s name or prison number')
+        })
+    })
+
+    it('should render not found page if user missing privileges', () => {
+      mockJwtDecode.mockImplementation(() => ({ authorities: ['REMOVE_RESTRICTED_PATIENT'] }))
+      return request(app)
+        .post('/view-restricted-patients/search-for-patient')
+        .expect('Content-Type', /html/)
+        .expect(res => {
+          expect(res.text).toContain('Page not found')
         })
     })
   })
