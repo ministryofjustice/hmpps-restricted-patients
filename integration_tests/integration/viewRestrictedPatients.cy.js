@@ -12,13 +12,9 @@ const toOffender = $cell => ({
 context('View restricted patients', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubLogin')
+    cy.task('stubLogin', { roles: ['SEARCH_RESTRICTED_PATIENT'] })
     cy.task('stubAuthUser')
-    cy.task('stubUserRoles', [
-      { roleCode: 'REMOVE_RESTRICTED_PATIENT' },
-      { roleCode: 'TRANSFER_RESTRICTED_PATIENT' },
-      { roleCode: 'SEARCH_RESTRICTED_PATIENT' },
-    ])
+    cy.task('stubUserRoles', [{ roleCode: 'SEARCH_RESTRICTED_PATIENT' }])
     cy.task('stubRestrictedPatientSearch', {
       query: {
         equalToJson: {

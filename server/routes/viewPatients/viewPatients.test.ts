@@ -4,7 +4,7 @@ import request from 'supertest'
 import RestrictedPatientSearchService, {
   RestrictedPatientSearchSummary,
 } from '../../services/restrictedPatientSearchService'
-import appWithAllRoutes from '../testutils/appSetup'
+import appWithAllRoutes, { mockJwtDecode } from '../testutils/appSetup'
 
 jest.mock('../../services/restrictedPatientSearchService')
 
@@ -14,7 +14,11 @@ const restrictedPatientSearchService =
 let app: Express
 
 beforeEach(() => {
-  app = appWithAllRoutes({ production: false, services: { restrictedPatientSearchService } })
+  app = appWithAllRoutes({
+    production: false,
+    services: { restrictedPatientSearchService },
+    roles: ['SEARCH_RESTRICTED_PATIENT'],
+  })
 })
 
 afterEach(() => {
@@ -62,6 +66,16 @@ describe('GET /view-restricted-patients', () => {
     })
   })
 
+  it('should render not found page if user missing privileges', () => {
+    mockJwtDecode.mockImplementation(() => ({ authorities: ['REMOVE_RESTRICTED_PATIENT'] }))
+    return request(app)
+      .get('/view-restricted-patients?searchTerm=Smith')
+      .expect('Content-Type', /html/)
+      .expect(res => {
+        expect(res.text).toContain('Page not found')
+      })
+  })
+
   describe('without results', () => {
     beforeEach(() => {
       restrictedPatientSearchService.search.mockResolvedValue([])
@@ -95,6 +109,16 @@ describe('POST /view-restricted-patients', () => {
         expect(res.text).toContain('Error: Viewing restricted patients')
         expect(res.text).toContain('There is a problem')
         expect(res.text).toContain('Enter a restricted patient’s name or prison number')
+      })
+  })
+
+  it('should render not found page if user missing privileges', () => {
+    mockJwtDecode.mockImplementation(() => ({ authorities: ['REMOVE_RESTRICTED_PATIENT'] }))
+    return request(app)
+      .post('/view-restricted-patients')
+      .expect('Content-Type', /html/)
+      .expect(res => {
+        expect(res.text).toContain('Page not found')
       })
   })
 })
