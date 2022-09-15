@@ -12,7 +12,7 @@ const removeRestrictedPatientService = new RemoveRestrictedPatientService(
 let app: Express
 
 beforeEach(() => {
-  app = appWithAllRoutes({ production: false }, { removeRestrictedPatientService })
+  app = appWithAllRoutes({ production: false, services: { removeRestrictedPatientService } })
 })
 
 afterEach(() => {

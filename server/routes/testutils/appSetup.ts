@@ -1,5 +1,5 @@
 import 'reflect-metadata'
-import express, { Router, Express } from 'express'
+import express, { Express } from 'express'
 import cookieSession from 'cookie-session'
 import createError from 'http-errors'
 import path from 'path'
@@ -46,6 +46,8 @@ const user = {
     caseloadFunction: 'TEST',
     currentlyActive: true,
   },
+  token: 'token',
+  authSource: 'NOMIS',
 }
 
 class MockUserService extends UserService {
@@ -61,7 +63,14 @@ class MockUserService extends UserService {
   }
 }
 
-function appSetup(route: Router, production: boolean, session: Record<string, unknown>): Express {
+export const flashProvider = jest.fn()
+
+function appSetup(
+  services: Services,
+  production: boolean,
+  session: Record<string, unknown>,
+  userSupplier: () => Express.User
+): Express {
   const app = express()
 
   app.set('view engine', 'njk')
@@ -69,8 +78,10 @@ function appSetup(route: Router, production: boolean, session: Record<string, un
   nunjucksSetup(app, path)
 
   app.use((req, res, next) => {
+    req.user = userSupplier()
+    req.flash = flashProvider
     res.locals = {}
-    res.locals.user = user
+    res.locals.user = { ...req.user }
     next()
   })
 
@@ -83,29 +94,33 @@ function appSetup(route: Router, production: boolean, session: Record<string, un
   })
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
-  app.use('/', route)
-  app.use((req, res, next) => next(createError(404, 'Not found')))
-  app.use(errorHandler(production))
-
-  return app
-}
-
-export default function appWithAllRoutes(
-  { production = false }: { production?: boolean },
-  overrides: Partial<Services> = {},
-  session = {}
-): Express {
-  auth.default.authenticationMiddleware = () => (req, res, next) => next()
-  return appSetup(
+  app.use(
     allRoutes(standardRouter(new MockUserService()), {
       userService: new MockUserService(),
       prisonerSearchService: {} as PrisonerSearchService,
       movePrisonerService: {} as MovePrisonerService,
       restrictedPatientSearchService: {} as RestrictedPatientSearchService,
       removeRestrictedPatientService: {} as RemoveRestrictedPatientService,
-      ...overrides,
-    }),
-    production,
-    session
+      ...services,
+    })
   )
+  app.use((req, res, next) => next(createError(404, 'Not found')))
+  app.use(errorHandler(production))
+
+  return app
+}
+
+export default function appWithAllRoutes({
+  production = false,
+  services = {},
+  session = {},
+  userSupplier = () => user,
+}: {
+  production?: boolean
+  services?: Partial<Services>
+  session?: Record<string, unknown>
+  userSupplier?: () => Express.User
+}): Express {
+  auth.default.authenticationMiddleware = () => (req, res, next) => next()
+  return appSetup(services as Services, production, session, userSupplier)
 }

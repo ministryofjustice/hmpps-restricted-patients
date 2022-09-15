@@ -14,11 +14,11 @@ let app: Express
 
 describe('GET /prisoner-moved-to-hospital', () => {
   beforeEach(() => {
-    app = appWithAllRoutes(
-      { production: false },
-      { prisonerSearchService, movePrisonerService },
-      { newMovePrisonerJourney: true }
-    )
+    app = appWithAllRoutes({
+      production: false,
+      services: { prisonerSearchService, movePrisonerService },
+      session: { newMovePrisonerJourney: true },
+    })
 
     movePrisonerService.getHospital.mockResolvedValue({
       agencyId: 'SHEFF',
@@ -64,7 +64,7 @@ describe('GET /prisoner-moved-to-hospital', () => {
 })
 describe('GET /prisoner-moved-to-hospital - no session item (user jumped to page)', () => {
   beforeEach(() => {
-    app = appWithAllRoutes({ production: false }, { prisonerSearchService, movePrisonerService })
+    app = appWithAllRoutes({ production: false, services: { prisonerSearchService, movePrisonerService } })
 
     movePrisonerService.getHospital.mockResolvedValue({
       agencyId: 'SHEFF',
