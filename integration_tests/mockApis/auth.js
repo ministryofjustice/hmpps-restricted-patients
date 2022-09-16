@@ -4,11 +4,13 @@ const { stubFor, getRequests } = require('./wiremock')
 const tokenVerification = require('./tokenVerification')
 
 const createToken = (roles = []) => {
+  // authorities in the session are always prefixed by ROLE.
+  const authorities = roles.map(role => (role.startsWith('ROLE_') ? role : `ROLE_${role}`))
   const payload = {
     user_name: 'USER1',
     scope: ['read'],
     auth_source: 'nomis',
-    authorities: roles,
+    authorities,
     jti: '83b50a10-cca6-41db-985f-e87efb303ddb',
     client_id: 'clientid',
   }

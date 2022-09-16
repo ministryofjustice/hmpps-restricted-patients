@@ -127,6 +127,7 @@ export default function appWithAllRoutes({
   roles?: string[]
 }): Express {
   auth.default.authenticationMiddleware = () => (req, res, next) => next()
-  mockJwtDecode.mockImplementation(() => ({ authorities: roles }))
+  const authorities = roles.map(role => (role.startsWith('ROLE_') ? role : `ROLE_${role}`))
+  mockJwtDecode.mockImplementation(() => ({ authorities }))
   return appSetup(services as Services, production, session, userSupplier)
 }
