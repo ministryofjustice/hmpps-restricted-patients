@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { FormError } from '../../@types/template'
 import PrisonerSearchService, { PrisonerSearchSummary } from '../../services/prisonerSearchService'
-import validateForm from './prisonerSearchValidation'
+import validateForm from '../searchPrisoners/prisonerSearchValidation'
 
 type PageData = {
   error?: FormError

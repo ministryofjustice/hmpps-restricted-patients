@@ -39,11 +39,11 @@ export const tasks: TaskType[] = [
     enabled: true,
   },
   {
-    id: 'migrate-into-hospital',
-    heading: 'Migrate released prisoner into hospital',
+    id: 'add-released-prisoner',
+    heading: 'Add a released prisoner into restricted patients',
     description:
-      'Migrate a released prisoner into the restricted patients service.  This amends a prisoner’s record who has previously been released using NOMIS to be a restricted patient and alters their last movement to include the hospital location.',
-    href: '/search-for-released-prisoner',
+      'Add a released prisoner into the restricted patients service.  This amends a prisoner’s record who has previously been released using NOMIS to be a restricted patient and alters their last movement to include the hospital location.',
+    href: '/add-restricted-patient/search-for-prisoner',
     roles: ['RESTRICTED_PATIENT_MIGRATION'],
     enabled: true,
   },
