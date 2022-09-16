@@ -60,7 +60,7 @@ describe('GET /select-restricted-patient', () => {
           expect(res.text).toContain('Smith, John')
           expect(res.text).toContain('Yew Trees')
           expect(res.text).toContain(
-            '<a href="/remove-from-restricted-patients?prisonerNumber=A1234AA&journeyStartUrl=/select-restricted-patient?searchTerm=Smith" class="govuk-link" data-test="remove-restricted-patient-link"><span class="govuk-visually-hidden">Smith, John - </span>Remove as a restricted patient</a>'
+            '<a href="/remove-from-restricted-patients?prisonerNumber=A1234AA&journeyStartUrl=/remove-from-restricted-patients/select-patient?searchTerm=Smith" class="govuk-link" data-test="remove-restricted-patient-link"><span class="govuk-visually-hidden">Smith, John - </span>Remove as a restricted patient</a>'
           )
         })
     })
@@ -90,6 +90,12 @@ describe('GET /select-restricted-patient', () => {
           expect(res.text).toContain('There are no results for the details you have entered.')
         })
     })
+
+    it('should redirect to search restricted patient page if no search text', () => {
+      return request(app)
+        .get('/remove-from-restricted-patients/select-patient')
+        .expect('Location', '/remove-from-restricted-patients/search-for-patient')
+    })
   })
 })
 
@@ -98,7 +104,7 @@ describe('POST /select-restricted-patient', () => {
     return request(app)
       .post('/remove-from-restricted-patients/select-patient')
       .send({ searchTerm: 'Smith' })
-      .expect('Location', '/select-restricted-patient?searchTerm=Smith')
+      .expect('Location', '/remove-from-restricted-patients/select-patient?searchTerm=Smith')
   })
 
   it('should render validation messages', () => {

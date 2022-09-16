@@ -7,5 +7,6 @@ module.exports = {
       prisonerNumber: () => cy.get('[data-test="prisoner-number"]'),
       patientHospital: () => cy.get('[data-test="patient-hospital"]'),
       confirmRemoval: () => cy.get('[data-test="confirm-patient-removal-submit"]'),
+      cancelRemoval: () => cy.get('[data-test="confirm-patient-removal-cancel"]'),
     }),
 }

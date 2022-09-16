@@ -141,6 +141,22 @@ context('Remove restricted patient', () => {
     })
   })
 
+  it('Cancel the progress through the removal of a restricted patient journey', () => {
+    cy.visit('/remove-from-restricted-patients/search-for-patient')
+    const restrictedPatientSearchPage = RestrictedPatientSearchPage.verifyOnPage()
+    const restrictedPatientSearchPageForm = restrictedPatientSearchPage.form()
+
+    restrictedPatientSearchPageForm.searchTerm().type('A1234AA')
+    restrictedPatientSearchPageForm.submit().click()
+    const restrictedPatientSelectPage = RestrictedPatientSelectPage.verifyOnPage()
+    restrictedPatientSelectPage.removeRestrictedPatientLink().click()
+    const removeRestrictedPatientConfirmationPage = RemoveRestrictedPatientConfirmationPage.verifyOnPage('John Smith')
+    removeRestrictedPatientConfirmationPage.cancelRemoval().click()
+
+    const restrictedPatientSelectPage2 = RestrictedPatientSelectPage.verifyOnPage()
+    restrictedPatientSelectPage2.form().searchTerm().should('have.value', 'A1234AA')
+  })
+
   it('Handles search form validation', () => {
     cy.visit('/remove-from-restricted-patients/search-for-patient')
     const restrictedPatientSearchPage = RestrictedPatientSearchPage.verifyOnPage()
@@ -179,13 +195,7 @@ context('Remove restricted patient', () => {
         .should('contain', 'There are no results for the details you have entered.')
     })
 
-    it('Handles search again validation', () => {
-      cy.task('stubRestrictedPatientSearch', {
-        results: {
-          content: [],
-        },
-      })
-
+    it('Handles search again', () => {
       cy.visit('/remove-from-restricted-patients/search-for-patient')
       const restrictedPatientSearchPage = RestrictedPatientSearchPage.verifyOnPage()
       const restrictedPatientSearchPageForm = restrictedPatientSearchPage.form()
@@ -205,6 +215,26 @@ context('Remove restricted patient', () => {
         .then($errors => {
           expect($errors.get(0).innerText).to.contain('Enter a restricted patient’s name or prison number')
         })
+
+      restrictedPatientSelectPageForm.searchTerm().type('A1234AA')
+      restrictedPatientSelectPageForm.submit().click()
+
+      restrictedPatientSelectPage.resultsTable().then($table => {
+        cy.get($table)
+          .find('tr')
+          .then($tableRows => {
+            cy.get($tableRows).its('length').should('eq', 2) // 1 result plus table header
+
+            const offenders = Array.from($tableRows).map($row => toOffender($row.cells))
+
+            expect(offenders[1].name).to.contain('Smith, John')
+          })
+      })
+    })
+
+    it('Handles empty search from select', () => {
+      cy.visit('/remove-from-restricted-patients/select-patient')
+      RestrictedPatientSearchPage.verifyOnPage()
     })
   })
 })
