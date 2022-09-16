@@ -7,6 +7,7 @@ import removePatientRoutes from './removePatient'
 import homepageRoutes from './homepage'
 
 import { Services } from '../services'
+import addPrisonerRoutes from './addPrisoner'
 
 export default function routes(
   router: Router,
@@ -28,6 +29,7 @@ export default function routes(
       prisonerSearchService,
     })
   )
+  router.use('/add-restricted-patient', addPrisonerRoutes({ prisonerSearchService }))
   router.use('/prisoner', prisonerRoutes({ prisonerSearchService }))
   router.use('/', homepageRoutes({ userService }))
 

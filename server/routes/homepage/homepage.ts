@@ -39,7 +39,7 @@ export const tasks: TaskType[] = [
     enabled: true,
   },
   {
-    id: 'add-released-prisoner',
+    id: 'add-restricted-patient',
     heading: 'Add a released prisoner into restricted patients',
     description:
       'Add a released prisoner into the restricted patients service.  This amends a prisoner’s record who has previously been released using NOMIS to be a restricted patient and alters their last movement to include the hospital location.',

@@ -2,7 +2,7 @@ const page = require('../page')
 
 module.exports = {
   verifyOnPage: () =>
-    page('Search for a prisoner to move', {
+    page('Search for a prisoner to add', {
       errorSummaryList: () => cy.get('[data-test="error-summary"]'),
       form: () => ({
         searchTerm: () => cy.get('[data-test="prisoner-search-term-input"]'),

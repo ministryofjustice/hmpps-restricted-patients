@@ -32,6 +32,7 @@ const defaultSearchResponse = [
     lastName: 'SMITH',
     prisonerNumber: 'A1234AA',
     prisonName: 'HMP Moorland',
+    locationDescription: 'Outside - released from Doncaster',
   },
 ]
 

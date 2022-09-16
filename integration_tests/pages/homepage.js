@@ -8,7 +8,7 @@ const homePage = () =>
     changeLocationLink: () => cy.get('[data-test="change-location-link"]'),
     searchRestrictedPatient: () => cy.get('[data-test="search-restricted-patient"]'),
     moveToHospital: () => cy.get('[data-test="move-to-hospital"]'),
-    addReleasedPrisoner: () => cy.get('[data-test="add-released-prisoner"]'),
+    addRestrictedPatient: () => cy.get('[data-test="add-restricted-patient"]'),
     removeFromRestrictedPatients: () => cy.get('[data-test="remove-from-restricted-patients"]'),
     logoutLink: () => cy.get('[data-test="logout-link"]'),
     feedbackBanner: () => cy.get('[data-test="feedback-banner"]'),
