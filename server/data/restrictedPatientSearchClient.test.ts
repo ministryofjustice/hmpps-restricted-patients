@@ -106,9 +106,11 @@ describe('restrictedPatientSearchClient', () => {
         dateOfBirth: new Date(Date.UTC(1990, 0, 2)),
         sentenceExpiryDate: new Date(Date.UTC(2020, 8, 20)),
         licenceExpiryDate: new Date(Date.UTC(2020, 8, 21)),
+        locationDescription: 'Outside - released from Moorland (HMP & YOI)',
         paroleEligibilityDate: new Date(Date.UTC(2020, 8, 22)),
         homeDetentionCurfewEligibilityDate: new Date(Date.UTC(2020, 8, 23)),
         releaseDate: new Date(Date.UTC(2020, 8, 24)),
+        restrictedPatient: true,
         alerts: [
           {
             alertType: 'T',

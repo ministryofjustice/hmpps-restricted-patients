@@ -62,4 +62,10 @@ export default class PrisonerSearchResult {
 
   @Expose()
   alerts: AlertType[]
+
+  @Expose()
+  restrictedPatient: boolean
+
+  @Expose()
+  locationDescription: string
 }

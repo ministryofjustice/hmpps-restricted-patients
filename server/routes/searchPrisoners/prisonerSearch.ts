@@ -7,13 +7,13 @@ export default class PrisonerSearchRoutes {
 
   private pages = {
     '/move-to-hospital/select-prisoner': 'pages/prisonerSearch',
+    '/add-restricted-patient/select-prisoner': 'pages/releasedPrisonerSearch',
   }
 
-  private renderView = async (req: Request, res: Response, error?: FormError): Promise<void> => {
-    return res.render(this.pages[this.searchResultsPath], {
+  private renderView = async (req: Request, res: Response, error?: FormError): Promise<void> =>
+    res.render(this.pages[this.searchResultsPath], {
       errors: error ? [error] : [],
     })
-  }
 
   view = async (req: Request, res: Response): Promise<void> => this.renderView(req, res)
 
