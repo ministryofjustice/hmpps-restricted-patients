@@ -19,7 +19,7 @@ export default class RestrictedPatientSelectRoutes {
 
     return res.render('pages/restrictedPatientSelect', {
       errors: error ? [error] : [],
-      journeyStartUrl: `/select-restricted-patient?searchTerm=${searchTerm}`,
+      journeyStartUrl: `/remove-from-restricted-patients/select-patient?searchTerm=${searchTerm}`,
       searchResults,
       searchTerm,
     })
@@ -29,7 +29,7 @@ export default class RestrictedPatientSelectRoutes {
     const { user } = res.locals
     const searchTerm = JSON.stringify(req.query.searchTerm)?.replace(/"/g, '')
 
-    if (!searchTerm) return res.redirect('/search-for-a-restricted-patient')
+    if (!searchTerm) return res.redirect('/remove-from-restricted-patients/search-for-patient')
 
     const searchResults = await this.restrictedPatientSearchService.search({ searchTerm }, user)
 
@@ -43,6 +43,6 @@ export default class RestrictedPatientSelectRoutes {
 
     if (error) return this.renderView(req, res, { error, searchTerm })
 
-    return res.redirect(`/select-restricted-patient?${new URLSearchParams({ searchTerm })}`)
+    return res.redirect(`/remove-from-restricted-patients/select-patient?${new URLSearchParams({ searchTerm })}`)
   }
 }
