@@ -1,14 +1,14 @@
-{% extends "../partials/layout.njk" %}
-{% from "../partials/breadcrumb.njk" import breadcrumb %}
-{% from "../macros/alertFlags.njk" import alertFlags %}
-{% from "../macros/categoryFlag.njk" import categoryFlag %}
+{% extends "../../partials/layout.njk" %}
+{% from "../../partials/breadcrumb.njk" import breadcrumb %}
+{% from "../../macros/alertFlags.njk" import alertFlags %}
+{% from "../../macros/categoryFlag.njk" import categoryFlag %}
 
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 
-{% set title = "Viewing restricted patients" %}
+{% set title = "Select a restricted patient to remove" %}
 
 {% block beforeContent %}
   {{ breadcrumb() }}
@@ -23,9 +23,9 @@
     }) }}
   {% endif %}
 
-  <h1 class="govuk-heading-l">Restricted patients</h1>
+  <h1 class="govuk-heading-l">{{ title }}</h1>
   
-  {% include "../partials/restrictedPatientSearchForm.njk" %}
+  {% include "../../partials/restrictedPatientSearchForm.njk" %}
 
   {% set rows = [] %}
   {% for prisoner in searchResults %}
@@ -35,8 +35,8 @@
     {% set prisonerLinkHtml %}
       <a href="{{ pshUrl }}/prisoner/{{ prisoner.prisonerNumber }}" class="govuk-link" data-test="view-prisoner-profile">{{ prisoner.displayName }}</a>
     {% endset -%}
-    {% set addCaseNoteLinkHtml %}
-      <a href="{{ pshUrl }}/prisoner/{{ prisoner.prisonerNumber }}/add-case-note" class="govuk-link" data-test="patient-add-case-note-link"><span class="govuk-visually-hidden">{{ prisoner.displayName }} - </span>Add a case note</a>
+    {% set removeAsRestrictedPatientLinkHtml %}
+      <a href="/remove-from-restricted-patients?prisonerNumber={{ prisoner.prisonerNumber }}&journeyStartUrl={{ journeyStartUrl }}" class="govuk-link" data-test="remove-restricted-patient-link"><span class="govuk-visually-hidden">{{ prisoner.displayName }} - </span>Remove as a restricted patient</a>
     {% endset -%}
     {% set rows = (rows.push([
       { html: prisonerImageHtml },
@@ -48,7 +48,7 @@
       },
       { text: prisoner.prisonerNumber },
       { text: prisoner.dischargedHospitalDescription },
-      { html: addCaseNoteLinkHtml }
+      { html: removeAsRestrictedPatientLinkHtml }
     ]), rows) %}
   {% endfor %}
 
@@ -67,7 +67,7 @@
           },
           { text: "Prison number" },
           {
-            text: "Location",
+            text: "Hospital",
             attributes: {
               "aria-sort": "none"
             }

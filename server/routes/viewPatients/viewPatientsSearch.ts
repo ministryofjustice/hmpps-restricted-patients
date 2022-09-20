@@ -2,6 +2,6 @@ import RestrictedPatientSearchRoutes from '../searchPatients/restrictedPatientSe
 
 export default class ViewPatientsSearchRoutes extends RestrictedPatientSearchRoutes {
   constructor() {
-    super('/view-restricted-patients', 'pages/restrictedPatientSearch')
+    super('/view-restricted-patients', 'pages/viewPatients/restrictedPatientSearch')
   }
 }

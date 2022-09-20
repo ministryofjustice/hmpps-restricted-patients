@@ -2,6 +2,6 @@ import RestrictedPatientSearchRoutes from '../searchPatients/restrictedPatientSe
 
 export default class RemoveRestrictedPatientSearchRoutes extends RestrictedPatientSearchRoutes {
   constructor() {
-    super('/remove-from-restricted-patients/select-patient', 'pages/removeRestrictedPatientSearch')
+    super('/remove-from-restricted-patients/select-patient', 'pages/removeRestrictedPatient/patientSearch')
   }
 }

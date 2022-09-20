@@ -17,7 +17,7 @@ export default class RestrictedPatientSelectRoutes {
   private renderView = async (req: Request, res: Response, pageData: PageData): Promise<void> => {
     const { error, searchResults, searchTerm } = pageData
 
-    return res.render('pages/restrictedPatientSelect', {
+    return res.render('pages/removeRestrictedPatient/patientSelect', {
       errors: error ? [error] : [],
       journeyStartUrl: `/remove-from-restricted-patients/select-patient?searchTerm=${searchTerm}`,
       searchResults,
