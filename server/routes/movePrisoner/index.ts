@@ -1,8 +1,7 @@
 import express, { RequestHandler, Router } from 'express'
 import asyncMiddleware from '../../middleware/asyncMiddleware'
 
-import MovePrisonerRoutes from './movePrisoner'
-
+import MovePrisonerRoutes from './hospitalSelect'
 import MovePrisonerService from '../../services/movePrisonerService'
 import PrisonerSearchService from '../../services/prisonerSearchService'
 import MovePrisonerConfirmationRoutes from './movePrisonerConfirmation'
@@ -36,15 +35,13 @@ export default function movePrisonerRoutes({
   get('/select-prisoner', prisonerSelect.view)
   post('/select-prisoner', prisonerSelect.submit)
 
-  get('/select-prisoner', movePrisoner.view)
+  get('/select-hospital', movePrisoner.view)
+  post('/select-hospital', movePrisoner.submit)
 
   get('/confirm-move', movePrisonerConfirmation.view)
   post('/confirm-move', movePrisonerConfirmation.submit)
 
   get('/prisoner-moved-to-hospital', movePrisonerCompleted.view)
-
-  get('/', movePrisoner.view)
-  post('/', movePrisoner.submit)
 
   return router
 }

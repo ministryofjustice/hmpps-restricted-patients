@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { FormError } from '../../@types/template'
-import validateMovePrisonerForm from './movePrisonerValidation'
+import validateMovePrisonerForm from './hospitalSelectValidation'
 import MovePrisonerService from '../../services/movePrisonerService'
 import PrisonerSearchService from '../../services/prisonerSearchService'
 import { addSelect } from '../../utils/utils'
@@ -9,10 +9,12 @@ type PageData = {
   error?: FormError
 }
 
-export default class PrisonerSelectRoutes {
-  constructor(
+export default abstract class HospitalSelectRoutes {
+  protected constructor(
     private readonly movePrisonerService: MovePrisonerService,
-    private readonly prisonerSearchService: PrisonerSearchService
+    private readonly prisonerSearchService: PrisonerSearchService,
+    private readonly path: string,
+    private readonly page: string
   ) {}
 
   private renderView = async (req: Request, res: Response, pageData: PageData): Promise<void> => {
@@ -33,7 +35,7 @@ export default class PrisonerSelectRoutes {
       'Select a hospital'
     )
 
-    return res.render('pages/movePrisoner/movePrisonerSelectHospital', {
+    return res.render(this.page, {
       errors: error ? [error] : [],
       prisoner,
       formattedHospitals,
@@ -52,8 +54,6 @@ export default class PrisonerSelectRoutes {
 
     req.session.newMovePrisonerJourney = true
 
-    return res.redirect(
-      `/move-to-hospital/confirm-move?${new URLSearchParams({ prisonerNumber, hospitalId: hospital })}`
-    )
+    return res.redirect(`${this.path}?${new URLSearchParams({ prisonerNumber, hospitalId: hospital })}`)
   }
 }
