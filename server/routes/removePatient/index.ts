@@ -4,7 +4,7 @@ import asyncMiddleware from '../../middleware/asyncMiddleware'
 import RemoveRestrictedPatientConfirmationRoutes from './removeRestrictedPatientConfirmation'
 
 import RemoveRestrictedPatientService from '../../services/removeRestrictedPatientService'
-import RestrictedPatientSearchRoutes from '../searchPatients/restrictedPatientSearch'
+import RestrictedPatientSearchRoutes from './removeRestrictedPatientSearch'
 import RestrictedPatientSelectRoutes from './restrictedPatientSelect'
 import RemoveRestrictedPatientCompletedRoutes from './removeRestrictedPatientCompleted'
 import RestrictedPatientSearchService from '../../services/restrictedPatientSearchService'
@@ -24,7 +24,7 @@ export default function removePatientRoutes({
   router.use(authorisationMiddleware(true, ['REMOVE_RESTRICTED_PATIENT']))
 
   const confirmation = new RemoveRestrictedPatientConfirmationRoutes(removeRestrictedPatientService)
-  const search = new RestrictedPatientSearchRoutes('/remove-from-restricted-patients/select-patient')
+  const search = new RestrictedPatientSearchRoutes()
   const select = new RestrictedPatientSelectRoutes(restrictedPatientSearchService)
   const completed = new RemoveRestrictedPatientCompletedRoutes(prisonerSearchService)
 

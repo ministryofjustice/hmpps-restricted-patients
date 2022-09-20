@@ -2,19 +2,13 @@ import { Request, Response } from 'express'
 import validateForm from './restrictedPatientSearchValidation'
 import { FormError } from '../../@types/template'
 
-export default class RestrictedPatientSearchRoutes {
-  constructor(private readonly searchResultsPath: string) {}
+export default abstract class RestrictedPatientSearchRoutes {
+  protected constructor(private readonly path: string, private readonly page: string) {}
 
-  private pages = {
-    '/view-restricted-patients': 'pages/restrictedPatientSearch',
-    '/remove-from-restricted-patients/select-patient': 'pages/removeRestrictedPatientSearch',
-  }
-
-  private renderView = async (req: Request, res: Response, error?: FormError): Promise<void> => {
-    return res.render(this.pages[this.searchResultsPath], {
+  private renderView = async (req: Request, res: Response, error?: FormError): Promise<void> =>
+    res.render(this.page, {
       errors: error ? [error] : [],
     })
-  }
 
   view = async (req: Request, res: Response): Promise<void> => this.renderView(req, res)
 
@@ -25,6 +19,6 @@ export default class RestrictedPatientSearchRoutes {
 
     if (error) return this.renderView(req, res, error)
 
-    return res.redirect(`${this.searchResultsPath}?${new URLSearchParams({ searchTerm })}`)
+    return res.redirect(`${this.path}?${new URLSearchParams({ searchTerm })}`)
   }
 }

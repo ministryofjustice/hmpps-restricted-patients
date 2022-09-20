@@ -3,15 +3,10 @@ import validateForm from './prisonerSearchValidation'
 import { FormError } from '../../@types/template'
 
 export default class PrisonerSearchRoutes {
-  constructor(private readonly searchResultsPath: string) {}
-
-  private pages = {
-    '/move-to-hospital/select-prisoner': 'pages/prisonerSearch',
-    '/add-restricted-patient/select-prisoner': 'pages/releasedPrisonerSearch',
-  }
+  protected constructor(private readonly path: string, private readonly page: string) {}
 
   private renderView = async (req: Request, res: Response, error?: FormError): Promise<void> =>
-    res.render(this.pages[this.searchResultsPath], {
+    res.render(this.page, {
       errors: error ? [error] : [],
     })
 
@@ -24,6 +19,6 @@ export default class PrisonerSearchRoutes {
 
     if (error) return this.renderView(req, res, error)
 
-    return res.redirect(`${this.searchResultsPath}?${new URLSearchParams({ searchTerm })}`)
+    return res.redirect(`${this.path}?${new URLSearchParams({ searchTerm })}`)
   }
 }
