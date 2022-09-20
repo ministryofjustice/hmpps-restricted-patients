@@ -1,4 +1,4 @@
-import validateMovePrisonerForm from './movePrisonerValidation'
+import validateMovePrisonerForm from './hospitalSelectValidation'
 
 describe('validateMovePrisonerForm', () => {
   describe('hospital', () => {
