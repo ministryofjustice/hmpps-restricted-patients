@@ -2,7 +2,7 @@ import express, { RequestHandler, Router } from 'express'
 import asyncMiddleware from '../../middleware/asyncMiddleware'
 
 import PrisonerSearchService from '../../services/prisonerSearchService'
-import PrisonerSearchRoutes from '../searchPrisoners/prisonerSearch'
+import PrisonerSearchRoutes from './prisonerSearch'
 import PrisonerSelectRoutes from './prisonerSelect'
 import authorisationMiddleware from '../../middleware/authorisationMiddleware'
 
@@ -17,7 +17,7 @@ export default function addPrisonerRoutes({
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
   const post = (path: string, handler: RequestHandler) => router.post(path, asyncMiddleware(handler))
 
-  const prisonerSearch = new PrisonerSearchRoutes('/add-restricted-patient/select-prisoner')
+  const prisonerSearch = new PrisonerSearchRoutes()
   const prisonerSelect = new PrisonerSelectRoutes(prisonerSearchService)
 
   get('/search-for-prisoner', prisonerSearch.view)

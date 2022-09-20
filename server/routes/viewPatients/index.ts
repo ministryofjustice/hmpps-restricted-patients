@@ -4,7 +4,7 @@ import asyncMiddleware from '../../middleware/asyncMiddleware'
 import RestrictedPatientSearchService from '../../services/restrictedPatientSearchService'
 
 import ViewPatientsRoutes from './viewPatients'
-import RestrictedPatientSearchRoutes from '../searchPatients/restrictedPatientSearch'
+import RestrictedPatientSearchRoutes from './viewPatientsSearch'
 import authorisationMiddleware from '../../middleware/authorisationMiddleware'
 
 export default function viewPatientsRoutes({
@@ -16,7 +16,7 @@ export default function viewPatientsRoutes({
   router.use(authorisationMiddleware(true, ['SEARCH_RESTRICTED_PATIENT']))
 
   const viewPatients = new ViewPatientsRoutes(restrictedPatientSearchService)
-  const restrictedPatientSearch = new RestrictedPatientSearchRoutes('/view-restricted-patients')
+  const restrictedPatientSearch = new RestrictedPatientSearchRoutes()
 
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
   const post = (path: string, handler: RequestHandler) => router.post(path, asyncMiddleware(handler))

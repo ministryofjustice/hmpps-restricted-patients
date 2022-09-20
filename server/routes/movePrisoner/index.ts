@@ -7,7 +7,7 @@ import MovePrisonerService from '../../services/movePrisonerService'
 import PrisonerSearchService from '../../services/prisonerSearchService'
 import MovePrisonerConfirmationRoutes from './movePrisonerConfirmation'
 import MovePrisonerCompletedRoutes from './movePrisonerCompleted'
-import PrisonerSearchRoutes from '../searchPrisoners/prisonerSearch'
+import PrisonerSearchRoutes from './movePrisonerSearch'
 import PrisonerSelectRoutes from './prisonerSelect'
 import authorisationMiddleware from '../../middleware/authorisationMiddleware'
 
@@ -24,7 +24,7 @@ export default function movePrisonerRoutes({
   const get = (path: string, handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
   const post = (path: string, handler: RequestHandler) => router.post(path, asyncMiddleware(handler))
 
-  const prisonerSearch = new PrisonerSearchRoutes('/move-to-hospital/select-prisoner')
+  const prisonerSearch = new PrisonerSearchRoutes()
   const prisonerSelect = new PrisonerSelectRoutes(prisonerSearchService)
   const movePrisoner = new MovePrisonerRoutes(movePrisonerService, prisonerSearchService)
   const movePrisonerConfirmation = new MovePrisonerConfirmationRoutes(movePrisonerService, prisonerSearchService)
