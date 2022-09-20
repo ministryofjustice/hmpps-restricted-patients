@@ -2,6 +2,6 @@ import PrisonerSearchRoutes from '../searchPrisoners/prisonerSearch'
 
 export default class AddPrisonerSearchRoutes extends PrisonerSearchRoutes {
   constructor() {
-    super('/add-restricted-patient/select-prisoner', 'pages/releasedPrisonerSearch')
+    super('/add-restricted-patient/select-prisoner', 'pages/addPatient/releasedPrisonerSearch')
   }
 }

@@ -7,7 +7,7 @@ import removePatientRoutes from './removePatient'
 import homepageRoutes from './homepage'
 
 import { Services } from '../services'
-import addPrisonerRoutes from './addPrisoner'
+import addPrisonerRoutes from './addPatient'
 
 export default function routes(
   router: Router,

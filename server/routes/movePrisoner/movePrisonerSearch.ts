@@ -2,6 +2,6 @@ import RestrictedPatientSearchRoutes from '../searchPatients/restrictedPatientSe
 
 export default class MovePrisonerSearchRoutes extends RestrictedPatientSearchRoutes {
   constructor() {
-    super('/move-to-hospital/select-prisoner', 'pages/prisonerSearch')
+    super('/move-to-hospital/select-prisoner', 'pages/movePrisoner/prisonerSearch')
   }
 }

@@ -17,7 +17,7 @@ export default class ViewPatientsRoutes {
   private renderView = async (req: Request, res: Response, pageData: PageData): Promise<void> => {
     const { error, searchResults, searchTerm } = pageData
 
-    return res.render('pages/viewPatients', {
+    return res.render('pages/viewPatients/viewPatients', {
       errors: error ? [error] : [],
       searchResults,
       searchTerm,

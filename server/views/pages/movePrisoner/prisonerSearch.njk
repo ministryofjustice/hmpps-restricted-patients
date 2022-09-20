@@ -1,11 +1,11 @@
-{% extends "../partials/layout.njk" %}
-{% from "../partials/breadcrumb.njk" import breadcrumb %}
+{% extends "../../partials/layout.njk" %}
+{% from "../../partials/breadcrumb.njk" import breadcrumb %}
 
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
-{% set title = "Search for a restricted patient to remove" %}
+{% set title = "Search for a prisoner to move" %}
 
 {% block beforeContent %}
   {{ breadcrumb() }}
@@ -23,11 +23,10 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-l">{{ title }}</h1>
-      <div class="govuk-hint">Search for patients who are currently in a secure hospital. These patients can be removed from Restricted Patients and will no longer be the responsibility of the prison.</div>
+      <div class="govuk-hint">Search for prisoners who are currently active in your caseload. These prisoners can be released to a secure hospital and registered in Restricted Patients.</div>
 
-      {% include "../partials/restrictedPatientSearchForm.njk" %}
+      {% include "../../partials/prisonerSearchForm.njk" %}
 
    </div>
   </div>
-
 {% endblock %}

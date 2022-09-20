@@ -14,7 +14,7 @@ export default class PrisonerSelectRoutes {
   private renderView = async (req: Request, res: Response, pageData: PageData): Promise<void> => {
     const { error, searchResults, searchTerm } = pageData
 
-    return res.render('pages/prisonerSelect', {
+    return res.render('pages/movePrisoner/prisonerSelect', {
       errors: error ? [error] : [],
       journeyStartUrl: `/move-to-hospital/select-prisoner?searchTerm=${searchTerm}`,
       searchResults,
