@@ -48,6 +48,7 @@ module.exports = defineConfig({
         stubPrisonApiPing: status => prisonApi.stubPing(status),
 
         ...restrictedPatientApi,
+        stubRestrictedPatientApiPing: restrictedPatientApi.stubPing,
       })
     },
 
