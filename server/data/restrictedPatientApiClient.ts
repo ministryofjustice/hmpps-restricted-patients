@@ -10,6 +10,10 @@ export interface RestrictedPatientDischargeToHospitalRequest {
   hospitalLocationCode: string
   supportingPrisonId?: string
 }
+export interface RestrictedPatientAddRequest {
+  offenderNo: string
+  hospitalLocationCode: string
+}
 
 export default class RestrictedPatientApiClient {
   restClient: RestClient
@@ -19,12 +23,17 @@ export default class RestrictedPatientApiClient {
   }
 
   async dischargePatient(searchRequest: RestrictedPatientDischargeToHospitalRequest): Promise<unknown> {
-    const results = await this.restClient.post<RestrictedPatientDischargeToHospitalRequest>({
+    return this.restClient.post<RestrictedPatientDischargeToHospitalRequest>({
       path: `/discharge-to-hospital`,
       data: { ...searchRequest },
     })
+  }
 
-    return results
+  async migratePatient(searchRequest: RestrictedPatientAddRequest): Promise<unknown> {
+    return this.restClient.post<RestrictedPatientAddRequest>({
+      path: `/migrate-in-restricted-patient`,
+      data: { ...searchRequest },
+    })
   }
 
   async getPatient(prisonerNumber: string): Promise<RestrictedPatientResult> {
@@ -36,10 +45,8 @@ export default class RestrictedPatientApiClient {
   }
 
   async removePatient(prisonerNumber: string): Promise<Record<string, unknown>> {
-    const response = await this.restClient.delete<Record<string, unknown>>({
+    return this.restClient.delete<Record<string, unknown>>({
       path: `/restricted-patient/prison-number/${prisonerNumber}`,
     })
-
-    return response
   }
 }

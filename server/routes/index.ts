@@ -18,6 +18,7 @@ export default function routes(
     removeRestrictedPatientService,
     userService,
     hospitalSearchService,
+    migratePrisonerService,
   }: Services
 ): Router {
   router.use(
@@ -33,7 +34,10 @@ export default function routes(
       prisonerSearchService,
     })
   )
-  router.use('/add-restricted-patient', addPrisonerRoutes({ hospitalSearchService, prisonerSearchService }))
+  router.use(
+    '/add-restricted-patient',
+    addPrisonerRoutes({ hospitalSearchService, prisonerSearchService, migratePrisonerService })
+  )
   router.use('/prisoner', prisonerRoutes({ prisonerSearchService }))
   router.use('/', homepageRoutes({ userService }))
 

@@ -7,6 +7,7 @@ import PrisonerSelectRoutes from './prisonerSelect'
 import authorisationMiddleware from '../../middleware/authorisationMiddleware'
 import HospitalSearchService from '../../services/hospitalSearchService'
 import HospitalSelectRoutes from './hospitalSelect'
+import MigratePrisonerService from '../../services/migratePrisonerService'
 
 export default function addPrisonerRoutes({
   hospitalSearchService,
@@ -14,6 +15,7 @@ export default function addPrisonerRoutes({
 }: {
   prisonerSearchService: PrisonerSearchService
   hospitalSearchService: HospitalSearchService
+  migratePrisonerService: MigratePrisonerService
 }): Router {
   const router = express.Router({ mergeParams: true })
   router.use(authorisationMiddleware(true, ['RESTRICTED_PATIENT_MIGRATION']))

@@ -26,6 +26,19 @@ const stubDischargeToHospital = ({ status, response = [] }) =>
     },
   })
 
+const stubMigrateToHospital = ({ status, response = [] }) =>
+  stubFor({
+    request: {
+      method: 'POST',
+      urlPattern: '/restrictedPatientApi/migrate-in-restricted-patient',
+    },
+    response: {
+      status,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: response,
+    },
+  })
+
 const stubGetPatient = ({ prisonerNumber, status = 200, response = [] }) =>
   stubFor({
     request: {
@@ -57,4 +70,5 @@ module.exports = {
   stubDischargeToHospital,
   stubGetPatient,
   stubRemovePatient,
+  stubMigrateToHospital,
 }

@@ -17,6 +17,7 @@ import RestrictedPatientSearchService from '../../services/restrictedPatientSear
 import { Services } from '../../services'
 import RemoveRestrictedPatientService from '../../services/removeRestrictedPatientService'
 import HospitalSearchService from '../../services/hospitalSearchService'
+import MigratePrisonerService from '../../services/migratePrisonerService'
 
 const user = {
   name: 'john smith',
@@ -106,6 +107,7 @@ function appSetup(
       restrictedPatientSearchService: {} as RestrictedPatientSearchService,
       removeRestrictedPatientService: {} as RemoveRestrictedPatientService,
       hospitalSearchService: {} as HospitalSearchService,
+      migratePrisonerService: {} as MigratePrisonerService,
       ...services,
     })
   )
