@@ -17,9 +17,13 @@ export default function routes(
     movePrisonerService,
     removeRestrictedPatientService,
     userService,
+    hospitalSearchService,
   }: Services
 ): Router {
-  router.use('/move-to-hospital', movePrisonerRoutes({ movePrisonerService, prisonerSearchService }))
+  router.use(
+    '/move-to-hospital',
+    movePrisonerRoutes({ movePrisonerService, prisonerSearchService, hospitalSearchService })
+  )
   router.use('/view-restricted-patients', viewPatientsRoutes({ restrictedPatientSearchService }))
   router.use(
     '/remove-from-restricted-patients',
@@ -29,7 +33,7 @@ export default function routes(
       prisonerSearchService,
     })
   )
-  router.use('/add-restricted-patient', addPrisonerRoutes({ movePrisonerService, prisonerSearchService }))
+  router.use('/add-restricted-patient', addPrisonerRoutes({ hospitalSearchService, prisonerSearchService }))
   router.use('/prisoner', prisonerRoutes({ prisonerSearchService }))
   router.use('/', homepageRoutes({ userService }))
 

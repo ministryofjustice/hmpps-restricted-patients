@@ -2,13 +2,16 @@ import { Express } from 'express'
 import request from 'supertest'
 import appWithAllRoutes, { mockJwtDecode } from '../testutils/appSetup'
 import PrisonerSearchService, { PrisonerResultSummary } from '../../services/prisonerSearchService'
-import MovePrisonerService, { Hospital } from '../../services/movePrisonerService'
+import MovePrisonerService from '../../services/movePrisonerService'
+import HospitalSearchService, { Hospital } from '../../services/hospitalSearchService'
 
 jest.mock('../../services/prisonerSearchService')
 jest.mock('../../services/movePrisonerService')
+jest.mock('../../services/hospitalSearchService')
 
 const prisonerSearchService = new PrisonerSearchService(null) as jest.Mocked<PrisonerSearchService>
-const movePrisonerService = new MovePrisonerService(null) as jest.Mocked<MovePrisonerService>
+const movePrisonerService = new MovePrisonerService() as jest.Mocked<MovePrisonerService>
+const hospitalSearchService = new HospitalSearchService() as jest.Mocked<HospitalSearchService>
 
 let app: Express
 
@@ -16,12 +19,12 @@ describe('GET /prisoner-moved-to-hospital', () => {
   beforeEach(() => {
     app = appWithAllRoutes({
       production: false,
-      services: { prisonerSearchService, movePrisonerService },
+      services: { prisonerSearchService, movePrisonerService, hospitalSearchService },
       session: { newMovePrisonerJourney: true },
       roles: ['TRANSFER_RESTRICTED_PATIENT'],
     })
 
-    movePrisonerService.getHospital.mockResolvedValue({
+    hospitalSearchService.getHospital.mockResolvedValue({
       agencyId: 'SHEFF',
       description: 'Sheffield Hospital',
       longDescription: 'Sheffield Teaching Hospital',
@@ -77,7 +80,7 @@ describe('GET /prisoner-moved-to-hospital - no session item (user jumped to page
   beforeEach(() => {
     app = appWithAllRoutes({ production: false, services: { prisonerSearchService, movePrisonerService } })
 
-    movePrisonerService.getHospital.mockResolvedValue({
+    hospitalSearchService.getHospital.mockResolvedValue({
       agencyId: 'SHEFF',
       description: 'Sheffield Hospital',
       longDescription: 'Sheffield Teaching Hospital',

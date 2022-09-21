@@ -1,8 +1,9 @@
 import express, { RequestHandler, Router } from 'express'
 import asyncMiddleware from '../../middleware/asyncMiddleware'
 
-import MovePrisonerRoutes from './hospitalSelect'
+import HospitalSelectRoutes from './hospitalSelect'
 import MovePrisonerService from '../../services/movePrisonerService'
+import HospitalSearchService from '../../services/hospitalSearchService'
 import PrisonerSearchService from '../../services/prisonerSearchService'
 import MovePrisonerConfirmationRoutes from './movePrisonerConfirmation'
 import MovePrisonerCompletedRoutes from './movePrisonerCompleted'
@@ -13,9 +14,11 @@ import authorisationMiddleware from '../../middleware/authorisationMiddleware'
 export default function movePrisonerRoutes({
   movePrisonerService,
   prisonerSearchService,
+  hospitalSearchService,
 }: {
   movePrisonerService: MovePrisonerService
   prisonerSearchService: PrisonerSearchService
+  hospitalSearchService: HospitalSearchService
 }): Router {
   const router = express.Router({ mergeParams: true })
   router.use(authorisationMiddleware(true, ['TRANSFER_RESTRICTED_PATIENT']))
@@ -25,9 +28,17 @@ export default function movePrisonerRoutes({
 
   const prisonerSearch = new PrisonerSearchRoutes()
   const prisonerSelect = new PrisonerSelectRoutes(prisonerSearchService)
-  const movePrisoner = new MovePrisonerRoutes(movePrisonerService, prisonerSearchService)
-  const movePrisonerConfirmation = new MovePrisonerConfirmationRoutes(movePrisonerService, prisonerSearchService)
-  const movePrisonerCompleted = new MovePrisonerCompletedRoutes(movePrisonerService, prisonerSearchService)
+  const movePrisoner = new HospitalSelectRoutes(hospitalSearchService, prisonerSearchService)
+  const movePrisonerConfirmation = new MovePrisonerConfirmationRoutes(
+    movePrisonerService,
+    prisonerSearchService,
+    hospitalSearchService
+  )
+  const movePrisonerCompleted = new MovePrisonerCompletedRoutes(
+    movePrisonerService,
+    prisonerSearchService,
+    hospitalSearchService
+  )
 
   get('/search-for-prisoner', prisonerSearch.view)
   post('/search-for-prisoner', prisonerSearch.submit)
