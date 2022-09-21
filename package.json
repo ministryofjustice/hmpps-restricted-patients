@@ -158,7 +158,7 @@
     "jest-html-reporter": "^3.7.0",
     "jest-junit": "^13.2.0",
     "jsonwebtoken": "^8.5.1",
-    "lint-staged": "^11.2.6",
+    "lint-staged": "^13.0.3",
     "mocha-junit-reporter": "^2.0.2",
     "nock": "^13.2.9",
     "nodemon": "^2.0.19",
