@@ -2,24 +2,24 @@ import { Express } from 'express'
 import request from 'supertest'
 import appWithAllRoutes, { mockJwtDecode } from '../testutils/appSetup'
 import PrisonerSearchService, { PrisonerResultSummary } from '../../services/prisonerSearchService'
-import MovePrisonerService, { Hospital } from '../../services/movePrisonerService'
+import HospitalSearchService, { Hospital } from '../../services/hospitalSearchService'
 
 jest.mock('../../services/prisonerSearchService')
-jest.mock('../../services/movePrisonerService')
+jest.mock('../../services/hospitalSearchService')
 
 const prisonerSearchService = new PrisonerSearchService(null) as jest.Mocked<PrisonerSearchService>
-const movePrisonerService = new MovePrisonerService(null) as jest.Mocked<MovePrisonerService>
+const hospitalSearchService = new HospitalSearchService() as jest.Mocked<HospitalSearchService>
 
 let app: Express
 
 beforeEach(() => {
   app = appWithAllRoutes({
     production: false,
-    services: { prisonerSearchService, movePrisonerService },
+    services: { prisonerSearchService, hospitalSearchService },
     roles: ['TRANSFER_RESTRICTED_PATIENT'],
   })
 
-  movePrisonerService.getHospitals.mockResolvedValue([
+  hospitalSearchService.getHospitals.mockResolvedValue([
     {
       agencyId: 'SHEFF',
       description: 'Sheffield Hospital',

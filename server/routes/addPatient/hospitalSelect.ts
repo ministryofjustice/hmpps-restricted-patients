@@ -1,11 +1,11 @@
 import HospitalSelectRoutes from '../selectHospital/hospitalSelect'
-import MovePrisonerService from '../../services/movePrisonerService'
+import HospitalSearchService from '../../services/hospitalSearchService'
 import PrisonerSearchService from '../../services/prisonerSearchService'
 
 export default class AddPatientHospitalSelectRoutes extends HospitalSelectRoutes {
-  constructor(movePrisonerService: MovePrisonerService, prisonerSearchService: PrisonerSearchService) {
+  constructor(hospitalSearchService: HospitalSearchService, prisonerSearchService: PrisonerSearchService) {
     super(
-      movePrisonerService,
+      hospitalSearchService,
       prisonerSearchService,
       '/add-restricted-patient/confirm-add',
       'pages/addPatient/addPatientSelectHospital'

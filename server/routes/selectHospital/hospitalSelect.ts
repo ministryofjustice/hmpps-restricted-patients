@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
 import { FormError } from '../../@types/template'
 import validateMovePrisonerForm from './hospitalSelectValidation'
-import MovePrisonerService from '../../services/movePrisonerService'
 import PrisonerSearchService from '../../services/prisonerSearchService'
 import { addSelect } from '../../utils/utils'
+import HospitalSearchService from '../../services/hospitalSearchService'
 
 type PageData = {
   error?: FormError
@@ -11,7 +11,7 @@ type PageData = {
 
 export default abstract class HospitalSelectRoutes {
   protected constructor(
-    private readonly movePrisonerService: MovePrisonerService,
+    private readonly hospitalSearchService: HospitalSearchService,
     private readonly prisonerSearchService: PrisonerSearchService,
     private readonly path: string,
     private readonly page: string
@@ -23,7 +23,7 @@ export default abstract class HospitalSelectRoutes {
     const { error } = pageData
 
     const [hospitals, prisoner] = await Promise.all([
-      this.movePrisonerService.getHospitals(user),
+      this.hospitalSearchService.getHospitals(user),
       this.prisonerSearchService.getPrisonerDetails(prisonerNumber, user),
     ])
 
