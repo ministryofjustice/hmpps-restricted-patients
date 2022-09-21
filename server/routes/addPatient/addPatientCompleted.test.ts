@@ -17,7 +17,7 @@ describe('GET /prisoner-added', () => {
     app = appWithAllRoutes({
       production: false,
       services: { prisonerSearchService, hospitalSearchService },
-      session: { newMovePrisonerJourney: true },
+      session: { newAddRestrictedPatientJourney: true },
       roles: ['RESTRICTED_PATIENT_MIGRATION'],
     })
 
@@ -109,7 +109,7 @@ describe('GET /prisoner-added - no session item (user jumped to page)', () => {
   afterEach(() => {
     jest.resetAllMocks()
   })
-  it('should load the prisoner move completed page', () => {
+  it('should load the prisoner add completed page', () => {
     return request(app)
       .get('/add-restricted-patient/prisoner-added?prisonerNumber=A1234AA&hospitalId=SHEFF')
       .expect('Content-Type', /html/)
