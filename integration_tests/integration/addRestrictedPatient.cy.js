@@ -60,7 +60,7 @@ context('Add prisoner', () => {
         active: true,
       },
     })
-    cy.task('stubDischargeToHospital', {
+    cy.task('stubMigrateToHospital', {
       status: 200,
       response: {
         restrictivePatient: {

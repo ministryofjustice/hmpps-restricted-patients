@@ -25,7 +25,7 @@
     "test:ci": "jest --runInBand",
     "security_audit": "npx audit-ci --config audit-ci.json",
     "int-test": "cypress run --config video=false",
-    "int-test-ui": "cypress open",
+    "int-test-ui": "cypress open --e2e --browser chrome",
     "clean": "rm -rf dist build node_modules stylesheets"
   },
   "engines": {
@@ -143,7 +143,7 @@
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "concurrently": "^6.5.1",
-    "cypress": "^10.3.0",
+    "cypress": "^10.8.0",
     "cypress-multi-reporters": "^1.6.1",
     "eslint": "^7.29.0",
     "eslint-config-airbnb-base": "^14.2.1",

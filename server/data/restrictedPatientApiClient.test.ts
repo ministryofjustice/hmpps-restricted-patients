@@ -1,7 +1,10 @@
 import 'reflect-metadata'
 import nock from 'nock'
 import config from '../config'
-import RestrictedPatientApiClient, { RestrictedPatientDischargeToHospitalRequest } from './restrictedPatientApiClient'
+import RestrictedPatientApiClient, {
+  RestrictedPatientAddRequest,
+  RestrictedPatientDischargeToHospitalRequest,
+} from './restrictedPatientApiClient'
 
 describe('restrictedPatientSearchClient', () => {
   let fakeRestrictedPatientApi: nock.Scope
@@ -9,13 +12,18 @@ describe('restrictedPatientSearchClient', () => {
 
   const token = 'token-1'
 
-  const request = {
+  const dischargeToHospitalRequest = {
     offenderNo: 'A1234AA',
     dischargeTime: new Date('2019-05-14T11:01:58.135Z'),
     fromLocationId: 'MDI',
     hospitalLocationCode: 'SHEFF',
     supportingPrisonId: 'MDI',
   } as RestrictedPatientDischargeToHospitalRequest
+
+  const migrateToHospitalRequest = {
+    offenderNo: 'A1234AA',
+    hospitalLocationCode: 'SHEFF',
+  } as RestrictedPatientAddRequest
 
   beforeEach(() => {
     fakeRestrictedPatientApi = nock(config.apis.restrictedPatientApi.url)
@@ -30,11 +38,11 @@ describe('restrictedPatientSearchClient', () => {
     it('makes the correct call and returns the response', async () => {
       const results: unknown = { restrictivePatient: { supportingPrisonId: 'MDI' } }
       fakeRestrictedPatientApi
-        .post(`/discharge-to-hospital`, JSON.stringify(request))
+        .post(`/discharge-to-hospital`, JSON.stringify(dischargeToHospitalRequest))
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, results)
 
-      const output = await client.dischargePatient(request)
+      const output = await client.dischargePatient(dischargeToHospitalRequest)
 
       expect(output).toEqual(results)
     })
@@ -47,7 +55,40 @@ describe('restrictedPatientSearchClient', () => {
         .reply(500)
 
       await client
-        .dischargePatient(request)
+        .dischargePatient(dischargeToHospitalRequest)
+        .then(() => {
+          // eslint-disable-next-line no-console
+          console.log('Should not get here')
+        })
+        .catch(error => {
+          expect(error.message).toEqual('Internal Server Error')
+          nock.cleanAll()
+        })
+    })
+  })
+
+  describe('migratePatient', () => {
+    it('makes the correct call and returns the response', async () => {
+      const results: unknown = { restrictivePatient: { supportingPrisonId: 'MDI' } }
+      fakeRestrictedPatientApi
+        .post(`/migrate-in-restricted-patient`, JSON.stringify(migrateToHospitalRequest))
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(200, results)
+
+      const output = await client.migratePatient(migrateToHospitalRequest)
+
+      expect(output).toEqual(results)
+    })
+
+    it('throws an error on 500', async () => {
+      fakeRestrictedPatientApi
+        .persist()
+        .post(`/migrate-in-restricted-patient`)
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(500)
+
+      await client
+        .migratePatient(migrateToHospitalRequest)
         .then(() => {
           // eslint-disable-next-line no-console
           console.log('Should not get here')

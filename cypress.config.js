@@ -47,10 +47,7 @@ module.exports = defineConfig({
         stubUserCaseloads: prisonApi.stubUserCaseloads,
         stubPrisonApiPing: status => prisonApi.stubPing(status),
 
-        stubDischargeToHospital: restrictedPatientApi.stubDischargeToHospital,
-        stubGetPatient: restrictedPatientApi.stubGetPatient,
-        stubRemovePatient: restrictedPatientApi.stubRemovePatient,
-        stubRestrictedPatientApiPing: status => restrictedPatientApi.stubPing(status),
+        ...restrictedPatientApi,
       })
     },
 
