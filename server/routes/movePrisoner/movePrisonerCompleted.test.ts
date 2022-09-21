@@ -2,15 +2,12 @@ import { Express } from 'express'
 import request from 'supertest'
 import appWithAllRoutes, { mockJwtDecode } from '../testutils/appSetup'
 import PrisonerSearchService, { PrisonerResultSummary } from '../../services/prisonerSearchService'
-import MovePrisonerService from '../../services/movePrisonerService'
 import HospitalSearchService, { Hospital } from '../../services/hospitalSearchService'
 
 jest.mock('../../services/prisonerSearchService')
-jest.mock('../../services/movePrisonerService')
 jest.mock('../../services/hospitalSearchService')
 
 const prisonerSearchService = new PrisonerSearchService(null) as jest.Mocked<PrisonerSearchService>
-const movePrisonerService = new MovePrisonerService() as jest.Mocked<MovePrisonerService>
 const hospitalSearchService = new HospitalSearchService() as jest.Mocked<HospitalSearchService>
 
 let app: Express
@@ -19,7 +16,7 @@ describe('GET /prisoner-moved-to-hospital', () => {
   beforeEach(() => {
     app = appWithAllRoutes({
       production: false,
-      services: { prisonerSearchService, movePrisonerService, hospitalSearchService },
+      services: { prisonerSearchService, hospitalSearchService },
       session: { newMovePrisonerJourney: true },
       roles: ['TRANSFER_RESTRICTED_PATIENT'],
     })
@@ -78,7 +75,7 @@ describe('GET /prisoner-moved-to-hospital', () => {
 })
 describe('GET /prisoner-moved-to-hospital - no session item (user jumped to page)', () => {
   beforeEach(() => {
-    app = appWithAllRoutes({ production: false, services: { prisonerSearchService, movePrisonerService } })
+    app = appWithAllRoutes({ production: false, services: { prisonerSearchService } })
 
     hospitalSearchService.getHospital.mockResolvedValue({
       agencyId: 'SHEFF',
