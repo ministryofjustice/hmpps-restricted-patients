@@ -24,6 +24,9 @@ export default class PrisonerResult {
   assignedLivingUnit: AssignedLivingUnit
 
   @Expose()
+  locationDescription: string
+
+  @Expose()
   categoryCode: string
 
   @Expose()

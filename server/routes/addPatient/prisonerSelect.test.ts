@@ -77,7 +77,7 @@ describe('GET /select-prisoner', () => {
           expect(res.text).toContain('Outside - released from Doncaster')
           expect(res.text).toContain('Controlled unlock')
           expect(res.text).toContain(
-            '<a href="/add-restricted-patient?prisonerNumber=A1234AA&journeyStartUrl=/add-restricted-patient/select-prisoner?searchTerm=Smith" class="govuk-link" data-test="prisoner-add-restricted-patient-link"><span class="govuk-visually-hidden">Smith, John - </span>Add to restricted patients</a>'
+            '<a href="/add-restricted-patient/select-hospital?prisonerNumber=A1234AA&journeyStartUrl=/add-restricted-patient/select-prisoner?searchTerm=Smith" class="govuk-link" data-test="prisoner-add-restricted-patient-link"><span class="govuk-visually-hidden">Smith, John - </span>Add to restricted patients</a>'
           )
         })
     })

@@ -1,6 +1,7 @@
 const PrisonerSearchPage = require('../pages/addPrisoner/addPrisonerSearch.page')
 const PrisonerSelectPage = require('../pages/addPrisoner/addPrisonerSelect.page')
 const homepage = require('../pages/homepage')
+const SelectHospitalPage = require('../pages/addPrisoner/addPrisonerSelectHospital.page')
 
 const toOffender = $cell => ({
   name: $cell[1].textContent,
@@ -73,7 +74,7 @@ context('Add prisoner', () => {
         offenderNo: 'A1234AA',
         firstName: 'JOHN',
         lastName: 'SMITH',
-        assignedLivingUnit: { description: '1-2-015' },
+        locationDescription: 'Outside - released from Doncaster',
         categoryCode: 'C',
         alerts: [
           { active: true, alertType: 'T', alertCode: 'TCPA' },
@@ -136,6 +137,18 @@ context('Add prisoner', () => {
           expect(offenders[1].addRestrictedPatientLink).to.contain('Add to restricted patients')
         })
     })
+    prisonerSelectPage.addRestrictedPatientLink().click()
+
+    const selectHospitalPage = SelectHospitalPage.verifyOnPage('John Smith')
+    const selectHospitalPageForm = selectHospitalPage.form()
+
+    selectHospitalPage.prisonerName().should('contain', 'Smith, John')
+    selectHospitalPage.prisonerNumber().should('contain', 'A1234AA')
+    selectHospitalPage.prisonerLocation().should('contain', 'Outside - released from Doncaster')
+    selectHospitalPage.prisonerAlerts().should('contain', 'Controlled unlock')
+
+    selectHospitalPageForm.hospital().type('Sheff')
+    selectHospitalPageForm.submit().click()
   })
 
   describe('Select prisoner results page', () => {
