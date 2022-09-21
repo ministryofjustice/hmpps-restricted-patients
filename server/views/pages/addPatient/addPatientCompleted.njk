@@ -1,0 +1,29 @@
+{% extends "../../partials/layout.njk" %}
+
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set title = "Prisoner added to restricted patients" %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-three-quarters">
+      {{ govukPanel({
+        titleText: prisoner.friendlyName + ' has been added to ' + hospital.description,
+        classes: "govuk-!-margin-bottom-6"
+      }) }}
+
+      <div data-test="prisoner-add-completed-help-text">
+        <p class="govuk-body">{{ prisoner.friendlyName | possessive }} prison number is {{ prisoner.prisonerNumber }}.</p>
+      </div>
+
+      {{ govukButton({
+        text: "Finish",
+        element: 'a',
+        href: '/',
+        classes: "govuk-button--secondary",
+        attributes: { "data-test": "prisoner-add-completed-finish" }
+      }) }}
+    </div>
+  </div>
+{% endblock %}
