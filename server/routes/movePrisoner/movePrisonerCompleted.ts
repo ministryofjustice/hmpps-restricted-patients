@@ -1,11 +1,9 @@
 import { Request, Response } from 'express'
-import MovePrisonerService from '../../services/movePrisonerService'
 import PrisonerSearchService from '../../services/prisonerSearchService'
 import HospitalSearchService from '../../services/hospitalSearchService'
 
 export default class MovePrisonerCompletedRoutes {
   constructor(
-    private readonly movePrisonerService: MovePrisonerService,
     private readonly prisonerSearchService: PrisonerSearchService,
     private readonly hospitalSearchService: HospitalSearchService
   ) {}

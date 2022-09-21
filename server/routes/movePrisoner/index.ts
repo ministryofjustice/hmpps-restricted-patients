@@ -34,11 +34,7 @@ export default function movePrisonerRoutes({
     prisonerSearchService,
     hospitalSearchService
   )
-  const movePrisonerCompleted = new MovePrisonerCompletedRoutes(
-    movePrisonerService,
-    prisonerSearchService,
-    hospitalSearchService
-  )
+  const movePrisonerCompleted = new MovePrisonerCompletedRoutes(prisonerSearchService, hospitalSearchService)
 
   get('/search-for-prisoner', prisonerSearch.view)
   post('/search-for-prisoner', prisonerSearch.submit)
