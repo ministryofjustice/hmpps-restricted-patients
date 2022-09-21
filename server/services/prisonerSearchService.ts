@@ -80,13 +80,11 @@ export default class PrisonerSearchService {
     const token = await this.hmppsAuthClient.getSystemClientToken(user.username)
     const prisoner = await new PrisonApiClient(token).getPrisonerDetails(prisonerNumber)
 
-    const enhancedResult = {
+    return {
       ...prisoner,
       ...PrisonerSearchService.enhancePrisoner(prisoner),
       friendlyName: convertToTitleCase(`${prisoner.firstName} ${prisoner.lastName}`),
       prisonerNumber: prisoner.offenderNo,
     }
-
-    return enhancedResult
   }
 }

@@ -29,7 +29,7 @@ export default function routes(
       prisonerSearchService,
     })
   )
-  router.use('/add-restricted-patient', addPrisonerRoutes({ prisonerSearchService }))
+  router.use('/add-restricted-patient', addPrisonerRoutes({ movePrisonerService, prisonerSearchService }))
   router.use('/prisoner', prisonerRoutes({ prisonerSearchService }))
   router.use('/', homepageRoutes({ userService }))
 
