@@ -52,8 +52,10 @@ export default abstract class HospitalSelectRoutes {
 
     if (error) return this.renderView(req, res, { error })
 
-    req.session.newMovePrisonerJourney = true
+    this.startNewJourneyInSession(req)
 
     return res.redirect(`${this.path}?${new URLSearchParams({ prisonerNumber, hospitalId: hospital })}`)
   }
+
+  protected abstract startNewJourneyInSession(req: Request): void
 }

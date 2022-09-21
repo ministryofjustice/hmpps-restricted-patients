@@ -56,7 +56,7 @@ afterEach(() => {
 })
 
 describe('GET /confirm-add', () => {
-  it('should load the confirm move page', () => {
+  it('should load the confirm add page', () => {
     return request(app)
       .get('/add-restricted-patient/confirm-add?prisonerNumber=A1234AA&hospitalId=SHEFF')
       .expect('Content-Type', /html/)

@@ -25,8 +25,8 @@ export default class AddPatientCompletedRoutes {
   }
 
   view = async (req: Request, res: Response): Promise<void> => {
-    if (!req.session.newMovePrisonerJourney) return res.render('pages/notFound.njk')
-    delete req.session.newMovePrisonerJourney
+    if (!req.session.newAddRestrictedPatientJourney) return res.render('pages/notFound.njk')
+    delete req.session.newAddRestrictedPatientJourney
     return this.renderView(req, res)
   }
 }
