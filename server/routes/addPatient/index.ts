@@ -4,6 +4,8 @@ import asyncMiddleware from '../../middleware/asyncMiddleware'
 import PrisonerSearchService from '../../services/prisonerSearchService'
 import PrisonerSearchRoutes from './prisonerSearch'
 import PrisonerSelectRoutes from './prisonerSelect'
+import AddPatientCompletedRoutes from './addPatientCompleted'
+import AddPatientConfirmationRoutes from './addPatientConfirmation'
 import authorisationMiddleware from '../../middleware/authorisationMiddleware'
 import HospitalSearchService from '../../services/hospitalSearchService'
 import HospitalSelectRoutes from './hospitalSelect'
@@ -12,6 +14,7 @@ import MigratePrisonerService from '../../services/migratePrisonerService'
 export default function addPrisonerRoutes({
   hospitalSearchService,
   prisonerSearchService,
+  migratePrisonerService,
 }: {
   prisonerSearchService: PrisonerSearchService
   hospitalSearchService: HospitalSearchService
@@ -26,6 +29,12 @@ export default function addPrisonerRoutes({
   const prisonerSearch = new PrisonerSearchRoutes()
   const prisonerSelect = new PrisonerSelectRoutes(prisonerSearchService)
   const hospitalSelect = new HospitalSelectRoutes(hospitalSearchService, prisonerSearchService)
+  const addPatientCompleted = new AddPatientCompletedRoutes(prisonerSearchService, hospitalSearchService)
+  const addPatientConfirmation = new AddPatientConfirmationRoutes(
+    migratePrisonerService,
+    prisonerSearchService,
+    hospitalSearchService
+  )
 
   get('/search-for-prisoner', prisonerSearch.view)
   post('/search-for-prisoner', prisonerSearch.submit)
@@ -35,6 +44,11 @@ export default function addPrisonerRoutes({
 
   get('/select-hospital', hospitalSelect.view)
   post('/select-hospital', hospitalSelect.submit)
+
+  get('/confirm-add', addPatientConfirmation.view)
+  post('/confirm-add', addPatientConfirmation.submit)
+
+  get('/prisoner-added', addPatientCompleted.view)
 
   return router
 }

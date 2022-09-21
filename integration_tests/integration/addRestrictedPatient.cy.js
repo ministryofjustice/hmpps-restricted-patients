@@ -2,6 +2,8 @@ const PrisonerSearchPage = require('../pages/addPrisoner/addPrisonerSearch.page'
 const PrisonerSelectPage = require('../pages/addPrisoner/addPrisonerSelect.page')
 const homepage = require('../pages/homepage')
 const SelectHospitalPage = require('../pages/addPrisoner/addPrisonerSelectHospital.page')
+const AddPatientConfirmationPage = require('../pages/addPrisoner/addPatientConfirmation.page')
+const AddPatientCompletedPage = require('../pages/addPrisoner/addPatientCompleted.page')
 
 const toOffender = $cell => ({
   name: $cell[1].textContent,
@@ -149,6 +151,19 @@ context('Add prisoner', () => {
 
     selectHospitalPageForm.hospital().type('Sheff')
     selectHospitalPageForm.submit().click()
+
+    const addPatientConfirmationRoutes = AddPatientConfirmationPage.verifyOnPage('John Smith', 'Sheffield Hospital')
+    const addPatientConfirmationRoutesForm = addPatientConfirmationRoutes.form()
+
+    addPatientConfirmationRoutesForm.confirm().click()
+
+    const addPatientCompletedPage = AddPatientCompletedPage.verifyOnPage('John Smith', 'Sheffield Hospital')
+
+    addPatientCompletedPage.finish().click()
+
+    cy.location().should(loc => {
+      expect(loc.pathname).to.eq('/')
+    })
   })
 
   describe('Select prisoner results page', () => {
