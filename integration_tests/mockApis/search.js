@@ -33,6 +33,9 @@ const defaultSearchResponse = [
     prisonerNumber: 'A1234AA',
     prisonName: 'HMP Moorland',
     locationDescription: 'Outside - released from Doncaster',
+    restrictedPatient: false,
+    lastMovementTypeCode: 'REL',
+    lastMovementReasonCode: 'HP',
   },
 ]
 
