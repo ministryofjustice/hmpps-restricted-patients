@@ -31,7 +31,7 @@ describe('GET /select-prisoner', () => {
             { alertType: 'T', alertCode: 'TCPA' },
             { alertType: 'X', alertCode: 'XCU' },
           ],
-          locationDescription: 'Outside - released from Doncaster',
+          locationDescription: 'Outside - released from Doncaster to Psychiatric Hospital',
           displayName: 'Smith, John',
           formattedAlerts: [
             {
@@ -41,6 +41,9 @@ describe('GET /select-prisoner', () => {
             },
           ],
           prisonerNumber: 'A1234AA',
+          lastMovementTypeCode: 'REL',
+          lastMovementReasonCode: 'HP',
+          restrictedPatient: false,
         } as PrisonerSearchSummary,
         {
           alerts: [],
@@ -48,7 +51,19 @@ describe('GET /select-prisoner', () => {
           displayName: 'Smith, James',
           formattedAlerts: [],
           prisonerNumber: 'A1234AB',
+          lastMovementTypeCode: 'REL',
+          lastMovementReasonCode: 'HP',
           restrictedPatient: true,
+        } as PrisonerSearchSummary,
+        {
+          alerts: [],
+          locationDescription: 'Outside - released from Doncaster on Conditional Release',
+          displayName: 'Smith, Jeff',
+          formattedAlerts: [],
+          prisonerNumber: 'A1234AC',
+          lastMovementTypeCode: 'REL',
+          lastMovementReasonCode: 'CR',
+          restrictedPatient: false,
         } as PrisonerSearchSummary,
       ])
     })
@@ -63,7 +78,7 @@ describe('GET /select-prisoner', () => {
         })
     })
 
-    it('should exclude restricted patients', () => {
+    it('should exclude restricted patients and not released to hospital', () => {
       return request(app)
         .get('/add-restricted-patient/select-prisoner?searchTerm=Smith')
         .expect('Content-Type', /html/)

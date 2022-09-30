@@ -31,9 +31,12 @@ export default class PrisonerSelectRoutes {
     const searchResults = await this.prisonerSearchService.search({ searchTerm, prisonIds: ['OUT'] }, user)
 
     // ensure we don't get any restricted patients in the results
-    const nonRestrictedPatientResults = searchResults.filter(result => !result.restrictedPatient)
+    // and only prisoners released to a hospital
+    const missingPatients = searchResults
+      .filter(result => !result.restrictedPatient)
+      .filter(result => result.lastMovementTypeCode === 'REL' && result.lastMovementReasonCode === 'HP')
 
-    return this.renderView(req, res, { searchResults: nonRestrictedPatientResults, searchTerm })
+    return this.renderView(req, res, { searchResults: missingPatients, searchTerm })
   }
 
   submit = async (req: Request, res: Response): Promise<void> => {
