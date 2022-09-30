@@ -68,4 +68,10 @@ export default class PrisonerSearchResult {
 
   @Expose()
   locationDescription: string
+
+  @Expose()
+  lastMovementTypeCode: string
+
+  @Expose()
+  lastMovementReasonCode: string
 }
