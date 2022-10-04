@@ -35,6 +35,8 @@ export default class PrisonerSelectRoutes {
     const missingPatients = searchResults
       .filter(result => !result.restrictedPatient)
       .filter(result => result.lastMovementTypeCode === 'REL' && result.lastMovementReasonCode === 'HP')
+      .filter(result => result.indeterminateSentence || result.conditionalReleaseDate > new Date())
+      .filter(result => !result.recall || result.sentenceExpiryDate > new Date())
 
     return this.renderView(req, res, { searchResults: missingPatients, searchTerm })
   }

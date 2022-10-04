@@ -48,7 +48,7 @@ describe('GET /select-prisoner', () => {
         {
           alerts: [],
           cellLocation: '1-2-016',
-          displayName: 'Smith, Jack',
+          displayName: 'Excluded - determinate sentence past CRD',
           formattedAlerts: [],
           prisonerNumber: 'A1235AA',
           prisonName: 'HMP Moorland',
@@ -58,7 +58,7 @@ describe('GET /select-prisoner', () => {
         {
           alerts: [],
           cellLocation: '1-2-016',
-          displayName: 'Smith, James',
+          displayName: 'Excluded - recall past SED',
           formattedAlerts: [],
           prisonerNumber: 'A1236AA',
           prisonName: 'HMP Moorland',
