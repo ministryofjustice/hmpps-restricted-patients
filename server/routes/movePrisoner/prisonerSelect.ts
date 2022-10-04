@@ -33,7 +33,11 @@ export default class PrisonerSelectRoutes {
       user
     )
 
-    return this.renderView(req, res, { searchResults, searchTerm })
+    const availablePrisoners = searchResults
+      .filter(result => result.indeterminateSentence || result.conditionalReleaseDate > new Date())
+      .filter(result => !result.recall || result.sentenceExpiryDate > new Date())
+
+    return this.renderView(req, res, { searchResults: availablePrisoners, searchTerm })
   }
 
   submit = async (req: Request, res: Response): Promise<void> => {

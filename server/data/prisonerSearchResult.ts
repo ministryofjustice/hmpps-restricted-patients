@@ -84,7 +84,4 @@ export default class PrisonerSearchResult {
   @Type(() => Date)
   @Expose()
   conditionalReleaseDate: Date
-
-  @Expose()
-  legalStatus: string
 }
