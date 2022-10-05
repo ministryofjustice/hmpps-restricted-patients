@@ -52,18 +52,9 @@ describe('GET /select-prisoner', () => {
           formattedAlerts: [],
           prisonerNumber: 'A1235AA',
           prisonName: 'HMP Moorland',
+          recall: false,
           indeterminateSentence: false,
           conditionalReleaseDate: new Date(new Date().getDate() - 1),
-        } as PrisonerSearchSummary,
-        {
-          alerts: [],
-          cellLocation: '1-2-016',
-          displayName: 'Excluded - recall past SED',
-          formattedAlerts: [],
-          prisonerNumber: 'A1236AA',
-          prisonName: 'HMP Moorland',
-          recall: true,
-          sentenceExpiryDate: new Date(new Date().getDate() - 1),
         } as PrisonerSearchSummary,
       ])
     })

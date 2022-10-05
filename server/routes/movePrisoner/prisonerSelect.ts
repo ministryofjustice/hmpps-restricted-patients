@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { FormError } from '../../@types/template'
 import PrisonerSearchService, { PrisonerSearchSummary } from '../../services/prisonerSearchService'
 import validateForm from '../searchPrisoners/prisonerSearchValidation'
+import RestrictedPatientSearchFilter from '../searchPatients/restrictedPatientSearchFilter'
 
 type PageData = {
   error?: FormError
@@ -10,6 +11,8 @@ type PageData = {
 }
 export default class PrisonerSelectRoutes {
   constructor(private readonly prisonerSearchService: PrisonerSearchService) {}
+
+  private searchFilter = new RestrictedPatientSearchFilter()
 
   private renderView = async (req: Request, res: Response, pageData: PageData): Promise<void> => {
     const { error, searchResults, searchTerm } = pageData
@@ -33,9 +36,7 @@ export default class PrisonerSelectRoutes {
       user
     )
 
-    const availablePrisoners = searchResults
-      .filter(result => result.indeterminateSentence || result.conditionalReleaseDate > new Date())
-      .filter(result => !result.recall || result.sentenceExpiryDate > new Date())
+    const availablePrisoners = searchResults.filter(prisoner => this.searchFilter.includePrisonerToMove(prisoner))
 
     return this.renderView(req, res, { searchResults: availablePrisoners, searchTerm })
   }
