@@ -74,4 +74,14 @@ export default class PrisonerSearchResult {
 
   @Expose()
   lastMovementReasonCode: string
+
+  @Expose()
+  indeterminateSentence: boolean
+
+  @Expose()
+  recall: boolean
+
+  @Type(() => Date)
+  @Expose()
+  conditionalReleaseDate: Date
 }

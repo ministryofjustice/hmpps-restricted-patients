@@ -36,6 +36,8 @@ const defaultSearchResponse = [
     restrictedPatient: false,
     lastMovementTypeCode: 'REL',
     lastMovementReasonCode: 'HP',
+    indeterminateSentence: true,
+    recall: false,
   },
 ]
 
