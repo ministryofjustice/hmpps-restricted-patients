@@ -75,6 +75,16 @@ describe('restrictedPatientSearchFilter', () => {
       expect(searchFilter.includePrisonerToAdd(prisoner)).toEqual(false)
     })
 
+    it('should include detained movements', () => {
+      const prisoner = {
+        restrictedPatient: false,
+        lastMovementTypeCode: 'REL',
+        lastMovementReasonCode: 'HO',
+      } as PrisonerSearchSummary
+
+      expect(searchFilter.includePrisonerToAdd(prisoner)).toEqual(true)
+    })
+
     it('should exclude determinate sentences past CRD', () => {
       const prisoner = {
         restrictedPatient: false,
