@@ -1,12 +1,28 @@
+/* eslint-disable import/no-cycle */
 import { Request, Response } from 'express'
-import type { HelpSection } from './index'
+import AboutPatientsHelp from './content/aboutPatientsHelp'
+import IssuesHelp from './content/issuesHelp'
+import RolesHelp from './content/rolesHelp'
+import ProductInfoHelp from './content/productInfoHelp'
+import AccountsHelp from './content/accountsHelp'
 
 export default class HelpRoutes {
-  constructor(private readonly aboutHelp: HelpSection[], private readonly issuesHelp: HelpSection[]) {}
+  private readonly productInfoHelp = new ProductInfoHelp().helpItems()
+
+  private readonly aboutPatientsHelp = new AboutPatientsHelp().helpItems()
+
+  private readonly rolesHelp = new RolesHelp().helpItems()
+
+  private readonly accountsHelp = new AccountsHelp().helpItems()
+
+  private readonly issuesHelp = new IssuesHelp().helpItems()
 
   view = async (req: Request, res: Response): Promise<void> => {
     return res.render('pages/help', {
-      aboutHelp: this.aboutHelp,
+      productInfoHelp: this.productInfoHelp,
+      aboutPatientsHelp: this.aboutPatientsHelp,
+      rolesHelp: this.rolesHelp,
+      accountsHelp: this.accountsHelp,
       issuesHelp: this.issuesHelp,
       openSection: req.query.section,
     })

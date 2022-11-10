@@ -10,7 +10,7 @@ beforeEach(() => {
   app = appWithAllRoutes({
     production: false,
     services: {},
-    roles: ['SEARCH_RESTRICTED_PATIENT'], // TODO don't need this?
+    roles: [],
   })
 })
 
@@ -39,7 +39,7 @@ function getDetailText(c: CheerioAPI, sectionId: string) {
 }
 
 describe('GET /help', () => {
-  it('should load the help page', () => {
+  it('should load all categories', () => {
     return request(app)
       .get('/help')
       .expect('Content-Type', /html/)
@@ -48,14 +48,27 @@ describe('GET /help', () => {
 
         expect(getPageHeader($)).toStrictEqual('Restricted patients help')
 
-        expect(getSubHeader($, 'about-header')).toStrictEqual('About restricted patients')
+        expect(getSubHeader($, 'about-patients-header')).toStrictEqual('About restricted patients')
+        expect(getSubHeader($, 'product-info-header')).toStrictEqual('Restricted patients product info')
+        expect(getSubHeader($, 'roles-header')).toStrictEqual('Roles')
+        expect(getSubHeader($, 'accounts-header')).toStrictEqual('Accounts, access and sign in')
+        expect(getSubHeader($, 'issues-header')).toStrictEqual('Operational issues')
+      })
+  })
+
+  it('should load some help details', () => {
+    return request(app)
+      .get('/help')
+      .expect('Content-Type', /html/)
+      .expect(res => {
+        const $ = load(res.text)
+
         expect(getDetail($, 'restricted-patient-definition').attr('open')).toBeFalsy()
         expect(getDetailSummaryText($, 'restricted-patient-definition')).toStrictEqual('A Restricted Patient is:')
         expect(getDetailText($, 'restricted-patient-definition')).toContain(
           'Someone in hospital who has special restrictions'
         )
 
-        expect(getSubHeader($, 'issues-header')).toStrictEqual('Operational issues')
         expect(getDetail($, 'sending-patients-back-to-prison').attr('open')).toBeFalsy()
         expect(getDetailSummaryText($, 'sending-patients-back-to-prison')).toStrictEqual(
           'An RP is being sent back to prison - how do we bring them in?'
