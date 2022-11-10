@@ -8,6 +8,7 @@ import homepageRoutes from './homepage'
 
 import { Services } from '../services'
 import addPrisonerRoutes from './addPatient'
+import helpRoutes from './help'
 
 export default function routes(
   router: Router,
@@ -39,6 +40,7 @@ export default function routes(
     addPrisonerRoutes({ hospitalSearchService, prisonerSearchService, migratePrisonerService })
   )
   router.use('/prisoner', prisonerRoutes({ prisonerSearchService }))
+  router.use('/help', helpRoutes())
   router.use('/', homepageRoutes({ userService }))
 
   return router
