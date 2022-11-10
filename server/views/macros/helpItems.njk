@@ -1,0 +1,12 @@
+{% from "govuk/components/details/macro.njk" import govukDetails %}
+
+{% macro helpItems(helpSections, openSection) %}
+  {% for helpSection in helpSections %}
+    {{ govukDetails({
+      id: helpSection.id,
+      open: (helpSection.id === openSection),
+      summaryText: helpSection.heading,
+      html: helpSection.content
+    }) }}
+  {% endfor %}
+{% endmacro %}

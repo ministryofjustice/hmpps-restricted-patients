@@ -1,0 +1,30 @@
+{% extends "../partials/layout.njk" %}
+{% from "../partials/breadcrumb.njk" import breadcrumb %}
+
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../macros/helpItems.njk" import helpItems %}
+
+{% set title = "Restricted patients help" %}
+
+{% block beforeContent %}
+  {{ breadcrumb() }}
+{% endblock %}
+
+{% block content %}
+
+  <h1 class="govuk-heading-l">{{ title }}</h1>
+
+  <h2 class="govuk-heading-m" data-qa="about-header">About restricted patients</h2>
+
+  {{ helpItems(aboutHelp, openSection) }}
+
+  <h2 class="govuk-heading-m" data-qa="issues-header">Operational issues</h2>
+
+  {{ helpItems(issuesHelp, openSection) }}
+
+{% endblock %}
+
+{% block pageScripts %}
+  <script src="/assets/js/open-help-section.js"></script>
+{% endblock %}
