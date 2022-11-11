@@ -48,13 +48,24 @@ describe('GET /select-prisoner', () => {
         {
           alerts: [],
           cellLocation: '1-2-016',
-          displayName: 'Excluded - determinate sentence past CRD',
+          displayName: 'No move link - determinate sentence past CRD',
           formattedAlerts: [],
           prisonerNumber: 'A1235AA',
           prisonName: 'HMP Moorland',
           recall: false,
           indeterminateSentence: false,
           conditionalReleaseDate: new Date(new Date().getDate() - 1),
+        } as PrisonerSearchSummary,
+        {
+          alerts: [],
+          cellLocation: '1-2-017',
+          displayName: 'No move link - determinate recall past SED',
+          formattedAlerts: [],
+          prisonerNumber: 'A1236AA',
+          prisonName: 'HMP Moorland',
+          recall: true,
+          indeterminateSentence: false,
+          sentenceExpiryDate: new Date(new Date().getDate() - 1),
         } as PrisonerSearchSummary,
       ])
     })
@@ -65,7 +76,7 @@ describe('GET /select-prisoner', () => {
         .expect('Content-Type', /html/)
         .expect(res => {
           expect(res.text).toContain('Select a prisoner')
-          expect(res.text).toContain('<p class="align-right"><strong>People listed:</strong> 1</p>')
+          expect(res.text).toContain('<p class="align-right"><strong>People listed:</strong> 3</p>')
           expect(res.text).toContain(
             '<img src="/prisoner/A1234AA/image" alt="Photograph of Smith, John" class="results-table__image" />'
           )
@@ -74,6 +85,20 @@ describe('GET /select-prisoner', () => {
           expect(res.text).toContain('Controlled unlock')
           expect(res.text).toContain(
             '<a href="/move-to-hospital/select-hospital?prisonerNumber=A1234AA&journeyStartUrl=/move-to-hospital/select-prisoner?searchTerm=Smith" class="govuk-link" data-test="prisoner-move-to-hospital-link"><span class="govuk-visually-hidden">Smith, John - </span>Move to a hospital</a>'
+          )
+        })
+    })
+
+    it('should include post CRD and SED but without an add link', () => {
+      return request(app)
+        .get('/move-to-hospital/select-prisoner?searchTerm=Smith')
+        .expect('Content-Type', /html/)
+        .expect(res => {
+          expect(res.text).toContain(
+            '<a href="/help?section=restricted-patients-should-be-removed" class="govuk-link" data-test="help-link"><span class="govuk-visually-hidden">No move link - determinate sentence past CRD - </span>Ineligible (past CRD) - View Help</a>'
+          )
+          expect(res.text).toContain(
+            '<a href="/help?section=restricted-patients-should-be-removed" class="govuk-link" data-test="help-link"><span class="govuk-visually-hidden">No move link - determinate recall past SED - </span>Ineligible (past SED) - View Help</a>'
           )
         })
     })

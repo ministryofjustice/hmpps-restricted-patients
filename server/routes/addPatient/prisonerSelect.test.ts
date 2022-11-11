@@ -59,6 +59,32 @@ describe('GET /select-prisoner', () => {
           indeterminateSentence: true,
           recall: false,
         } as PrisonerSearchSummary,
+        {
+          alerts: [],
+          locationDescription: 'Outside - released from Doncaster - discharged to NGH',
+          displayName: 'No move link - determinate sentence past CRD',
+          formattedAlerts: [],
+          prisonerNumber: 'A1234AC',
+          lastMovementTypeCode: 'REL',
+          lastMovementReasonCode: 'HP',
+          restrictedPatient: false,
+          indeterminateSentence: false,
+          recall: false,
+          conditionalReleaseDate: new Date(new Date().getDate() - 1),
+        } as PrisonerSearchSummary,
+        {
+          alerts: [],
+          locationDescription: 'Outside - released from Doncaster - discharged to NGH',
+          displayName: 'No move link - determinate recall past SED',
+          formattedAlerts: [],
+          prisonerNumber: 'A1234AD',
+          lastMovementTypeCode: 'REL',
+          lastMovementReasonCode: 'HP',
+          restrictedPatient: false,
+          indeterminateSentence: false,
+          recall: true,
+          sentenceExpiryDate: new Date(new Date().getDate() - 1),
+        } as PrisonerSearchSummary,
       ])
     })
 
@@ -78,7 +104,7 @@ describe('GET /select-prisoner', () => {
         .expect('Content-Type', /html/)
         .expect(res => {
           expect(res.text).toContain('Select a prisoner')
-          expect(res.text).toContain('<p class="align-right"><strong>People listed:</strong> 1</p>')
+          expect(res.text).toContain('<p class="align-right"><strong>People listed:</strong> 3</p>')
           expect(res.text).toContain(
             '<img src="/prisoner/A1234AA/image" alt="Photograph of Smith, John" class="results-table__image" />'
           )
@@ -87,6 +113,22 @@ describe('GET /select-prisoner', () => {
           expect(res.text).toContain('Controlled unlock')
           expect(res.text).toContain(
             '<a href="/add-restricted-patient/select-hospital?prisonerNumber=A1234AA&journeyStartUrl=/add-restricted-patient/select-prisoner?searchTerm=Smith" class="govuk-link" data-test="prisoner-add-restricted-patient-link"><span class="govuk-visually-hidden">Smith, John - </span>Add to restricted patients</a>'
+          )
+        })
+    })
+
+    it('should include post CRD and SED but without a move link', () => {
+      return request(app)
+        .get('/add-restricted-patient/select-prisoner?searchTerm=Smith')
+        .expect('Content-Type', /html/)
+        .expect(res => {
+          expect(res.text).toContain('Select a prisoner')
+          expect(res.text).toContain('<p class="align-right"><strong>People listed:</strong> 3</p>')
+          expect(res.text).toContain(
+            '<a href="/help?section=restricted-patients-should-be-removed" class="govuk-link" data-test="help-link"><span class="govuk-visually-hidden">No move link - determinate sentence past CRD - </span>Ineligible (past CRD) - View Help</a>'
+          )
+          expect(res.text).toContain(
+            '<a href="/help?section=restricted-patients-should-be-removed" class="govuk-link" data-test="help-link"><span class="govuk-visually-hidden">No move link - determinate recall past SED - </span>Ineligible (past SED) - View Help</a>'
           )
         })
     })

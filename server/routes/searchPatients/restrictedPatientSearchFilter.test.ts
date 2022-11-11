@@ -1,4 +1,4 @@
-import RestrictedPatientSearchFilter from './restrictedPatientSearchFilter'
+import RestrictedPatientSearchFilter, { SearchStatus } from './restrictedPatientSearchFilter'
 import { PrisonerSearchSummary } from '../../services/prisonerSearchService'
 
 const searchFilter = new RestrictedPatientSearchFilter()
@@ -20,7 +20,7 @@ describe('restrictedPatientSearchFilter', () => {
         conditionalReleaseDate: yesterday,
       } as PrisonerSearchSummary
 
-      expect(searchFilter.includePrisonerToMove(prisoner)).toEqual(false)
+      expect(searchFilter.includePrisonerToMove(prisoner)).toEqual(SearchStatus.EXCLUDE_POST_CRD)
     })
 
     it('should include determinate sentences before CRD', () => {
@@ -30,7 +30,7 @@ describe('restrictedPatientSearchFilter', () => {
         conditionalReleaseDate: tomorrow,
       } as PrisonerSearchSummary
 
-      expect(searchFilter.includePrisonerToMove(prisoner)).toEqual(true)
+      expect(searchFilter.includePrisonerToMove(prisoner)).toEqual(SearchStatus.INCLUDE)
     })
 
     it('should exclude recalls past SED', () => {
@@ -41,7 +41,7 @@ describe('restrictedPatientSearchFilter', () => {
         conditionalReleaseDate: yesterday,
       } as PrisonerSearchSummary
 
-      expect(searchFilter.includePrisonerToMove(prisoner)).toEqual(false)
+      expect(searchFilter.includePrisonerToMove(prisoner)).toEqual(SearchStatus.EXCLUDE_POST_SED)
     })
 
     it('should include recalls before SED', () => {
@@ -52,7 +52,7 @@ describe('restrictedPatientSearchFilter', () => {
         conditionalReleaseDate: yesterday,
       } as PrisonerSearchSummary
 
-      expect(searchFilter.includePrisonerToMove(prisoner)).toEqual(true)
+      expect(searchFilter.includePrisonerToMove(prisoner)).toEqual(SearchStatus.INCLUDE)
     })
   })
 
@@ -62,7 +62,7 @@ describe('restrictedPatientSearchFilter', () => {
         restrictedPatient: true,
       } as PrisonerSearchSummary
 
-      expect(searchFilter.includePrisonerToAdd(prisoner)).toEqual(false)
+      expect(searchFilter.includePrisonerToAdd(prisoner)).toEqual(SearchStatus.EXCLUDE)
     })
 
     it('should exclude incorrect movements', () => {
@@ -72,7 +72,7 @@ describe('restrictedPatientSearchFilter', () => {
         lastMovementReasonCode: 'CR',
       } as PrisonerSearchSummary
 
-      expect(searchFilter.includePrisonerToAdd(prisoner)).toEqual(false)
+      expect(searchFilter.includePrisonerToAdd(prisoner)).toEqual(SearchStatus.EXCLUDE)
     })
 
     it('should include detained movements', () => {
@@ -82,7 +82,7 @@ describe('restrictedPatientSearchFilter', () => {
         lastMovementReasonCode: 'HO',
       } as PrisonerSearchSummary
 
-      expect(searchFilter.includePrisonerToAdd(prisoner)).toEqual(true)
+      expect(searchFilter.includePrisonerToAdd(prisoner)).toEqual(SearchStatus.INCLUDE)
     })
 
     it('should exclude determinate sentences past CRD', () => {
@@ -95,7 +95,7 @@ describe('restrictedPatientSearchFilter', () => {
         conditionalReleaseDate: yesterday,
       } as PrisonerSearchSummary
 
-      expect(searchFilter.includePrisonerToAdd(prisoner)).toEqual(false)
+      expect(searchFilter.includePrisonerToAdd(prisoner)).toEqual(SearchStatus.EXCLUDE_POST_CRD)
     })
 
     it('should include determinate sentences before CRD', () => {
@@ -108,7 +108,7 @@ describe('restrictedPatientSearchFilter', () => {
         conditionalReleaseDate: tomorrow,
       } as PrisonerSearchSummary
 
-      expect(searchFilter.includePrisonerToAdd(prisoner)).toEqual(true)
+      expect(searchFilter.includePrisonerToAdd(prisoner)).toEqual(SearchStatus.INCLUDE)
     })
 
     it('should exclude recalls past SED', () => {
@@ -122,7 +122,7 @@ describe('restrictedPatientSearchFilter', () => {
         conditionalReleaseDate: yesterday,
       } as PrisonerSearchSummary
 
-      expect(searchFilter.includePrisonerToAdd(prisoner)).toEqual(false)
+      expect(searchFilter.includePrisonerToAdd(prisoner)).toEqual(SearchStatus.EXCLUDE_POST_SED)
     })
 
     it('should include recalls before SED', () => {
@@ -136,7 +136,7 @@ describe('restrictedPatientSearchFilter', () => {
         conditionalReleaseDate: yesterday,
       } as PrisonerSearchSummary
 
-      expect(searchFilter.includePrisonerToAdd(prisoner)).toEqual(true)
+      expect(searchFilter.includePrisonerToAdd(prisoner)).toEqual(SearchStatus.INCLUDE)
     })
   })
 })

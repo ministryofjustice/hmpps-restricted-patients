@@ -36,7 +36,15 @@
       <a href="{{ pshUrl }}/prisoner/{{ prisoner.prisonerNumber }}" class="govuk-link">{{ prisoner.displayName }}</a>
     {% endset -%}
     {% set moveHospitalLinkHtml %}
-      <a href="/move-to-hospital/select-hospital?prisonerNumber={{ prisoner.prisonerNumber }}&journeyStartUrl={{ journeyStartUrl }}" class="govuk-link" data-test="prisoner-move-to-hospital-link"><span class="govuk-visually-hidden">{{ prisoner.displayName }} - </span>Move to a hospital</a>
+      {% if (prisoner.searchStatus == 'include') %}
+        <a href="/move-to-hospital/select-hospital?prisonerNumber={{ prisoner.prisonerNumber }}&journeyStartUrl={{ journeyStartUrl }}" class="govuk-link" data-test="prisoner-move-to-hospital-link"><span class="govuk-visually-hidden">{{ prisoner.displayName }} - </span>Move to a hospital</a>
+      {% elif (prisoner.searchStatus == 'exclude-post-crd') %}
+        <a href="/help?section=restricted-patients-should-be-removed" class="govuk-link" data-test="help-link"><span class="govuk-visually-hidden">{{ prisoner.displayName }} - </span>Ineligible (past CRD) - View Help</a>
+      {% elif (prisoner.searchStatus == 'exclude-post-sed') %}
+        <a href="/help?section=restricted-patients-should-be-removed" class="govuk-link" data-test="help-link"><span class="govuk-visually-hidden">{{ prisoner.displayName }} - </span>Ineligible (past SED) - View Help</a>
+      {% else %}
+        <p>Cannot find the prisoner search status: {{ prisoner.searchStatus }}</p>
+      {% endif %}
     {% endset -%}
     {% set rows = (rows.push([
       { html: prisonerImageHtml },

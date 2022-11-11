@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { FormError } from '../../@types/template'
 import PrisonerSearchService, { PrisonerSearchSummary } from '../../services/prisonerSearchService'
 import validateForm from '../searchPrisoners/prisonerSearchValidation'
-import RestrictedPatientSearchFilter from '../searchPatients/restrictedPatientSearchFilter'
+import RestrictedPatientSearchFilter, { SearchStatus } from '../searchPatients/restrictedPatientSearchFilter'
 
 type PageData = {
   error?: FormError
@@ -33,7 +33,11 @@ export default class PrisonerSelectRoutes {
 
     const searchResults = await this.prisonerSearchService.search({ searchTerm, prisonIds: ['OUT'] }, user)
 
-    const missingPatients = searchResults.filter(prisoner => this.searchFilter.includePrisonerToAdd(prisoner))
+    const missingPatients = searchResults
+      .map(prisoner => {
+        return { ...prisoner, searchStatus: this.searchFilter.includePrisonerToAdd(prisoner) }
+      })
+      .filter(prisoner => prisoner.searchStatus !== SearchStatus.EXCLUDE)
 
     return this.renderView(req, res, { searchResults: missingPatients, searchTerm })
   }
