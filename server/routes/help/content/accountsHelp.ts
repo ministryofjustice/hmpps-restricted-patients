@@ -46,7 +46,7 @@ export default class AccountsHelp {
         category: this.category,
         heading: `I try to reset my password but it's not recognising my email`,
         content: `
-<p>Please enter your User ID instead. If this still does not allow access contact your LSA to check your email address is correct on your NOMIS account.</p>
+<p>Please enter your username instead. If this still does not allow access contact your LSA to check your email address is correct on your NOMIS account.</p>
 `.trim(),
       },
     ]

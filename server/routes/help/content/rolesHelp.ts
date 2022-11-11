@@ -30,7 +30,7 @@ export default class RolesHelp {
       {
         id: 'restricted-patient-transfer',
         category: this.category,
-        heading: 'Restricted Patient Search',
+        heading: 'Restricted Patient Transfer',
         content: `
 <p>Allows the release of a prisoner from Prison, to a secure hospital, where they are being detained under the mental health act.</p>
 <p>Intended users are Reception staff and OMU hub managers.</p>

@@ -36,7 +36,7 @@ Someone in hospital who has special restrictions applied under the Mental Health
       {
         id: 'restricted-patients-should-be-removed',
         category: this.category,
-        heading: 'Restrcited patients should be removed from the service:',
+        heading: 'Restricted patients should be removed from the service:',
         content: `
 <ul>
   <li>Once their Conditional Release Date has passed.</li>
