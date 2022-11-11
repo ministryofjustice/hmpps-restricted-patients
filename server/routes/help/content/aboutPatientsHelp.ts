@@ -1,11 +1,15 @@
-import type { HelpSection } from './index'
+// eslint-disable-next-line import/no-cycle
+import { HelpCategory } from '../index'
+import type { HelpSection } from '../index'
 
-export default class AboutHelp {
+export default class AboutPatientsHelp {
+  category = HelpCategory.ABOUT_PATIENTS
+
   helpItems(): HelpSection[] {
     return [
       {
         id: 'restricted-patient-definition',
-        section: 'about-restricted-patients',
+        category: this.category,
         heading: 'A Restricted Patient is:',
         content: `
 Someone in hospital who has special restrictions applied under the Mental Health Act. These restrictions are:
@@ -20,12 +24,25 @@ Someone in hospital who has special restrictions applied under the Mental Health
       },
       {
         id: 'omic-restricted-patients',
-        section: 'about-restricted-patients',
+        category: this.category,
         heading: 'OMIC are only concerned with restricted patients with the following restrictions:',
         content: `
 <ul>
   <li><b>47/49</b></li>
   <li><b>45a</b></li>
+</ul>
+`.trim(),
+      },
+      {
+        id: 'restricted-patients-should-be-removed',
+        category: this.category,
+        heading: 'Restricted patients should be removed from the service:',
+        content: `
+<ul>
+  <li>Once their Conditional Release Date has passed.</li>
+  <li>If recalled, they are removed when their Sentence Expiry Date has passed (and they have no additional sentence which supersedes it).</li>
+    <ul><li>Cases where a restricted patient is recalled without going via a prison are very low and will be handled as an exception to normal process by a MHCS caseworker</li></ul>
+  <li>Validation is in place on the Restricted patients service to prevent the above types of prisoners from being added.  If you are attempting to move a prisoner into the service but can’t see an option to do so, please check the above criteria or speak to a member of the MHCS team for more information</li>
 </ul>
 `.trim(),
       },
