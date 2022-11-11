@@ -8,10 +8,13 @@ import HmppsAuthClient, { User } from '../data/hmppsAuthClient'
 import { FormattedAlertType, getFormattedAlerts } from '../common/alertFlagValues'
 import { convertToTitleCase } from '../utils/utils'
 import PrisonerResult from '../data/prisonerResult'
+import type { SearchStatus } from '../routes/searchPatients/restrictedPatientSearchFilter'
 
 export interface PrisonerSearchSummary extends PrisonerSearchResult {
   displayName: string
   formattedAlerts: FormattedAlertType[]
+  searchStatus?: SearchStatus
+  actionLink?: string
 }
 
 export interface PrisonerResultSummary extends PrisonerResult {

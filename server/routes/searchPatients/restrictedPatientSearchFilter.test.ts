@@ -72,7 +72,7 @@ describe('restrictedPatientSearchFilter', () => {
         lastMovementReasonCode: 'CR',
       } as PrisonerSearchSummary
 
-      expect(searchFilter.includePrisonerToAdd(prisoner)).toEqual(SearchStatus.EXCLUDE)
+      expect(searchFilter.includePrisonerToAdd(prisoner)).toEqual(SearchStatus.EXCLUDE_NOT_RELEASED_HOSPITAL)
     })
 
     it('should include detained movements', () => {
