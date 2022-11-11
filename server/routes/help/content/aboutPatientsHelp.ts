@@ -10,7 +10,7 @@ export default class AboutPatientsHelp {
       {
         id: 'restricted-patient-definition',
         category: this.category,
-        heading: 'A Restricted Patient is:',
+        heading: 'A restricted patient is:',
         content: `
 Someone in hospital who has special restrictions applied under the Mental Health Act. These restrictions are:
 <ul>

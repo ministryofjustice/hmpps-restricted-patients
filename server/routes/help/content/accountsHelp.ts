@@ -30,7 +30,7 @@ export default class AccountsHelp {
         category: this.category,
         heading: 'I need a new password',
         content: `
-<p>Users can reset their own password using the reset option on the sign in page.</p>
+<p>Users can reset their own password using the reset option on the sign in page. Note for users who have a NOMIS account, this will also change the password on NOMIS.</p>
 `.trim(),
       },
       {

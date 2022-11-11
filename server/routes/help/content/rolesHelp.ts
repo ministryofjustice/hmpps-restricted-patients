@@ -22,7 +22,7 @@ export default class RolesHelp {
         category: this.category,
         heading: 'Restricted Patient Search',
         content: `
-<p>Role is primarily for users within Mental Health Casework Section and allows them to search the restricted patients database to find the current secure hospital location of an offender.</p> 
+<p>This role is primarily for users within Mental Health Casework Section and allows them to search the restricted patients database to find the current secure hospital location of an offender.</p> 
 <p>Intended users are MHCS staff and Head of OMU.</p>
 <p>It is not visible to LSAs and should not be given to regular users.</p> 
 `.trim(),

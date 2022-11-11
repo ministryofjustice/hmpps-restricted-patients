@@ -64,17 +64,17 @@ describe('GET /help', () => {
         const $ = load(res.text)
 
         expect(getDetail($, 'restricted-patient-definition').attr('open')).toBeFalsy()
-        expect(getDetailSummaryText($, 'restricted-patient-definition')).toStrictEqual('A Restricted Patient is:')
+        expect(getDetailSummaryText($, 'restricted-patient-definition')).toStrictEqual('A restricted patient is:')
         expect(getDetailText($, 'restricted-patient-definition')).toContain(
           'Someone in hospital who has special restrictions'
         )
 
         expect(getDetail($, 'sending-patients-back-to-prison').attr('open')).toBeFalsy()
         expect(getDetailSummaryText($, 'sending-patients-back-to-prison')).toStrictEqual(
-          'An RP is being sent back to prison - how do we bring them in?'
+          'A restricted patient is being sent back to prison - how do we bring them in?'
         )
         expect(getDetailText($, 'sending-patients-back-to-prison')).toContain(
-          'Simply book the offender back in on NOMIS'
+          'Simply book the offender back into NOMIS'
         )
       })
   })
