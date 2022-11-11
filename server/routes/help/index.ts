@@ -30,3 +30,9 @@ export type HelpSection = {
   heading: string
   content: string
 }
+
+export interface HelpContent {
+  title: string
+  category: HelpCategory
+  helpItems: HelpSection[]
+}

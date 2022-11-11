@@ -48,11 +48,11 @@ describe('GET /help', () => {
 
         expect(getPageHeader($)).toStrictEqual('Restricted patients help')
 
-        expect(getSubHeader($, 'about-patients-header')).toStrictEqual('About restricted patients')
+        expect(getSubHeader($, 'about-restricted-patients-header')).toStrictEqual('About restricted patients')
         expect(getSubHeader($, 'product-info-header')).toStrictEqual('Restricted patients product info')
         expect(getSubHeader($, 'roles-header')).toStrictEqual('Roles')
         expect(getSubHeader($, 'accounts-header')).toStrictEqual('Accounts, access and sign in')
-        expect(getSubHeader($, 'issues-header')).toStrictEqual('Operational issues')
+        expect(getSubHeader($, 'operational-issues-header')).toStrictEqual('Operational issues')
       })
   })
 
