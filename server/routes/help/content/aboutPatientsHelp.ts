@@ -1,17 +1,18 @@
 // eslint-disable-next-line import/no-cycle
 import { HelpCategory } from '../index'
-import type { HelpSection } from '../index'
+import type { HelpContent, HelpSection } from '../index'
 
-export default class AboutPatientsHelp {
+export default class AboutPatientsHelp implements HelpContent {
+  title = 'About restricted patients'
+
   category = HelpCategory.ABOUT_PATIENTS
 
-  helpItems(): HelpSection[] {
-    return [
-      {
-        id: 'restricted-patient-definition',
-        category: this.category,
-        heading: 'A Restricted Patient is:',
-        content: `
+  helpItems: HelpSection[] = [
+    {
+      id: 'restricted-patient-definition',
+      category: this.category,
+      heading: 'A restricted patient is:',
+      content: `
 Someone in hospital who has special restrictions applied under the Mental Health Act. These restrictions are:
 <ul>
   <li><b>37/41</b> – 37 is the hospital order and 41 the restriction.</li>
@@ -21,23 +22,23 @@ Someone in hospital who has special restrictions applied under the Mental Health
   <li><b>45a</b> – transferred straight from court to hospital with a restriction applied. In this case the Court should send the Hospital Order and Order of Imprisonment to the local prison who will create or update the NOMIS record and add the patient to the service.</li>
 </ul>
 `.trim(),
-      },
-      {
-        id: 'omic-restricted-patients',
-        category: this.category,
-        heading: 'OMIC are only concerned with restricted patients with the following restrictions:',
-        content: `
+    },
+    {
+      id: 'omic-restricted-patients',
+      category: this.category,
+      heading: 'OMIC are only concerned with restricted patients with the following restrictions:',
+      content: `
 <ul>
   <li><b>47/49</b></li>
   <li><b>45a</b></li>
 </ul>
 `.trim(),
-      },
-      {
-        id: 'restricted-patients-should-be-removed',
-        category: this.category,
-        heading: 'Restricted patients should be removed from the service:',
-        content: `
+    },
+    {
+      id: 'restricted-patients-should-be-removed',
+      category: this.category,
+      heading: 'Restricted patients should be removed from the service:',
+      content: `
 <ul>
   <li>Once their Conditional Release Date has passed.</li>
   <li>If recalled, they are removed when their Sentence Expiry Date has passed (and they have no additional sentence which supersedes it).</li>
@@ -45,7 +46,6 @@ Someone in hospital who has special restrictions applied under the Mental Health
   <li>Validation is in place on the Restricted patients service to prevent the above types of prisoners from being added.  If you are attempting to move a prisoner into the service but can’t see an option to do so, please check the above criteria or speak to a member of the MHCS team for more information</li>
 </ul>
 `.trim(),
-      },
-    ]
-  }
+    },
+  ]
 }
