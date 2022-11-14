@@ -26,6 +26,15 @@ export default class IssuesHelp implements HelpContent {
         `.trim(),
     },
     {
+      id: 'not-released-to-hospital',
+      category: this.category,
+      heading: `I can't add a released prisoner into the Restricted Patients service as they were not released to hospital.`,
+      content: `
+<p>The page "Add a released prisoner into restricted patients" can be used to add prisoners who were released to a hospital in Classic NOMIS.</p>
+<p>However if the prisoner was not released to hospital then they cannot be added to Restricted Patients. In this situation contact the Support team for advice.</p>
+        `.trim(),
+    },
+    {
       id: 'pom-cannot-find-offender',
       category: this.category,
       heading: 'I am a POM and cannot find my offender who was booked out via the Restricted Patient service.',

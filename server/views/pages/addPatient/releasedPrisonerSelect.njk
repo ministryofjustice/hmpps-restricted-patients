@@ -35,9 +35,6 @@
     {% set prisonerLinkHtml %}
       <a href="{{ pshUrl }}/prisoner/{{ prisoner.prisonerNumber }}" class="govuk-link">{{ prisoner.displayName }}</a>
     {% endset -%}
-    {% set addReleasedPrisonerLinkHtml %}
-      <a href="/add-restricted-patient/select-hospital?prisonerNumber={{ prisoner.prisonerNumber }}&journeyStartUrl={{ journeyStartUrl }}" class="govuk-link" data-test="prisoner-add-restricted-patient-link"><span class="govuk-visually-hidden">{{ prisoner.displayName }} - </span>Add to restricted patients</a>
-    {% endset -%}
     {% set rows = (rows.push([
       { html: prisonerImageHtml },
       {
@@ -49,7 +46,7 @@
       { text: prisoner.prisonerNumber },
       { text: prisoner.locationDescription },
       { html: alertFlags(prisoner.formattedAlerts, newLine=true) + categoryFlag('', prisoner.category, false) },
-      { html: addReleasedPrisonerLinkHtml }
+      { html: prisoner.actionLink }
     ]), rows) %}
   {% endfor %}
 
