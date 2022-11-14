@@ -20,7 +20,7 @@ export default class IssuesHelp implements HelpContent {
       category: this.category,
       heading: 'Offender was booked out using Classic NOMIS. How do we get them into the service?',
       content: `
-<p>The prison will need to raise a ticket for the offender to be migrated into the restricted patient service.</p>
+<p>This request needs to be raised via the Helpdesk, who can be contacted by calling 0800 917 5148, or #6598 from inside a prison. Ask the agent who takes your call to read the Knowledge Article KB0020285, which clearly outlines the process they need to follow to correctly route your ticket.</p>
 <p>The prison should not self-rectify by booking the offender back in on NOMIS and then out again, as this will trigger several events and also cause erroneous movements on the record.</p>
 <p>Instead if the ticket is passed to the New-NOMIS resolver group, it can be done in the back-end without affecting the NOMIS record.</p> 
         `.trim(),
