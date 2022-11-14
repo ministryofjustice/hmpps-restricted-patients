@@ -137,13 +137,13 @@ describe('GET /select-prisoner', () => {
           expect(res.text).toContain('Select a prisoner')
           expect(res.text).toContain('<p class="align-right"><strong>People listed:</strong> 4</p>')
           expect(res.text).toContain(
-            `<p><span class="govuk-visually-hidden">No add link - determinate sentence past CRD - </span>Ineligible (past CRD) <a href="/help?section=restricted-patients-should-be-removed" class="govuk-link" data-test="help-link" target="_blank">View Help</a></p>`
+            `<p><span class="govuk-visually-hidden">No add link - determinate sentence past CRD - </span>Ineligible (past CRD)<br><a href="/help?section=restricted-patients-should-be-removed" class="govuk-link" data-test="help-link" target="restricted_patients_help">View Help</a></p>`
           )
           expect(res.text).toContain(
-            `<p><span class="govuk-visually-hidden">No add link - determinate recall past SED - </span>Ineligible (past SED) <a href="/help?section=restricted-patients-should-be-removed" class="govuk-link" data-test="help-link" target="_blank">View Help</a></p>`
+            `<p><span class="govuk-visually-hidden">No add link - determinate recall past SED - </span>Ineligible (past SED)<br><a href="/help?section=restricted-patients-should-be-removed" class="govuk-link" data-test="help-link" target="restricted_patients_help">View Help</a></p>`
           )
           expect(res.text).toContain(
-            `<p><span class="govuk-visually-hidden">No add link - not released to a prison - </span>Ineligible (not released to hospital) <a href="/help?section=not-released-to-hospital" class="govuk-link" data-test="help-link" target="_blank">View Help</a></p>`
+            `<p><span class="govuk-visually-hidden">No add link - not released to a prison - </span>Ineligible (not released to hospital)<br><a href="/help?section=not-released-to-hospital" class="govuk-link" data-test="help-link" target="restricted_patients_help">View Help</a></p>`
           )
         })
     })

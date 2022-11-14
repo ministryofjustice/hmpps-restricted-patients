@@ -95,10 +95,10 @@ describe('GET /select-prisoner', () => {
         .expect('Content-Type', /html/)
         .expect(res => {
           expect(res.text).toContain(
-            `<p><span class="govuk-visually-hidden">No move link - determinate sentence past CRD - </span>Ineligible (past CRD) <a href="/help?section=restricted-patients-should-be-removed" class="govuk-link" data-test="help-link" target="_blank">View Help</a></p>`
+            `<p><span class="govuk-visually-hidden">No move link - determinate sentence past CRD - </span>Ineligible (past CRD)<br><a href="/help?section=restricted-patients-should-be-removed" class="govuk-link" data-test="help-link" target="restricted_patients_help">View Help</a></p>`
           )
           expect(res.text).toContain(
-            `<p><span class="govuk-visually-hidden">No move link - determinate recall past SED - </span>Ineligible (past SED) <a href="/help?section=restricted-patients-should-be-removed" class="govuk-link" data-test="help-link" target="_blank">View Help</a></p>`
+            `<p><span class="govuk-visually-hidden">No move link - determinate recall past SED - </span>Ineligible (past SED)<br><a href="/help?section=restricted-patients-should-be-removed" class="govuk-link" data-test="help-link" target="restricted_patients_help">View Help</a></p>`
           )
         })
     })
