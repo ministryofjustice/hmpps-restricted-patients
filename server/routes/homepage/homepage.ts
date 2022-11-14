@@ -47,6 +47,14 @@ export const tasks: TaskType[] = [
     roles: ['RESTRICTED_PATIENT_MIGRATION'],
     enabled: true,
   },
+  {
+    id: 'help',
+    heading: 'Help and support',
+    description: 'View help and FAQ.',
+    href: '/help',
+    roles: null,
+    enabled: true,
+  },
 ]
 
 export default class HomepageRoutes {

@@ -17,7 +17,7 @@ afterEach(() => {
   jest.resetAllMocks()
 })
 
-describe('', () => {
+describe('view tiles', () => {
   it('should get the home page with all tiles if the roles are present', () => {
     userService.getUserRoles.mockResolvedValue([
       'SEARCH_RESTRICTED_PATIENT',
@@ -34,6 +34,7 @@ describe('', () => {
         expect(res.text).toContain('Add a released prisoner into restricted patients')
         expect(res.text).toContain('Search for a restricted patient')
         expect(res.text).toContain('Remove someone from restricted patients')
+        expect(res.text).toContain('Help and support')
       })
   })
   it('should get the home page with appropriate tiles if not all of the roles are present', () => {
@@ -47,9 +48,10 @@ describe('', () => {
         expect(res.text).toContain('Remove someone from restricted patients')
         expect(res.text).not.toContain('Move someone to a hospital')
         expect(res.text).not.toContain('Add a released prisoner into restricted patients')
+        expect(res.text).toContain('Help and support')
       })
   })
-  it('should get the home page with appropriate tiles if not all of the roles are present', () => {
+  it('should get the home page with appropriate tiles if a single role is present', () => {
     userService.getUserRoles.mockResolvedValue(['SEARCH_RESTRICTED_PATIENT'])
     return request(app)
       .get('/')
@@ -60,16 +62,16 @@ describe('', () => {
         expect(res.text).not.toContain('Remove someone from restricted patients')
         expect(res.text).not.toContain('Move someone to a hospital')
         expect(res.text).not.toContain('Add a released prisoner into restricted patients')
+        expect(res.text).toContain('Help and support')
       })
   })
-  it('should give a 401 and error page when none of the roles are present', () => {
+  it('should show help page regardless of role', () => {
     userService.getUserRoles.mockResolvedValue([])
     return request(app)
       .get('/')
       .expect('Content-Type', /html/)
-      .expect(401)
       .expect(res => {
-        expect(res.text).toContain('You do not have permission to view this page')
+        expect(res.text).toContain('Help and support')
       })
   })
 })
