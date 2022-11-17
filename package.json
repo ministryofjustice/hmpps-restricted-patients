@@ -108,7 +108,7 @@
     "express": "^4.18.2",
     "express-request-id": "^1.4.1",
     "express-session": "^1.17.3",
-    "govuk-frontend": "^4.3.1",
+    "govuk-frontend": "^4.4.0",
     "helmet": "^4.6.0",
     "http-errors": "^1.8.1",
     "jquery": "^3.6.1",
@@ -160,13 +160,13 @@
     "jest-junit": "^13.2.0",
     "jsonwebtoken": "^8.5.1",
     "lint-staged": "^13.0.3",
-    "mocha-junit-reporter": "^2.1.1",
+    "mocha-junit-reporter": "^2.2.0",
     "nock": "^13.2.9",
     "nodemon": "^2.0.20",
     "prettier": "^2.7.1",
     "sass": "^1.56.1",
     "supertest": "^6.3.1",
     "ts-jest": "^27.1.5",
-    "typescript": "^4.8.4"
+    "typescript": "^4.9.3"
   }
 }
