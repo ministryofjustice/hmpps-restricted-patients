@@ -31,6 +31,7 @@ export default class IssuesHelp implements HelpContent {
       heading: `How can I add a prisoner to Restricted Patients if they were not released to a hospital via classic NOMIS?`,
       content: `
 <p>If the prisoner wasn't released to hospital then they cannot be added to Restricted Patients. In this situation contact the Support team for advice.</p>
+<p>If you need support with the RP service contact the Helpdesk by calling 0800 917 5148, or #6598 from inside a prison. Ask the agent who takes your call to read the Knowledge Article KB0020285 which clearly outlines the process they need to follow to correctly route your ticket to the RP Service Support Team.</p>
         `.trim(),
     },
     {
