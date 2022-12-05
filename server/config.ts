@@ -15,17 +15,29 @@ function get<T>(name: string, fallback: T, options = { requireInProduction: fals
 const requiredInProduction = { requireInProduction: true }
 
 export class AgentConfig {
+  // Maximum number of sockets to allow per host
   maxSockets: 100
 
+  // Maximum number of sockets (per host) to leave open in a free state
   maxFreeSockets: 10
 
+  // Sets the free socket to timeout after freeSocketTimeout milliseconds of inactivity on the free socket.
   freeSocketTimeout: 30000
+
+  // Sets the working socket to timeout after timeout milliseconds of inactivity on the working socket.
+  // This is deliberately set to a high value to allow superagent to time out the socket instead.
+  // The default is 8 seconds so if Prison API took > 8s then we were getting timeouts here when we didn't want them.
+  timeout: 60000
 }
 
 export interface ApiConfig {
   url: string
   timeout: {
+    // sets maximum time to wait for the first byte to arrive from the server, but it does not limit how long the
+    // entire download can take.
     response: number
+    // sets a deadline for the entire request (including all uploads, redirects, server processing time) to complete.
+    // If the response isn't fully downloaded within that time, the request will be aborted.
     deadline: number
   }
   agent: AgentConfig
@@ -78,7 +90,8 @@ export default {
       url: get('RESTRICTED_PATIENT_API_URL', 'http://localhost:8084', requiredInProduction),
       timeout: {
         response: Number(get('RESTRICTED_PATIENT_API_TIMEOUT_RESPONSE', 10000)),
-        deadline: Number(get('RESTRICTED_PATIENT_API_TIMEOUT_DEADLINE', 10000)),
+        // bumped to 30 seconds as prisoner re-index was taking > 15 seconds
+        deadline: Number(get('RESTRICTED_PATIENT_API_TIMEOUT_DEADLINE', 30000)),
       },
       agent: new AgentConfig(),
     },
