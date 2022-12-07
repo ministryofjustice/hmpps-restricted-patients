@@ -57,7 +57,7 @@ export default {
         response: Number(get('HMPPS_AUTH_TIMEOUT_RESPONSE', 10000)),
         deadline: Number(get('HMPPS_AUTH_TIMEOUT_DEADLINE', 10000)),
       },
-      agent: new AgentConfig(Number(get('HMPPS_AUTH_TIMEOUT_DEADLINE', 10000))),
+      agent: new AgentConfig(Number(get('HMPPS_AUTH_TIMEOUT_RESPONSE', 10000))),
       apiClientId: get('API_CLIENT_ID', 'clientid', requiredInProduction),
       apiClientSecret: get('API_CLIENT_SECRET', 'clientsecret', requiredInProduction),
       systemClientId: get('SYSTEM_CLIENT_ID', 'clientid', requiredInProduction),
@@ -69,24 +69,24 @@ export default {
         response: Number(get('PRISON_API_TIMEOUT_RESPONSE', 10000)),
         deadline: Number(get('PRISON_API_TIMEOUT_DEADLINE', 10000)),
       },
-      agent: new AgentConfig(Number(get('PRISON_API_TIMEOUT_DEADLINE', 10000))),
+      agent: new AgentConfig(Number(get('PRISON_API_TIMEOUT_RESPONSE', 10000))),
     },
     prisonerSearch: {
       url: get('PRISONER_SEARCH_API_URL', 'http://localhost:8083', requiredInProduction),
       timeout: {
-        response: Number(get('PRISONER_SEARCH_TIMEOUT_RESPONSE', 10000)),
-        deadline: Number(get('PRISONER_SEARCH_TIMEOUT_DEADLINE', 15000)),
+        response: Number(get('PRISONER_SEARCH_TIMEOUT_RESPONSE', 15000)),
+        deadline: Number(get('PRISONER_SEARCH_TIMEOUT_DEADLINE', 10000)),
       },
-      agent: new AgentConfig(Number(get('PRISONER_SEARCH_TIMEOUT_DEADLINE', 15000))),
+      agent: new AgentConfig(Number(get('PRISONER_SEARCH_TIMEOUT_RESPONSE', 15000))),
     },
     restrictedPatientApi: {
       url: get('RESTRICTED_PATIENT_API_URL', 'http://localhost:8084', requiredInProduction),
       timeout: {
-        response: Number(get('RESTRICTED_PATIENT_API_TIMEOUT_RESPONSE', 10000)),
+        response: Number(get('RESTRICTED_PATIENT_API_TIMEOUT_RESPONSE', 30000)),
         // bumped to 30 seconds as prisoner re-index was taking > 15 seconds
-        deadline: Number(get('RESTRICTED_PATIENT_API_TIMEOUT_DEADLINE', 30000)),
+        deadline: Number(get('RESTRICTED_PATIENT_API_TIMEOUT_DEADLINE', 10000)),
       },
-      agent: new AgentConfig(Number(get('RESTRICTED_PATIENT_API_TIMEOUT_DEADLINE', 30000))),
+      agent: new AgentConfig(Number(get('RESTRICTED_PATIENT_API_TIMEOUT_RESPONSE', 30000))),
     },
     tokenVerification: {
       url: get('TOKEN_VERIFICATION_API_URL', 'http://localhost:8100', requiredInProduction),
