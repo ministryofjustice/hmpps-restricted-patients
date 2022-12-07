@@ -23,6 +23,7 @@ export declare global {
 
     interface Request {
       verified?: boolean
+      id: string
     }
   }
 }

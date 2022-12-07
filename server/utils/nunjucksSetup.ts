@@ -57,7 +57,7 @@ export default function nunjucksSetup(app: express.Express, path: pathModule.Pla
     return `${array[0][0]}. ${array.reverse()[0]}`
   })
 
-  njkEnv.addFilter('findError', (array: FormError[] = [], formFieldId: string) => {
+  njkEnv.addFilter('findError', (array: FormError[], formFieldId: string) => {
     const item = array.find(error => error.href === `#${formFieldId}`)
     if (item) {
       return {
