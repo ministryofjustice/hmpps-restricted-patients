@@ -30,7 +30,7 @@ export default class PrisonerSelectRoutes {
 
     const searchResults = await this.prisonerSearchService.search(
       { searchTerm, prisonIds: [user.activeCaseLoadId] },
-      user
+      user,
     )
 
     const availablePrisoners = searchResults

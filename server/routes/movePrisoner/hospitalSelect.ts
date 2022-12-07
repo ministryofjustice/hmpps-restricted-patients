@@ -10,7 +10,7 @@ export default class MovePrisonerHospitalSelectRoutes extends HospitalSelectRout
       hospitalSearchService,
       prisonerSearchService,
       '/move-to-hospital/confirm-move',
-      'pages/movePrisoner/movePrisonerSelectHospital'
+      'pages/movePrisoner/movePrisonerSelectHospital',
     )
   }
 

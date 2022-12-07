@@ -6,7 +6,7 @@ export default class MovePrisonerService {
     prisonerNumber: string,
     currentPrisonId: string,
     hospitalId: string,
-    user: User
+    user: User,
   ): Promise<unknown> {
     const client = new RestrictedPatientApiClient(user.token)
     const request = {

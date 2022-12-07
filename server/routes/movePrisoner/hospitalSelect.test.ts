@@ -59,7 +59,7 @@ describe('GET /move-to-hospital', () => {
       .expect(res => {
         expect(res.text).toContain('Move John Smith to a hospital')
         expect(res.text).toContain(
-          '<img src="/prisoner/A1234AA/image" alt="Photograph of John Smith" class="horizontal-information__prisoner-image" />'
+          '<img src="/prisoner/A1234AA/image" alt="Photograph of John Smith" class="horizontal-information__prisoner-image" />',
         )
         expect(res.text).toContain('Smith, John')
         expect(res.text).toContain('1-2-015')

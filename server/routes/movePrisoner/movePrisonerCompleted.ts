@@ -5,7 +5,7 @@ import HospitalSearchService from '../../services/hospitalSearchService'
 export default class MovePrisonerCompletedRoutes {
   constructor(
     private readonly prisonerSearchService: PrisonerSearchService,
-    private readonly hospitalSearchService: HospitalSearchService
+    private readonly hospitalSearchService: HospitalSearchService,
   ) {}
 
   private renderView = async (req: Request, res: Response): Promise<void> => {

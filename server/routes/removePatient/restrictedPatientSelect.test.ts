@@ -55,12 +55,12 @@ describe('GET /select-restricted-patient', () => {
           expect(res.text).toContain('Select a restricted patient')
           expect(res.text).toContain('<p class="align-right"><strong>People listed:</strong> 1</p>')
           expect(res.text).toContain(
-            '<img src="/prisoner/A1234AA/image" alt="Photograph of Smith, John" class="results-table__image" />'
+            '<img src="/prisoner/A1234AA/image" alt="Photograph of Smith, John" class="results-table__image" />',
           )
           expect(res.text).toContain('Smith, John')
           expect(res.text).toContain('Yew Trees')
           expect(res.text).toContain(
-            '<a href="/remove-from-restricted-patients?prisonerNumber=A1234AA&journeyStartUrl=/remove-from-restricted-patients/select-patient?searchTerm=Smith" class="govuk-link" data-test="remove-restricted-patient-link"><span class="govuk-visually-hidden">Smith, John - </span>Remove as a restricted patient</a>'
+            '<a href="/remove-from-restricted-patients?prisonerNumber=A1234AA&journeyStartUrl=/remove-from-restricted-patients/select-patient?searchTerm=Smith" class="govuk-link" data-test="remove-restricted-patient-link"><span class="govuk-visually-hidden">Smith, John - </span>Remove as a restricted patient</a>',
           )
         })
     })

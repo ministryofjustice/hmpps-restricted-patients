@@ -64,7 +64,7 @@ describe('restrictedPatientSearchService', () => {
         expect.arrayContaining([
           expect.objectContaining({ displayName: 'Jones, Steve' }),
           expect.objectContaining({ displayName: 'Smith, John' }),
-        ])
+        ]),
       )
 
       expect(RestrictedPatientSearchClient).toBeCalledWith(user.token)

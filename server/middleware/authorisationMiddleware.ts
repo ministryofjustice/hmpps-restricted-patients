@@ -6,7 +6,7 @@ import asyncMiddleware from './asyncMiddleware'
 
 export default function authorisationMiddleware(
   renderNotFound: boolean,
-  authorisedRoles: string[] = []
+  authorisedRoles: string[] = [],
 ): RequestHandler {
   // authorities in the user token will always be prefixed by ROLE_.
   // Convert roles that are passed into this function without the prefix so that we match correctly.

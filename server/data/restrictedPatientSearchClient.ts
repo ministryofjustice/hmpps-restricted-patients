@@ -29,7 +29,7 @@ export default class RestrictedPatientSearchClient {
     })
 
     return results?.content.map(result =>
-      plainToClass(RestrictedPatientSearchResult, result, { excludeExtraneousValues: true })
+      plainToClass(RestrictedPatientSearchResult, result, { excludeExtraneousValues: true }),
     )
   }
 }

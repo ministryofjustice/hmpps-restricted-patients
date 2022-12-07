@@ -7,7 +7,7 @@ const getAgencyDetails = jest.fn()
 
 jest.mock('../data/hmppsAuthClient')
 jest.mock('../data/prisonApiClient', () =>
-  jest.fn().mockImplementation(() => ({ getAgenciesByType, getAgencyDetails }))
+  jest.fn().mockImplementation(() => ({ getAgenciesByType, getAgencyDetails })),
 )
 
 const user = {

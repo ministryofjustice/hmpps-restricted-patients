@@ -118,13 +118,13 @@ describe('GET /select-prisoner', () => {
           expect(res.text).toContain('Select a prisoner')
           expect(res.text).toContain('<p class="align-right"><strong>People listed:</strong> 4</p>')
           expect(res.text).toContain(
-            '<img src="/prisoner/A1234AA/image" alt="Photograph of Smith, John" class="results-table__image" />'
+            '<img src="/prisoner/A1234AA/image" alt="Photograph of Smith, John" class="results-table__image" />',
           )
           expect(res.text).toContain('Smith, John')
           expect(res.text).toContain('Outside - released from Doncaster')
           expect(res.text).toContain('Controlled unlock')
           expect(res.text).toContain(
-            '<a href="/add-restricted-patient/select-hospital?prisonerNumber=A1234AA&journeyStartUrl=/add-restricted-patient/select-prisoner?searchTerm=Smith" class="govuk-link" data-test="prisoner-add-restricted-patient-link"><span class="govuk-visually-hidden">Smith, John - </span>Add to restricted patients</a>'
+            '<a href="/add-restricted-patient/select-hospital?prisonerNumber=A1234AA&journeyStartUrl=/add-restricted-patient/select-prisoner?searchTerm=Smith" class="govuk-link" data-test="prisoner-add-restricted-patient-link"><span class="govuk-visually-hidden">Smith, John - </span>Add to restricted patients</a>',
           )
         })
     })
@@ -137,13 +137,13 @@ describe('GET /select-prisoner', () => {
           expect(res.text).toContain('Select a prisoner')
           expect(res.text).toContain('<p class="align-right"><strong>People listed:</strong> 4</p>')
           expect(res.text).toContain(
-            `<p><span class="govuk-visually-hidden">No add link - determinate sentence past CRD - </span>Ineligible (past CRD)<br><a href="/help?section=restricted-patients-should-be-removed" class="govuk-link" data-test="help-link" target="restricted_patients_help">View Help</a></p>`
+            `<p><span class="govuk-visually-hidden">No add link - determinate sentence past CRD - </span>Ineligible (past CRD)<br><a href="/help?section=restricted-patients-should-be-removed" class="govuk-link" data-test="help-link" target="restricted_patients_help">View Help</a></p>`,
           )
           expect(res.text).toContain(
-            `<p><span class="govuk-visually-hidden">No add link - determinate recall past SED - </span>Ineligible (past SED)<br><a href="/help?section=restricted-patients-should-be-removed" class="govuk-link" data-test="help-link" target="restricted_patients_help">View Help</a></p>`
+            `<p><span class="govuk-visually-hidden">No add link - determinate recall past SED - </span>Ineligible (past SED)<br><a href="/help?section=restricted-patients-should-be-removed" class="govuk-link" data-test="help-link" target="restricted_patients_help">View Help</a></p>`,
           )
           expect(res.text).toContain(
-            `<p><span class="govuk-visually-hidden">No add link - not released to a prison - </span>Ineligible (not released to hospital)<br><a href="/help?section=not-released-to-hospital" class="govuk-link" data-test="help-link" target="restricted_patients_help">View Help</a></p>`
+            `<p><span class="govuk-visually-hidden">No add link - not released to a prison - </span>Ineligible (not released to hospital)<br><a href="/help?section=not-released-to-hospital" class="govuk-link" data-test="help-link" target="restricted_patients_help">View Help</a></p>`,
           )
         })
     })
