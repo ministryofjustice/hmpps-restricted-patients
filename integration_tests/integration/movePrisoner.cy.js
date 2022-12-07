@@ -97,7 +97,7 @@ context('Move prisoner', () => {
       .should('have.attr', 'href')
       .then(href => {
         expect(href).to.equal(
-          'https://eu.surveymonkey.com/r/GYB8Y9Q?source=localhost/move-to-hospital/search-for-prisoner'
+          'https://eu.surveymonkey.com/r/GYB8Y9Q?source=localhost/move-to-hospital/search-for-prisoner',
         )
       })
   })

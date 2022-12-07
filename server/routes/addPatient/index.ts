@@ -33,7 +33,7 @@ export default function addPrisonerRoutes({
   const addPatientConfirmation = new AddPatientConfirmationRoutes(
     migratePrisonerService,
     prisonerSearchService,
-    hospitalSearchService
+    hospitalSearchService,
   )
 
   get('/search-for-prisoner', prisonerSearch.view)

@@ -74,7 +74,7 @@ function appSetup(
   services: Services,
   production: boolean,
   session: Record<string, unknown>,
-  userSupplier: () => Express.User
+  userSupplier: () => Express.User,
 ): Express {
   const app = express()
 
@@ -109,7 +109,7 @@ function appSetup(
       hospitalSearchService: {} as HospitalSearchService,
       migratePrisonerService: {} as MigratePrisonerService,
       ...services,
-    })
+    }),
   )
   app.use((req, res, next) => next(createError(404, 'Not found')))
   app.use(errorHandler(production))

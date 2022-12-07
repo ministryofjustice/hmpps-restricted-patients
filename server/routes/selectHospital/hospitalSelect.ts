@@ -14,7 +14,7 @@ export default abstract class HospitalSelectRoutes {
     private readonly hospitalSearchService: HospitalSearchService,
     private readonly prisonerSearchService: PrisonerSearchService,
     private readonly path: string,
-    private readonly page: string
+    private readonly page: string,
   ) {}
 
   private renderView = async (req: Request, res: Response, pageData: PageData): Promise<void> => {
@@ -32,7 +32,7 @@ export default abstract class HospitalSelectRoutes {
         value: hospital.agencyId,
         text: hospital.description,
       })),
-      'Select a hospital'
+      'Select a hospital',
     )
 
     return res.render(this.page, {

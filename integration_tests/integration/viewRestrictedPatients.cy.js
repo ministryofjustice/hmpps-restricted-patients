@@ -60,7 +60,7 @@ context('View restricted patients', () => {
       .should('have.attr', 'href')
       .then(href => {
         expect(href).to.equal(
-          'https://eu.surveymonkey.com/r/GYB8Y9Q?source=localhost/view-restricted-patients/search-for-patient'
+          'https://eu.surveymonkey.com/r/GYB8Y9Q?source=localhost/view-restricted-patients/search-for-patient',
         )
       })
   })

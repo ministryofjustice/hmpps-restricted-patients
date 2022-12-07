@@ -33,7 +33,7 @@ export default function setUpWebSecurity(): Router {
           connectSrc: ["'self'", '*.googletagmanager.com', '*.google-analytics.com', '*.analytics.google.com'],
         },
       },
-    })
+    }),
   )
   return router
 }

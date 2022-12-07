@@ -104,7 +104,7 @@ context('Add prisoner', () => {
       .should('have.attr', 'href')
       .then(href => {
         expect(href).to.equal(
-          'https://eu.surveymonkey.com/r/GYB8Y9Q?source=localhost/add-restricted-patient/search-for-prisoner'
+          'https://eu.surveymonkey.com/r/GYB8Y9Q?source=localhost/add-restricted-patient/search-for-prisoner',
         )
       })
   })

@@ -7,7 +7,7 @@ export default class AddPatientConfirmationRoutes {
   constructor(
     private readonly migratePrisonerService: MigratePrisonerService,
     private readonly prisonerSearchService: PrisonerSearchService,
-    private readonly hospitalSearchService: HospitalSearchService
+    private readonly hospitalSearchService: HospitalSearchService,
   ) {}
 
   private renderView = async (req: Request, res: Response): Promise<void> => {
@@ -37,7 +37,7 @@ export default class AddPatientConfirmationRoutes {
       await this.migratePrisonerService.migrateToHospital(prisonerNumber, hospitalId, user)
 
       return res.redirect(
-        `/add-restricted-patient/prisoner-added?${new URLSearchParams({ prisonerNumber, hospitalId })}`
+        `/add-restricted-patient/prisoner-added?${new URLSearchParams({ prisonerNumber, hospitalId })}`,
       )
     } catch (error) {
       res.locals.redirectUrl = `/back-to-start`

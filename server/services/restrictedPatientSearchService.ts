@@ -46,7 +46,7 @@ export default class RestrictedPatientSearchService {
     })
 
     return enhancedResults.sort((a: RestrictedPatientSearchSummary, b: RestrictedPatientSearchSummary) =>
-      a.displayName.localeCompare(b.displayName)
+      a.displayName.localeCompare(b.displayName),
     )
   }
 }

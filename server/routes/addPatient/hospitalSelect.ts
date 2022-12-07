@@ -9,7 +9,7 @@ export default class AddPatientHospitalSelectRoutes extends HospitalSelectRoutes
       hospitalSearchService,
       prisonerSearchService,
       '/add-restricted-patient/confirm-add',
-      'pages/addPatient/addPatientSelectHospital'
+      'pages/addPatient/addPatientSelectHospital',
     )
   }
 

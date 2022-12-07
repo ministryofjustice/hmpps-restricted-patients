@@ -32,7 +32,7 @@ export default function movePrisonerRoutes({
   const movePrisonerConfirmation = new MovePrisonerConfirmationRoutes(
     movePrisonerService,
     prisonerSearchService,
-    hospitalSearchService
+    hospitalSearchService,
   )
   const movePrisonerCompleted = new MovePrisonerCompletedRoutes(prisonerSearchService, hospitalSearchService)
 

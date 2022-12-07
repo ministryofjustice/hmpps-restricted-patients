@@ -23,7 +23,7 @@ export default function prisonerRoutes({
           const placeHolder = path.join(process.cwd(), '/assets/images/image-missing.jpg')
           res.sendFile(placeHolder)
         })
-    })
+    }),
   )
 
   return router
