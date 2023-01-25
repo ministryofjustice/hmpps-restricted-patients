@@ -13,9 +13,9 @@ export default class ProductInfoHelp implements HelpContent {
       category: this.category,
       heading: 'Why is the service used?',
       content: `
-<p>This service is for managing offenders who are currently held in a secure hospital, but still under the responsibility of the prison.</p> 
+<p>This service is for managing offenders who are currently held in a secure hospital, but still require sentence management.</p> 
 <p>It allows users to transfer an offender to a hospital, remove them once they have been transferred back or released into the community from the hospital and also search for an offender to see if they are currently located within a hospital.</p>
-<p>It is not a service you would access in the usual manner, but a tool to book offenders out by discharging them to hospital, whilst still allowing the prison to retain ownership, and adding the record to the relevant services users need to access to update the record.</p> 
+<p>It is not a service you would access in the usual manner, but a tool to book offenders out by discharging them to hospital, whilst still allowing the prison to retain oversight, and adding the record to the relevant services users need to access to update the record.</p> 
 `.trim(),
     },
     {
