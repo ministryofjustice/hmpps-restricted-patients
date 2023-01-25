@@ -26,7 +26,8 @@ Someone in hospital who has special restrictions applied under the Mental Health
     {
       id: 'omic-restricted-patients',
       category: this.category,
-      heading: 'OMIC are only concerned with restricted patients with the following restrictions:',
+      heading:
+        'Sentence management activities are only required for restricted patients with the following restrictions:',
       content: `
 <ul>
   <li><b>47/49</b></li>

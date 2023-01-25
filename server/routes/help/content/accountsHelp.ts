@@ -14,7 +14,7 @@ export default class AccountsHelp implements HelpContent {
       heading: 'Can I get access to the Restricted Patients service?',
       content: `
 <p>LSAs can add 2 roles to a users DPS account to allow them access to the service.</p>
-<p>MHCS staff are currently being managed by the Restricted Patients Service Team.</p>
+<p>Access for MHCS staff is currently being managed by the Restricted Patients service team.</p>
 `.trim(),
     },
     {
@@ -23,7 +23,7 @@ export default class AccountsHelp implements HelpContent {
       heading: 'Can I get someone else access to the service?',
       content: `
 <p>LSAs can add 2 roles to a users DPS account to allow them access to the service.</p>
-<p>MHCS staff are currently being managed by the Restricted Patients Service Team.</p>
+<p>Access for MHCS staff is currently being managed by the Restricted Patients service team.</p>
 `.trim(),
     },
     {
