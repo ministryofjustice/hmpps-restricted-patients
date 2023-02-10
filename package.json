@@ -95,7 +95,7 @@
   "dependencies": {
     "@ministryofjustice/frontend": "^1.6.4",
     "agentkeepalive": "^4.2.1",
-    "applicationinsights": "^2.4.1",
+    "applicationinsights": "^2.4.2",
     "body-parser": "^1.20.1",
     "bunyan": "^1.8.15",
     "bunyan-format": "^0.2.1",
@@ -137,7 +137,7 @@
     "@types/node": "^18.13.0",
     "@types/nunjucks": "^3.2.1",
     "@types/passport": "^1.0.11",
-    "@types/passport-oauth2": "^1.4.11",
+    "@types/passport-oauth2": "^1.4.12",
     "@types/redis": "^4.0.11",
     "@types/superagent": "^4.1.16",
     "@types/supertest": "^2.0.12",
