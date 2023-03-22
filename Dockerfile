@@ -2,7 +2,7 @@
 ARG BUILD_NUMBER=1_0_0
 ARG GIT_REF=not-available
 
-FROM node:18.12-bullseye-slim as base
+FROM node:18.15-bullseye-slim as base
 
 LABEL maintainer="HMPPS Digital Studio <info@digital.justice.gov.uk>"
 
@@ -34,7 +34,7 @@ RUN export BUILD_NUMBER=${BUILD_NUMBER} && \
     export GIT_REF=${GIT_REF} && \
     npm run record-build-info
 
-RUN npm prune --no-audit --production
+RUN npm prune --no-audit --omit-dev
 
 # Stage: copy production assets and dependencies
 FROM base
