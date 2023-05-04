@@ -7,6 +7,11 @@ generic-service:
   ingress:
     host: manage-restricted-patients-dev.hmpps.service.justice.gov.uk
 
+  scheduledDowntime:
+    enabled: true
+    startup: '26 6 * * 1-5' # Start at 6.26am UTC Monday-Friday
+    shutdown: '43 21 * * 1-5' # Stop at 9.43pm UTC Monday-Friday
+
   env:
     INGRESS_URL: https://manage-restricted-patients-dev.hmpps.service.justice.gov.uk
     HMPPS_AUTH_URL: https://sign-in-dev.hmpps.service.justice.gov.uk/auth

@@ -2,10 +2,15 @@
 # Per environment values which override defaults in hmpps-restricted-patients/values.yaml
 
 generic-service:
-  replicaCount: 4
+  replicaCount: 2
 
   ingress:
     host: manage-restricted-patients-preprod.hmpps.service.justice.gov.uk
+
+  scheduledDowntime:
+    enabled: true
+    startup: '27 6 * * 1-5' # Start at 6.27am UTC Monday-Friday
+    shutdown: '44 21 * * 1-5' # Stop at 9.44pm UTC Monday-Friday
 
   env:
     INGRESS_URL: "https://manage-restricted-patients-preprod.hmpps.service.justice.gov.uk"
