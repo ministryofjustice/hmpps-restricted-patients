@@ -3,7 +3,10 @@ import validateForm from './restrictedPatientSearchValidation'
 import { FormError } from '../../@types/template'
 
 export default abstract class RestrictedPatientSearchRoutes {
-  protected constructor(private readonly path: string, private readonly page: string) {}
+  protected constructor(
+    private readonly path: string,
+    private readonly page: string,
+  ) {}
 
   private renderView = async (req: Request, res: Response, error?: FormError): Promise<void> =>
     res.render(this.page, {
