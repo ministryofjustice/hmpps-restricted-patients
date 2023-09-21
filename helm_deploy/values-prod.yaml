@@ -16,6 +16,7 @@ generic-service:
     PRISONER_SEARCH_API_URL: https://prisoner-offender-search.prison.service.justice.gov.uk
     RESTRICTED_PATIENT_API_URL: https://restricted-patients-api.hmpps.service.justice.gov.uk
     SUPPORT_URL: https://support.hmpps.service.justice.gov.uk/
+    FRONTEND_COMPONENTS_URL: https://frontend-components.hmpps.service.justice.gov.uk
 
   allowlist:
     global-protect: "35.176.93.186/32"
