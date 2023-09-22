@@ -95,6 +95,15 @@ export default {
       agent: new AgentConfig(Number(get('TOKEN_VERIFICATION_API_TIMEOUT_DEADLINE', 5000))),
       enabled: get('TOKEN_VERIFICATION_ENABLED', 'false') === 'true',
     },
+    frontendComponents: {
+      url: get('FRONTEND_COMPONENTS_URL', 'http://localhost:8083', requiredInProduction),
+      timeout: {
+        response: Number(get('FRONTEND_COMPONENTS_TIMEOUT_RESPONSE', 10000)),
+        deadline: Number(get('FRONTEND_COMPONENTS_TIMEOUT_DEADLINE', 10000)),
+      },
+      agent: new AgentConfig(Number(get('FRONTEND_COMPONENTS_TIMEOUT_RESPONSE', 10000))),
+      enabled: get('FRONTEND_COMPONENTS_ENABLED', 'false') === 'true',
+    },
   },
   analytics: {
     tagManagerContainerId: get('TAG_MANAGER_CONTAINER_ID', ''),
