@@ -1,4 +1,4 @@
-import type { Router } from 'express'
+import { Router } from 'express'
 
 import prisonerRoutes from './prisonerRoutes'
 import movePrisonerRoutes from './movePrisoner'
@@ -6,22 +6,20 @@ import viewPatientsRoutes from './viewPatients'
 import removePatientRoutes from './removePatient'
 import homepageRoutes from './homepage'
 
-import { Services } from '../services'
 import addPrisonerRoutes from './addPatient'
 import helpRoutes from './help'
+import { Services } from '../services'
 
-export default function routes(
-  router: Router,
-  {
-    prisonerSearchService,
-    restrictedPatientSearchService,
-    movePrisonerService,
-    removeRestrictedPatientService,
-    userService,
-    hospitalSearchService,
-    migratePrisonerService,
-  }: Services,
-): Router {
+export default function routes({
+  prisonerSearchService,
+  restrictedPatientSearchService,
+  movePrisonerService,
+  removeRestrictedPatientService,
+  userService,
+  hospitalSearchService,
+  migratePrisonerService,
+}: Services): Router {
+  const router = Router()
   router.use(
     '/move-to-hospital',
     movePrisonerRoutes({ movePrisonerService, prisonerSearchService, hospitalSearchService }),
