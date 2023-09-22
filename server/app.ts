@@ -1,7 +1,6 @@
 import 'reflect-metadata'
 import express from 'express'
 
-import path from 'path'
 import createError from 'http-errors'
 
 import routes from './routes'
@@ -45,12 +44,12 @@ export default function createApp(services: Services): express.Application {
 
     next()
   })
-  app.use(setUpHealthChecks())
+  app.use(setUpHealthChecks(services.applicationInfo))
   app.use(setUpWebSecurity())
   app.use(setUpWebSession())
   app.use(setUpWebRequestParsing())
   app.use(setUpStaticResources())
-  nunjucksSetup(app, path)
+  nunjucksSetup(app, services.applicationInfo)
   app.use(setUpAuthentication())
   app.use(authorisationMiddleware(false))
   app.use(setUpCsrf())

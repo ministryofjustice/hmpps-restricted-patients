@@ -2,7 +2,6 @@ import 'reflect-metadata'
 import express, { Express } from 'express'
 import cookieSession from 'cookie-session'
 import createError from 'http-errors'
-import path from 'path'
 import jwtDecode from 'jwt-decode'
 
 import nunjucksSetup from '../../utils/nunjucksSetup'
@@ -17,6 +16,14 @@ import { Services } from '../../services'
 import RemoveRestrictedPatientService from '../../services/removeRestrictedPatientService'
 import HospitalSearchService from '../../services/hospitalSearchService'
 import MigratePrisonerService from '../../services/migratePrisonerService'
+import { ApplicationInfo } from '../../applicationInfo'
+
+const testAppInfo: ApplicationInfo = {
+  applicationName: 'test',
+  buildNumber: '1',
+  gitRef: 'long ref',
+  gitShortHash: 'short ref',
+}
 
 const user = {
   name: 'john smith',
@@ -79,7 +86,7 @@ function appSetup(
 
   app.set('view engine', 'njk')
 
-  nunjucksSetup(app, path)
+  nunjucksSetup(app, testAppInfo)
 
   app.use((req, res, next) => {
     req.user = userSupplier()

@@ -10,17 +10,17 @@ context('Healthcheck', () => {
     })
 
     it('Health check page is visible', () => {
-      cy.request('/health').its('body.healthy').should('equal', true)
+      cy.request('/health').its('body.status').should('equal', 'UP')
     })
 
     it('All dependant APIs are healthy', () => {
       cy.request('/health').then(response => {
-        expect(response.body.checks).to.deep.eq({
-          hmppsAuth: 'OK',
-          prisonerOffenderSearch: 'OK',
-          tokenVerification: 'OK',
-          prisonApi: 'OK',
-          restrictedPatientApi: 'OK',
+        expect(response.body.components).to.deep.eq({
+          hmppsAuth: { status: 'UP', details: 'UP' },
+          prisonerOffenderSearch: { status: 'UP', details: 'UP' },
+          tokenVerification: { status: 'UP', details: 'UP' },
+          prisonApi: { status: 'UP', details: 'UP' },
+          restrictedPatientApi: { status: 'UP', details: 'UP' },
         })
       })
     })
@@ -41,16 +41,18 @@ context('Healthcheck', () => {
     })
 
     it('Health check page is visible', () => {
-      cy.request({ url: '/health', method: 'GET', failOnStatusCode: false }).its('body.healthy').should('equal', false)
+      cy.request({ url: '/health', method: 'GET', failOnStatusCode: false }).its('body.status').should('equal', 'DOWN')
     })
 
-    it('All dependant APIs are healthy', () => {
+    it('All dependant APIs are unhealthy', () => {
       cy.request({ url: '/health', method: 'GET', failOnStatusCode: false }).then(response => {
-        expect(response.body.checks.hmppsAuth.status).to.eq(500)
-        expect(response.body.checks.prisonerOffenderSearch.status).to.eq(500)
-        expect(response.body.checks.tokenVerification.status).to.eq(500)
-        expect(response.body.checks.prisonApi.status).to.eq(500)
-        expect(response.body.checks.restrictedPatientApi.status).to.eq(500)
+        expect(response.body.components.hmppsAuth.status).to.equal('DOWN')
+        expect(response.body.components.prisonerOffenderSearch.status).to.equal('DOWN')
+        expect(response.body.components.prisonerOffenderSearch.details).to.contain({ status: 500, retries: 2 })
+        expect(response.body.components.tokenVerification.status).to.equal('DOWN')
+        expect(response.body.components.tokenVerification.details).to.contain({ status: 500, retries: 2 })
+        expect(response.body.components.prisonApi.status).to.equal('DOWN')
+        expect(response.body.components.restrictedPatientApi.status).to.equal('DOWN')
       })
     })
   })
