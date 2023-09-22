@@ -22,8 +22,6 @@ generic-service:
     RESTRICTED_PATIENT_API_URL: https://restricted-patients-api-dev.hmpps.service.justice.gov.uk
     SUPPORT_URL: https://support-dev.hmpps.service.justice.gov.uk/
 
-  allowlist: null
-
 generic-prometheus-alerts:
   businessHoursOnly: true
   alertSeverity: digital-prison-service-dev
