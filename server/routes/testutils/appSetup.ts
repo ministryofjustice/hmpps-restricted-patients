@@ -5,10 +5,9 @@ import createError from 'http-errors'
 import path from 'path'
 import jwtDecode from 'jwt-decode'
 
-import allRoutes from '../index'
 import nunjucksSetup from '../../utils/nunjucksSetup'
 import errorHandler from '../../errorHandler'
-import standardRouter from '../standardRouter'
+import routes from '../index'
 import UserService from '../../services/userService'
 import * as auth from '../../authentication/auth'
 import PrisonerSearchService from '../../services/prisonerSearchService'
@@ -100,7 +99,7 @@ function appSetup(
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
   app.use(
-    allRoutes(standardRouter(new MockUserService()), {
+    routes({
       userService: new MockUserService(),
       prisonerSearchService: {} as PrisonerSearchService,
       movePrisonerService: {} as MovePrisonerService,
