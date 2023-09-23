@@ -9,7 +9,7 @@ import HospitalSearchService from './hospitalSearchService'
 import MigratePrisonerService from './migratePrisonerService'
 
 export const services = () => {
-  const { hmppsAuthClient } = dataAccess()
+  const { hmppsAuthClient, applicationInfo } = dataAccess()
 
   const userService = new UserService(hmppsAuthClient)
   const prisonerSearchService = new PrisonerSearchService(hmppsAuthClient)
@@ -20,6 +20,7 @@ export const services = () => {
   const migratePrisonerService = new MigratePrisonerService()
 
   return {
+    applicationInfo,
     userService,
     prisonerSearchService,
     movePrisonerService,

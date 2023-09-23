@@ -1,13 +1,14 @@
 import express, { Router } from 'express'
 
 import healthcheck from '../services/healthCheck'
+import type { ApplicationInfo } from '../applicationInfo'
 
-export default function setUpHealthChecks(): Router {
+export default function setUpHealthChecks(applicationInfo: ApplicationInfo): Router {
   const router = express.Router()
 
   router.get('/health', (req, res, next) => {
-    healthcheck(result => {
-      if (!result.healthy) {
+    healthcheck(applicationInfo, result => {
+      if (result.status !== 'UP') {
         res.status(503)
       }
       res.json(result)
@@ -19,6 +20,18 @@ export default function setUpHealthChecks(): Router {
       status: 'UP',
     }),
   )
+
+  router.get('/info', (req, res) => {
+    res.json({
+      uptime: process.uptime(),
+      build: {
+        buildNumber: applicationInfo.buildNumber,
+        gitRef: applicationInfo.gitRef,
+      },
+      version: applicationInfo.buildNumber,
+      productId: applicationInfo.productId,
+    })
+  })
 
   return router
 }

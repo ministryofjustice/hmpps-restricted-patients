@@ -23,7 +23,7 @@ describe('Service healthcheck', () => {
       fakeServiceApi.get('/ping').reply(200, 'pong')
 
       const output = await healthcheck()
-      expect(output).toEqual('OK')
+      expect(output).toEqual('UP')
     })
   })
 
@@ -46,7 +46,7 @@ describe('Service healthcheck', () => {
         .reply(200, 'pong')
 
       const response = await healthcheck()
-      expect(response).toEqual('OK')
+      expect(response).toEqual('UP')
     })
 
     it('Should retry twice if request times out', async () => {
@@ -61,7 +61,7 @@ describe('Service healthcheck', () => {
         .reply(200, 'pong')
 
       const response = await healthcheck()
-      expect(response).toEqual('OK')
+      expect(response).toEqual('UP')
     })
 
     it('Should fail if request times out three times', async () => {
