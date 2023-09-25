@@ -8,6 +8,7 @@ describe('Healthcheck', () => {
     buildNumber: '1',
     gitRef: 'long ref',
     gitShortHash: 'short ref',
+    branchName: 'main',
   }
 
   it('Healthcheck reports healthy', done => {

@@ -38,6 +38,7 @@ export default {
   buildNumber: get('BUILD_NUMBER', '1_0_0', requiredInProduction),
   productId: get('PRODUCT_ID', 'UNASSIGNED', requiredInProduction),
   gitRef: get('GIT_REF', 'xxxxxxxxxxxxxxxxxxx', requiredInProduction),
+  branchName: get('GIT_BRANCH', 'xxxxxxxxxxxxxxxxxxx', requiredInProduction),
   https: production,
   staticResourceCacheDuration: 20,
   redis: {
@@ -101,10 +102,10 @@ export default {
     frontendComponents: {
       url: get('FRONTEND_COMPONENTS_URL', 'http://localhost:8083', requiredInProduction),
       timeout: {
-        response: Number(get('FRONTEND_COMPONENTS_TIMEOUT_RESPONSE', 10000)),
-        deadline: Number(get('FRONTEND_COMPONENTS_TIMEOUT_DEADLINE', 10000)),
+        response: Number(get('FRONTEND_COMPONENTS_TIMEOUT_RESPONSE', 5000)),
+        deadline: Number(get('FRONTEND_COMPONENTS_TIMEOUT_DEADLINE', 5000)),
       },
-      agent: new AgentConfig(Number(get('FRONTEND_COMPONENTS_TIMEOUT_RESPONSE', 10000))),
+      agent: new AgentConfig(Number(get('FRONTEND_COMPONENTS_TIMEOUT_RESPONSE', 5000))),
       enabled: get('FRONTEND_COMPONENTS_ENABLED', 'false') === 'true',
     },
   },
