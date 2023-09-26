@@ -1,7 +1,7 @@
 version: '3.1'
 services:
 
-  redis:
+  rp-redis:
     image: 'redis:7.0'
     networks:
       - hmpps_int
@@ -10,7 +10,7 @@ services:
     ports:
       - '6379:6379'
 
-  wiremock:
+  rp-wiremock:
     image: wiremock/wiremock
     networks:
     - hmpps_int
@@ -19,8 +19,6 @@ services:
     command: "--global-response-templating --enable-stub-cors" # add command `--verbose` to output verbose request matching
     ports:
       - "9091:8080"
-    volumes:
-      - ./wiremock:/home/wiremock
 
 networks:
   hmpps_int:

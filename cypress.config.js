@@ -8,6 +8,7 @@ const tokenVerification = require('./integration_tests/mockApis/tokenVerificatio
 const search = require('./integration_tests/mockApis/search')
 const prisonApi = require('./integration_tests/mockApis/prisonApi')
 const restrictedPatientApi = require('./integration_tests/mockApis/restrictedPatientApi')
+const frontendComponents = require('./integration_tests/mockApis/frontendComponents')
 
 module.exports = defineConfig({
   chromeWebSecurity: false,
@@ -48,6 +49,10 @@ module.exports = defineConfig({
 
         ...restrictedPatientApi,
         stubRestrictedPatientApiPing: restrictedPatientApi.stubPing,
+
+        ...frontendComponents,
+        stubFrontendComponents: () =>
+          Promise.all([frontendComponents.stubGetComponents(), frontendComponents.stubGetComponentAssets()]),
       })
     },
 

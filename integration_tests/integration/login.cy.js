@@ -6,6 +6,7 @@ context('Login', () => {
     cy.task('reset')
     cy.task('stubLogin')
     cy.task('stubAuthUser')
+    cy.task('stubFrontendComponents')
     cy.task('stubUserRoles', [
       { roleCode: 'REMOVE_RESTRICTED_PATIENT' },
       { roleCode: 'TRANSFER_RESTRICTED_PATIENT' },

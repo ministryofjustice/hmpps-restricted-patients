@@ -19,6 +19,7 @@ context('Move prisoner', () => {
     cy.task('reset')
     cy.task('stubLogin', { roles: ['TRANSFER_RESTRICTED_PATIENT'] })
     cy.task('stubAuthUser')
+    cy.task('stubFrontendComponents')
     cy.task('stubUserRoles', [{ roleCode: 'TRANSFER_RESTRICTED_PATIENT' }])
     cy.task('stubSearch')
     cy.task('stubGetAgenciesByType', {
