@@ -24,6 +24,34 @@ services:
       - SPRING_PROFILES_ACTIVE=dev
       - DELIUS_ENABLED=false
 
+  prison-api:
+    image: quay.io/hmpps/prison-api:latest
+    networks:
+      - hmpps
+    container_name: prison-api
+    depends_on:
+      - hmpps-auth
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+    environment:
+      - SERVER_PORT=8080
+      - SPRING_PROFILES_ACTIVE=nomis-hsqldb
+      - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://hmpps-auth:8080/auth/.well-known/jwks.json
+
+  wiremock:
+    image: wiremock/wiremock
+    networks:
+      - hmpps
+    container_name: wiremock
+    restart: always
+    command: "--global-response-templating --enable-stub-cors" # add command `--verbose` to output verbose request matching
+    ports:
+      - "8085:8080"
+    volumes:
+      - ./wiremock:/home/wiremock
+
   app:
     build: .
     networks:

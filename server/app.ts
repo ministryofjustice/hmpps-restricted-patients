@@ -19,6 +19,7 @@ import { Services } from './services'
 import setUpCsrf from './middleware/setUpCsrf'
 import setUpCurrentUser from './middleware/setUpCurrentUser'
 import setupJourneyStart from './routes/journeyStartRouter'
+import setupFrontendComponents from './middleware/setupFrontendComponents'
 
 export default function createApp(services: Services): express.Application {
   // We do not want the server to exit, partly because any log information will be lost.
@@ -54,6 +55,7 @@ export default function createApp(services: Services): express.Application {
   app.use(authorisationMiddleware(false))
   app.use(setUpCsrf())
   app.use(setUpCurrentUser(services))
+  app.use(setupFrontendComponents(services))
 
   app.use(setupJourneyStart())
   app.use(routes(services))

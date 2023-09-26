@@ -1,0 +1,14 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/frontend-components/assets/.*/.*"
+  },
+  "response": {
+    "headers": {
+      "Content-Type": "text/css",
+      "Cross-Origin-Resource-Policy": "same-site"
+    },
+    "status": 200,
+    "bodyFileName": "assets/{{request.pathSegments.[2]}}/{{request.pathSegments.[3]}}"
+  }
+}
