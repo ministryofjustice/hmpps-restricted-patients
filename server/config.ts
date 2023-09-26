@@ -100,7 +100,7 @@ export default {
       enabled: get('TOKEN_VERIFICATION_ENABLED', 'false') === 'true',
     },
     frontendComponents: {
-      url: get('FRONTEND_COMPONENTS_URL', 'http://localhost:8083', requiredInProduction),
+      url: get('FRONTEND_COMPONENTS_URL', 'http://localhost:8085/frontend-components', requiredInProduction),
       timeout: {
         response: Number(get('FRONTEND_COMPONENTS_TIMEOUT_RESPONSE', 5000)),
         deadline: Number(get('FRONTEND_COMPONENTS_TIMEOUT_DEADLINE', 5000)),
