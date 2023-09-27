@@ -28,17 +28,13 @@
           crossorigin="anonymous"></script>
   <link href="https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
 
-  {% if frontendComponents.jsInclude %}
-    {% for js in frontendComponents.jsIncludes %}
-      <script src="{{ js }}" nonce="{{ cspNonce }}"></script>
-    {% endfor %}
-  {% endif %}
+  {% for js in frontendComponents.jsIncludes %}
+    <script src="{{ js }}" nonce="{{ cspNonce }}"></script>
+  {% endfor %}
 
-  {% if frontendComponents.cssIncludes %}
-    {% for css in frontendComponents.cssIncludes %}
-      <link href="{{ css }}" nonce="{{ cspNonce }}" rel="stylesheet" />
-    {% endfor %}
-  {% endif %}
+  {% for css in frontendComponents.cssIncludes %}
+    <link href="{{ css }}" nonce="{{ cspNonce }}" rel="stylesheet" />
+  {% endfor %}
 {% endblock %}
 
 {% block pageTitle %}{% if errors.length %}Error: {% endif %}{{title}} - {{applicationName}} - Digital Prison Services{% endblock %}
