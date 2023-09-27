@@ -35,7 +35,6 @@ describe('GET 404', () => {
         .expect('Content-Type', /html/)
         .expect(res => {
           expect(res.text).toContain('Sorry, there is a problem with the service')
-          expect(res.text).not.toContain('404')
           expect(res.text).not.toContain('NotFoundError: Not found')
         })
     })

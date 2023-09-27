@@ -23,6 +23,7 @@ generic-service:
     SUPPORT_URL: https://support-dev.hmpps.service.justice.gov.uk/
     FRONTEND_COMPONENTS_URL: https://frontend-components-dev.hmpps.service.justice.gov.uk
     FRONTEND_COMPONENTS_ENABLED: "true"
+    ENVIRONMENT_NAME: DEV
 
 generic-prometheus-alerts:
   businessHoursOnly: true
