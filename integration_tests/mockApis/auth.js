@@ -18,12 +18,12 @@ const createToken = (roles = []) => {
   return jwt.sign(payload, 'secret', { expiresIn: '1h' })
 }
 
-const getLoginUrl = () =>
+const getSignInUrl = () =>
   getRequests().then(data => {
     const { requests } = data.body
     const stateParam = requests[0].request.queryParams.state
     const stateValue = stateParam ? stateParam.values[0] : requests[1].request.queryParams.state.values[0]
-    return `/login/callback?code=codexxxx&state=${stateValue}`
+    return `/sign-in/callback?code=codexxxx&state=${stateValue}`
   })
 
 const favicon = () =>
@@ -58,9 +58,9 @@ const redirect = () =>
       status: 200,
       headers: {
         'Content-Type': 'text/html',
-        Location: 'http://localhost:3007/login/callback?code=codexxxx&state=stateyyyy',
+        Location: 'http://localhost:3007/sign-in/callback?code=codexxxx&state=stateyyyy',
       },
-      body: '<html><body>Login page<h1>Sign in</h1></body></html>',
+      body: '<html><body>Sign in page<h1>Sign in</h1></body></html>',
     },
   })
 
@@ -89,7 +89,7 @@ const token = (roles = []) =>
       status: 200,
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
-        Location: 'http://localhost:3007/login/callback?code=codexxxx&state=stateyyyy',
+        Location: 'http://localhost:3007/sign-in/callback?code=codexxxx&state=stateyyyy',
       },
       jsonBody: {
         access_token: createToken(roles),
@@ -139,9 +139,9 @@ const stubUserRoles = (roles = []) =>
   })
 
 module.exports = {
-  getLoginUrl,
+  getSignInUrl,
   stubPing: (status = 200) => Promise.all([ping(status), tokenVerification.stubPing(status)]),
-  stubLogin: (roles = []) =>
+  stubSignIn: (roles = []) =>
     Promise.all([favicon(), redirect(), signOut(), token(roles), tokenVerification.stubVerifyToken()]),
   stubUser: () => Promise.all([stubUser(), stubUserRoles()]),
   stubUserRoles,

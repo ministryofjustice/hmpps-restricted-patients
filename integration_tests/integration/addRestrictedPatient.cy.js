@@ -16,7 +16,7 @@ const toOffender = $cell => ({
 context('Add prisoner', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubLogin', { roles: ['RESTRICTED_PATIENT_MIGRATION'] })
+    cy.task('stubSignIn', { roles: ['RESTRICTED_PATIENT_MIGRATION'] })
     cy.task('stubAuthUser')
     cy.task('stubFrontendComponents')
     cy.task('stubUserRoles', [{ roleCode: 'RESTRICTED_PATIENT_MIGRATION' }])
@@ -85,7 +85,7 @@ context('Add prisoner', () => {
         ],
       },
     })
-    cy.login()
+    cy.signIn()
   })
 
   it('should display the search for prisoner page from the homepage', () => {

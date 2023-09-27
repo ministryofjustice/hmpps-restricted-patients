@@ -1,4 +1,4 @@
-Cypress.Commands.add('login', () => {
+Cypress.Commands.add('signIn', () => {
   cy.request(`/`)
-  cy.task('getLoginUrl').then(cy.visit)
+  cy.task('getSignInUrl').then(cy.visit)
 })
