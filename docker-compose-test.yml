@@ -17,6 +17,8 @@ services:
     container_name: wiremock
     restart: always
     command: "--global-response-templating --enable-stub-cors" # add command `--verbose` to output verbose request matching
+    volumes:
+      - ./wiremock/__files:/home/wiremock/__files
     ports:
       - "9091:8080"
 

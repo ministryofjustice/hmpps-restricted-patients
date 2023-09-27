@@ -28,12 +28,27 @@
           crossorigin="anonymous"></script>
   <link href="https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css" rel="stylesheet">
 
+  {% if frontendComponents.jsInclude %}
+    {% for js in frontendComponents.jsIncludes %}
+      <script src="{{ js }}" nonce="{{ cspNonce }}"></script>
+    {% endfor %}
+  {% endif %}
+
+  {% if frontendComponents.cssIncludes %}
+    {% for css in frontendComponents.cssIncludes %}
+      <link href="{{ css }}" nonce="{{ cspNonce }}" rel="stylesheet" />
+    {% endfor %}
+  {% endif %}
 {% endblock %}
 
 {% block pageTitle %}{% if errors.length %}Error: {% endif %}{{title}} - {{applicationName}} - Digital Prison Services{% endblock %}
 
 {% block header %}
-  {% include "./header.njk" %}
+  {% if frontendComponents.headerHtml %}
+    {{ frontendComponents.headerHtml | safe }}
+  {% else %}
+    {% include "./header.njk" %}
+  {% endif %}
 {% endblock %}
 
 {% block bodyStart %}
@@ -47,7 +62,17 @@
 {% endblock %}
 
 {% block footer %}
-  {% include "./footer.njk" %}
+  <div style="background: {{ feedbackBannerBackground or '#fff' }}" class="govuk-!-display-none-print">
+    <div class="govuk-width-container">
+      {% include "./feedbackBanner.njk" %}
+    </div>
+  </div>
+
+  {% if frontendComponents.footerHtml %}
+    {{ frontendComponents.footerHtml | safe }}
+  {% else %}
+    {% include "./footer.njk" %}
+  {% endif %}
 {% endblock %}
 
 {% block bodyEnd %}
