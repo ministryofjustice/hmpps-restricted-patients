@@ -3,7 +3,7 @@ const homepage = require('../../pages/homepage')
 context('Homepage', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubLogin')
+    cy.task('stubSignIn')
     cy.task('stubAuthUser')
     cy.task('stubFrontendComponents')
     cy.task('stubUserRoles', [
@@ -12,7 +12,7 @@ context('Homepage', () => {
       { roleCode: 'SEARCH_RESTRICTED_PATIENT' },
       { roleCode: 'RESTRICTED_PATIENT_MIGRATION' },
     ])
-    cy.login()
+    cy.signIn()
   })
 
   describe('Tasks', () => {

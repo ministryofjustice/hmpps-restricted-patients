@@ -1,10 +1,10 @@
 const IndexPage = require('../pages/homepage')
-const AuthLoginPage = require('../pages/authLogin')
+const AuthSignInPage = require('../pages/authSignIn')
 
-context('Login', () => {
+context('Sign In', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubLogin')
+    cy.task('stubSignIn')
     cy.task('stubAuthUser')
     cy.task('stubFrontendComponents')
     cy.task('stubUserRoles', [
@@ -16,20 +16,20 @@ context('Login', () => {
 
   it('Unauthenticated user directed to auth', () => {
     cy.visit('/')
-    AuthLoginPage.verifyOnPage()
+    AuthSignInPage.verifyOnPage()
   })
 
   it('User can sign out', () => {
-    cy.login()
+    cy.signIn()
     const landingPage = IndexPage.verifyOnPage()
     landingPage.signOutLink().click()
-    AuthLoginPage.verifyOnPage()
+    AuthSignInPage.verifyOnPage()
   })
 
   describe('Header', () => {
     it('should display the correct details for the logged in user', () => {
-      cy.task('stubLogin')
-      cy.login()
+      cy.task('stubSignIn')
+      cy.signIn()
       const page = IndexPage.goTo()
 
       page.loggedInName().contains('J. Smith')
@@ -46,7 +46,7 @@ context('Login', () => {
     })
 
     it('should show change location link when user has more than 1 caseload', () => {
-      cy.task('stubLogin', {
+      cy.task('stubSignIn', {
         caseLoads: [
           {
             caseLoadId: 'MDI',
@@ -60,7 +60,7 @@ context('Login', () => {
           },
         ],
       })
-      cy.login()
+      cy.signIn()
 
       const page = IndexPage.goTo()
 

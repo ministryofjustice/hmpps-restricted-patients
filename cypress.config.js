@@ -27,9 +27,9 @@ module.exports = defineConfig({
       on('task', {
         reset: resetStubs,
 
-        getLoginUrl: auth.getLoginUrl,
-        stubLogin: ({ caseLoads, roles } = {}) =>
-          Promise.all([auth.stubLogin(roles), prisonApi.stubUserCaseloads(caseLoads)]),
+        getSignInUrl: auth.getSignInUrl,
+        stubSignIn: ({ caseLoads, roles } = {}) =>
+          Promise.all([auth.stubSignIn(roles), prisonApi.stubUserCaseloads(caseLoads)]),
 
         stubAuthUser: auth.stubUser,
         stubUserRoles: auth.stubUserRoles,
