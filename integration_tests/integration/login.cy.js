@@ -19,10 +19,10 @@ context('Login', () => {
     AuthLoginPage.verifyOnPage()
   })
 
-  it('User can log out', () => {
+  it('User can sign out', () => {
     cy.login()
     const landingPage = IndexPage.verifyOnPage()
-    landingPage.logoutLink().click()
+    landingPage.signOutLink().click()
     AuthLoginPage.verifyOnPage()
   })
 

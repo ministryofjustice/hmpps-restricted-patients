@@ -64,18 +64,18 @@ const redirect = () =>
     },
   })
 
-const logout = () =>
+const signOut = () =>
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: '/auth/logout.*',
+      urlPattern: '/auth/sign-out.*',
     },
     response: {
       status: 200,
       headers: {
         'Content-Type': 'text/html',
       },
-      body: '<html><body>Login page<h1>Sign in</h1></body></html>',
+      body: '<html><body>Sign in page<h1>Sign in</h1></body></html>',
     },
   })
 
@@ -142,7 +142,7 @@ module.exports = {
   getLoginUrl,
   stubPing: (status = 200) => Promise.all([ping(status), tokenVerification.stubPing(status)]),
   stubLogin: (roles = []) =>
-    Promise.all([favicon(), redirect(), logout(), token(roles), tokenVerification.stubVerifyToken()]),
+    Promise.all([favicon(), redirect(), signOut(), token(roles), tokenVerification.stubVerifyToken()]),
   stubUser: () => Promise.all([stubUser(), stubUserRoles()]),
   stubUserRoles,
 }

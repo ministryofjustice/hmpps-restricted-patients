@@ -11,7 +11,7 @@ const homePage = () =>
     addRestrictedPatient: () => cy.get('[data-test="add-restricted-patient"]'),
     removeFromRestrictedPatients: () => cy.get('[data-test="remove-from-restricted-patients"]'),
     helpLink: () => cy.get('[data-test="help"]'),
-    logoutLink: () => cy.get('[data-test="logout-link"]'),
+    signOutLink: () => cy.get('[data-test="sign-out-link"]'),
     feedbackBanner: () => cy.get('[data-test="feedback-banner"]'),
   })
 
