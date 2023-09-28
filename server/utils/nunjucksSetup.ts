@@ -15,6 +15,8 @@ export default function nunjucksSetup(app: express.Express, applicationInfo: App
 
   app.locals.asset_path = '/assets/'
   app.locals.applicationName = 'Manage restricted patients'
+  app.locals.environmentName = config.environmentName
+  app.locals.environmentNameColour = config.environmentName === 'PRE-PRODUCTION' ? 'govuk-tag--green' : ''
 
   // Cachebusting version string
   if (production) {
@@ -69,7 +71,6 @@ export default function nunjucksSetup(app: express.Express, applicationInfo: App
   })
 
   njkEnv.addGlobal('pshUrl', config.pshUrl)
-  njkEnv.addGlobal('supportUrl', config.supportUrl)
   njkEnv.addGlobal('authUrl', config.apis.hmppsAuth.url)
   njkEnv.addFilter('possessive', possessive)
 }
