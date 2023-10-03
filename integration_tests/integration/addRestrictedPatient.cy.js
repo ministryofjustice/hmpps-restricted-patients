@@ -94,22 +94,6 @@ context('Add prisoner', () => {
     PrisonerSearchPage.verifyOnPage()
   })
 
-  it('should display the feedback banner with the correct href', () => {
-    cy.visit('/add-restricted-patient/search-for-prisoner')
-    const prisonerSearchPage = PrisonerSearchPage.verifyOnPage()
-
-    prisonerSearchPage
-      .feedbackBanner()
-      .find('a')
-      .should('contain', 'Give feedback on Digital Prison Services (opens in a new tab)')
-      .should('have.attr', 'href')
-      .then(href => {
-        expect(href).to.equal(
-          'https://eu.surveymonkey.com/r/GYB8Y9Q?source=localhost/add-restricted-patient/search-for-prisoner',
-        )
-      })
-  })
-
   it('Completes a add prisoner journey', () => {
     cy.visit('/add-restricted-patient/search-for-prisoner')
     const prisonerSearchPage = PrisonerSearchPage.verifyOnPage()

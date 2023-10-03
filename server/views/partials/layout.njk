@@ -58,12 +58,6 @@
 {% endblock %}
 
 {% block footer %}
-  <div style="background: {{ feedbackBannerBackground or '#fff' }}" class="govuk-!-display-none-print">
-    <div class="govuk-width-container">
-      {% include "./feedbackBanner.njk" %}
-    </div>
-  </div>
-
   {% if frontendComponents.footerHtml %}
     {{ frontendComponents.footerHtml | safe }}
   {% else %}

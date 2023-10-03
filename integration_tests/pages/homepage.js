@@ -12,7 +12,6 @@ const homePage = () =>
     removeFromRestrictedPatients: () => cy.get('[data-test="remove-from-restricted-patients"]'),
     helpLink: () => cy.get('[data-test="help"]'),
     signOutLink: () => cy.get('[data-qa="signOut"]'),
-    feedbackBanner: () => cy.get('[data-test="feedback-banner"]'),
     headerPhaseBanner: () => cy.get('[data-qa=header-phase-banner]'),
   })
 
