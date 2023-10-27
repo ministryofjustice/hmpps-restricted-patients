@@ -74,8 +74,8 @@ class MockUserService extends UserService {
 }
 
 export const flashProvider = jest.fn()
-jest.mock('jwt-decode', () => jest.fn())
-export const mockJwtDecode = jwtDecode as jest.Mock
+jest.mock('jwt-decode', () => ({ jwtDecode: jest.fn() }))
+export const mockJwtDecode = jwtDecode.jwtDecode as jest.Mock
 
 function appSetup(
   services: Services,
