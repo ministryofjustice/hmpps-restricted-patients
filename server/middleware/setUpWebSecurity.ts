@@ -41,6 +41,7 @@ export default function setUpWebSecurity(): Router {
           fontSrc,
           imgSrc,
           connectSrc: ["'self'", '*.googletagmanager.com', '*.google-analytics.com', '*.analytics.google.com'],
+          formAction: ["'self'", config.dpsUrl],
         },
       },
     }),
