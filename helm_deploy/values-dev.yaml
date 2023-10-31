@@ -22,6 +22,7 @@ generic-service:
     RESTRICTED_PATIENT_API_URL: https://restricted-patients-api-dev.hmpps.service.justice.gov.uk
     FRONTEND_COMPONENTS_URL: https://frontend-components-dev.hmpps.service.justice.gov.uk
     ENVIRONMENT_NAME: DEV
+    DPS_URL: https://digital-dev.prison.service.justice.gov.uk
 
 generic-prometheus-alerts:
   businessHoursOnly: true
