@@ -52,10 +52,8 @@ generic-service:
       REDIS_AUTH_TOKEN: "auth_token"
 
   allowlist:
-    groups:
-      - internal
-      - prisons
-      - private_prisons
+    undefined: internal,prisons,private_prisons/32
+    groups: []
 
 generic-prometheus-alerts:
   targetApplication: hmpps-restricted-patients
