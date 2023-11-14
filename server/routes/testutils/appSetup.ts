@@ -1,22 +1,15 @@
 import 'reflect-metadata'
 import express, { Express } from 'express'
 import cookieSession from 'cookie-session'
-import createError from 'http-errors'
+import { NotFound } from 'http-errors'
 import jwtDecode from 'jwt-decode'
 
+import routes from '../index'
 import nunjucksSetup from '../../utils/nunjucksSetup'
 import errorHandler from '../../errorHandler'
-import routes from '../index'
-import UserService from '../../services/userService'
 import * as auth from '../../authentication/auth'
-import PrisonerSearchService from '../../services/prisonerSearchService'
-import MovePrisonerService from '../../services/movePrisonerService'
-import RestrictedPatientSearchService from '../../services/restrictedPatientSearchService'
-import { Services } from '../../services'
-import RemoveRestrictedPatientService from '../../services/removeRestrictedPatientService'
-import HospitalSearchService from '../../services/hospitalSearchService'
-import MigratePrisonerService from '../../services/migratePrisonerService'
-import { ApplicationInfo } from '../../applicationInfo'
+import type { Services } from '../../services'
+import type { ApplicationInfo } from '../../applicationInfo'
 
 const testAppInfo: ApplicationInfo = {
   applicationName: 'test',
@@ -26,51 +19,15 @@ const testAppInfo: ApplicationInfo = {
   branchName: 'main',
 }
 
-const user = {
-  name: 'john smith',
-  firstName: 'john',
-  lastName: 'smith',
-  username: 'user1',
-  displayName: 'John Smith',
-  activeCaseLoadId: 'MDI',
-  allCaseLoads: [
-    {
-      caseLoadId: 'MDI',
-      description: 'Moorland',
-      type: 'INST',
-      caseloadFunction: 'TEST',
-      currentlyActive: true,
-    },
-    {
-      caseLoadId: 'LEI',
-      description: 'Leeds',
-      type: 'INST',
-      caseloadFunction: 'TEST',
-      currentlyActive: false,
-    },
-  ],
-  activeCaseLoad: {
-    caseLoadId: 'MDI',
-    description: 'Moorland',
-    type: 'INST',
-    caseloadFunction: 'TEST',
-    currentlyActive: true,
-  },
+export const user: Express.User = {
+  name: 'FIRST LAST',
+  userId: 'id',
   token: 'token',
+  username: 'user1',
+  displayName: 'First Last',
+  active: true,
+  activeCaseLoadId: 'MDI',
   authSource: 'NOMIS',
-}
-
-class MockUserService extends UserService {
-  constructor() {
-    super(undefined)
-  }
-
-  async getUser(token: string) {
-    return {
-      token,
-      ...user,
-    }
-  }
 }
 
 export const flashProvider = jest.fn()
@@ -88,43 +45,29 @@ function appSetup(
   app.set('view engine', 'njk')
 
   nunjucksSetup(app, testAppInfo)
-
+  app.use(cookieSession({ keys: [''] }))
   app.use((req, res, next) => {
     req.user = userSupplier()
     req.flash = flashProvider
-    res.locals = {}
-    res.locals.user = { ...req.user }
-    next()
-  })
-
-  app.use(cookieSession({ keys: [''] }))
-  app.use((req, res, next) => {
+    res.locals = {
+      user: { ...req.user },
+    }
     Object.entries(session).forEach(([key, value]) => {
+      // @ts-expect-error assignment of any type ignored
       req.session[key] = value
     })
     next()
   })
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
-  app.use(
-    routes({
-      userService: new MockUserService(),
-      prisonerSearchService: {} as PrisonerSearchService,
-      movePrisonerService: {} as MovePrisonerService,
-      restrictedPatientSearchService: {} as RestrictedPatientSearchService,
-      removeRestrictedPatientService: {} as RemoveRestrictedPatientService,
-      hospitalSearchService: {} as HospitalSearchService,
-      migratePrisonerService: {} as MigratePrisonerService,
-      ...services,
-    }),
-  )
-  app.use((req, res, next) => next(createError(404, 'Not found')))
+  app.use(routes(services))
+  app.use((req, res, next) => next(new NotFound()))
   app.use(errorHandler(production))
 
   return app
 }
 
-export default function appWithAllRoutes({
+export function appWithAllRoutes({
   production = false,
   services = {},
   session = {},

@@ -4,7 +4,7 @@ context('Homepage', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubSignIn')
-    cy.task('stubAuthUser')
+    cy.task('stubManageUser')
     cy.task('stubFrontendComponents')
     cy.task('stubUserRoles', [
       { roleCode: 'REMOVE_RESTRICTED_PATIENT' },

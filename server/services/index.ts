@@ -1,5 +1,4 @@
 import { dataAccess } from '../data'
-
 import UserService from './userService'
 import PrisonerSearchService from './prisonerSearchService'
 import MovePrisonerService from './movePrisonerService'
@@ -10,9 +9,9 @@ import MigratePrisonerService from './migratePrisonerService'
 import FrontendComponentsService from './frontendComponentsService'
 
 export const services = () => {
-  const { hmppsAuthClient, applicationInfo } = dataAccess()
+  const { applicationInfo, hmppsAuthClient, manageUsersApiClient } = dataAccess()
 
-  const userService = new UserService(hmppsAuthClient)
+  const userService = new UserService(manageUsersApiClient)
   const prisonerSearchService = new PrisonerSearchService(hmppsAuthClient)
   const movePrisonerService = new MovePrisonerService()
   const hospitalSearchService = new HospitalSearchService()

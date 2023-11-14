@@ -1,8 +1,9 @@
+import { SuperAgentRequest } from 'superagent'
 import { stubFor } from './wiremock'
 
 export default {
-  stubTokenVerificationPing: (httpStatus = 200) => {
-    return stubFor({
+  stubTokenVerificationPing: (httpStatus = 200): SuperAgentRequest =>
+    stubFor({
       request: {
         method: 'GET',
         urlPattern: '/verification/health/ping',
@@ -12,19 +13,17 @@ export default {
         headers: { 'Content-Type': 'application/json;charset=UTF-8' },
         jsonBody: { status: httpStatus === 200 ? 'UP' : 'DOWN' },
       },
-    })
-  },
-  stubVerifyToken: (status = 200) => {
-    return stubFor({
+    }),
+  stubVerifyToken: (active = true): SuperAgentRequest =>
+    stubFor({
       request: {
         method: 'POST',
         urlPattern: '/verification/token/verify',
       },
       response: {
-        status,
+        status: 200,
         headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-        jsonBody: { active: 'true' },
+        jsonBody: { active },
       },
-    })
-  },
+    }),
 }

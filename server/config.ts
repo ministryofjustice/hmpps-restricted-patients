@@ -39,8 +39,9 @@ export default {
   productId: get('PRODUCT_ID', 'UNASSIGNED', requiredInProduction),
   gitRef: get('GIT_REF', 'xxxxxxxxxxxxxxxxxxx', requiredInProduction),
   branchName: get('GIT_BRANCH', 'xxxxxxxxxxxxxxxxxxx', requiredInProduction),
+  production,
   https: production,
-  staticResourceCacheDuration: 20,
+  staticResourceCacheDuration: '1h',
   redis: {
     host: get('REDIS_HOST', 'localhost', requiredInProduction),
     port: parseInt(process.env.REDIS_PORT, 10) || 6379,
@@ -64,6 +65,23 @@ export default {
       apiClientSecret: get('API_CLIENT_SECRET', 'clientsecret', requiredInProduction),
       systemClientId: get('SYSTEM_CLIENT_ID', 'clientid', requiredInProduction),
       systemClientSecret: get('SYSTEM_CLIENT_SECRET', 'clientsecret', requiredInProduction),
+    },
+    manageUsersApi: {
+      url: get('MANAGE_USERS_API_URL', 'http://localhost:9091', requiredInProduction),
+      timeout: {
+        response: Number(get('MANAGE_USERS_API_TIMEOUT_RESPONSE', 10000)),
+        deadline: Number(get('MANAGE_USERS_API_TIMEOUT_DEADLINE', 10000)),
+      },
+      agent: new AgentConfig(Number(get('MANAGE_USERS_API_TIMEOUT_RESPONSE', 10000))),
+    },
+    tokenVerification: {
+      url: get('TOKEN_VERIFICATION_API_URL', 'http://localhost:8100', requiredInProduction),
+      timeout: {
+        response: Number(get('TOKEN_VERIFICATION_API_TIMEOUT_RESPONSE', 5000)),
+        deadline: Number(get('TOKEN_VERIFICATION_API_TIMEOUT_DEADLINE', 5000)),
+      },
+      agent: new AgentConfig(Number(get('TOKEN_VERIFICATION_API_TIMEOUT_RESPONSE', 5000))),
+      enabled: get('TOKEN_VERIFICATION_ENABLED', 'false') === 'true',
     },
     prison: {
       url: get('PRISON_API_URL', 'http://localhost:8080', requiredInProduction),
@@ -90,15 +108,6 @@ export default {
       },
       agent: new AgentConfig(Number(get('RESTRICTED_PATIENT_API_TIMEOUT_RESPONSE', 30000))),
     },
-    tokenVerification: {
-      url: get('TOKEN_VERIFICATION_API_URL', 'http://localhost:8100', requiredInProduction),
-      timeout: {
-        response: Number(get('TOKEN_VERIFICATION_API_TIMEOUT_RESPONSE', 5000)),
-        deadline: Number(get('TOKEN_VERIFICATION_API_TIMEOUT_DEADLINE', 5000)),
-      },
-      agent: new AgentConfig(Number(get('TOKEN_VERIFICATION_API_TIMEOUT_DEADLINE', 5000))),
-      enabled: get('TOKEN_VERIFICATION_ENABLED', 'false') === 'true',
-    },
     frontendComponents: {
       url: get('FRONTEND_COMPONENTS_URL', 'http://localhost:8085/frontend-components', requiredInProduction),
       timeout: {
@@ -108,9 +117,6 @@ export default {
       agent: new AgentConfig(Number(get('FRONTEND_COMPONENTS_TIMEOUT_RESPONSE', 5000))),
       enabled: get('FRONTEND_COMPONENTS_ENABLED', 'false') === 'true',
     },
-  },
-  analytics: {
-    tagManagerContainerId: get('TAG_MANAGER_CONTAINER_ID', ''),
   },
   domain: get('INGRESS_URL', 'http://localhost:3000', requiredInProduction),
   pshUrl: get('PSH_URL', 'http://localhost:3002', requiredInProduction),

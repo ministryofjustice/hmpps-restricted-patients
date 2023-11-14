@@ -28,7 +28,7 @@ export default class PrisonApiClient {
     this.restClient = new RestClient('Prison API', config.apis.prison, token)
   }
 
-  async getPrisonerImage(prisonerNumber: string): Promise<Readable> {
+  getPrisonerImage(prisonerNumber: string): Promise<Readable> {
     return this.restClient.stream({
       path: `/api/bookings/offenderNo/${prisonerNumber}/image/data`,
       errorLogger: error =>

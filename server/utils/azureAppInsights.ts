@@ -2,7 +2,7 @@ import { setup, defaultClient, TelemetryClient, DistributedTracingModes } from '
 import type { ApplicationInfo } from '../applicationInfo'
 
 export function initialiseAppInsights(): void {
-  if (process.env.APPINSIGHTS_INSTRUMENTATIONKEY) {
+  if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING) {
     // eslint-disable-next-line no-console
     console.log('Enabling azure application insights')
 

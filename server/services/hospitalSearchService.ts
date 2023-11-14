@@ -1,5 +1,6 @@
 import PrisonApiClient, { Prison } from '../data/prisonApiClient'
-import { User } from '../data/hmppsAuthClient'
+
+import { Context } from './context'
 
 export type Hospital = {
   agencyId: string
@@ -10,7 +11,7 @@ export type Hospital = {
 }
 
 export default class HospitalSearchService {
-  async getHospitals(user: User): Promise<Prison[]> {
+  async getHospitals(user: Context): Promise<Prison[]> {
     // agencies endpoint just needs a valid token without any special roles required
     const client = new PrisonApiClient(user.token)
 
@@ -24,7 +25,7 @@ export default class HospitalSearchService {
       .sort((a: Hospital, b: Hospital) => a.description.localeCompare(b.description))
   }
 
-  async getHospital(hospitalId: string, user: User): Promise<Prison> {
+  async getHospital(hospitalId: string, user: Context): Promise<Prison> {
     // agency endpoint just needs a valid token without any special roles required
     const client = new PrisonApiClient(user.token)
 

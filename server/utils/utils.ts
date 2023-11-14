@@ -16,6 +16,14 @@ const properCaseName = (name: string): string => (isBlank(name) ? '' : name.spli
 export const convertToTitleCase = (sentence: string): string =>
   isBlank(sentence) ? '' : sentence.split(' ').map(properCaseName).join(' ')
 
+export const initialiseName = (fullName?: string): string | null => {
+  // this check is for the authError page
+  if (!fullName) return null
+
+  const array = fullName.split(' ')
+  return `${array[0][0]}. ${array.reverse()[0]}`
+}
+
 export const addSelect = (selectItems: SelectOption[], text = 'Select'): SelectOption[] => [
   { value: '', text },
   ...selectItems,
@@ -28,10 +36,3 @@ export const possessive = (string: string): string => {
 
 export const hasAnyRole = (requiredRoles: string[], userRoles: string[]): boolean =>
   !requiredRoles || (!!userRoles && requiredRoles.some(role => userRoles.includes(role)))
-
-export default {
-  convertToTitleCase,
-  possessive,
-  addSelect,
-  hasAnyRole,
-}

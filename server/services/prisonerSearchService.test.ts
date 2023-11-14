@@ -1,7 +1,9 @@
 import PrisonerSearchService, { PrisonerSearchSummary } from './prisonerSearchService'
 import PrisonerSearchClient from '../data/prisonerSearchClient'
 import PrisonApiClient from '../data/prisonApiClient'
-import HmppsAuthClient, { User } from '../data/hmppsAuthClient'
+import HmppsAuthClient from '../data/hmppsAuthClient'
+
+import { Context } from './context'
 
 const search = jest.fn()
 const getPrisonerImage = jest.fn()
@@ -26,10 +28,8 @@ const token = 'some token'
 const prisonIds = ['PR1', 'PR2']
 const user = {
   username: 'user1',
-  name: 'User',
-  activeCaseLoadId: 'MDI',
   token: 'token-1',
-} as User
+} as Context
 
 describe('prisonerSearchService', () => {
   let service: PrisonerSearchService
@@ -161,11 +161,8 @@ describe('prisonerSearchService', () => {
       getPrisonerImage.mockResolvedValue('image data')
 
       const result = await service.getPrisonerImage('A1234AA', {
-        activeCaseLoadId: 'MDI',
-        name: 'User',
         username: 'user1',
         token: 'token-1',
-        authSource: 'auth',
       })
 
       expect(result).toEqual('image data')
@@ -190,11 +187,8 @@ describe('prisonerSearchService', () => {
       })
 
       const result = await service.getPrisonerDetails('A1234AA', {
-        activeCaseLoadId: 'MDI',
-        name: 'User',
         username: 'user1',
         token: 'token-1',
-        authSource: 'auth',
       })
 
       expect(result).toEqual({

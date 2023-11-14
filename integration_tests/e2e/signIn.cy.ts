@@ -1,12 +1,13 @@
 import AuthSignInPage from '../pages/authSignIn'
 import Page from '../pages/page'
+import AuthManageDetailsPage from '../pages/authManageDetails'
 import HomePage from '../pages/home.page'
 
 context('Sign In', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubSignIn')
-    cy.task('stubAuthUser')
+    cy.task('stubManageUser')
     cy.task('stubFrontendComponents')
     cy.task('stubUserRoles', [
       { roleCode: 'REMOVE_RESTRICTED_PATIENT' },
@@ -20,6 +21,23 @@ context('Sign In', () => {
     Page.verifyOnPage(AuthSignInPage)
   })
 
+  it('Unauthenticated user navigating to sign in page directed to auth', () => {
+    cy.visit('/sign-in')
+    Page.verifyOnPage(AuthSignInPage)
+  })
+
+  it('User name visible in header', () => {
+    cy.signIn()
+    const homePage = Page.verifyOnPage(HomePage)
+    homePage.headerUserName().should('contain.text', 'J. Smith')
+  })
+
+  it('Phase banner visible in header', () => {
+    cy.signIn()
+    const homePage = Page.verifyOnPage(HomePage)
+    homePage.headerPhaseBanner().should('contain.text', 'DEV')
+  })
+
   it('User can sign out', () => {
     cy.signIn()
     const landingPage = Page.verifyOnPage(HomePage)
@@ -27,13 +45,32 @@ context('Sign In', () => {
     Page.verifyOnPage(AuthSignInPage)
   })
 
+  it('User can manage their details', () => {
+    cy.signIn()
+    cy.task('stubAuthManageDetails')
+    const homePage = Page.verifyOnPage(HomePage)
+
+    homePage.manageDetails().get('a').invoke('removeAttr', 'target')
+    homePage.manageDetails().click()
+    Page.verifyOnPage(AuthManageDetailsPage)
+  })
+
+  it('Token verification failure takes user to sign in page', () => {
+    cy.signIn()
+    Page.verifyOnPage(HomePage)
+    cy.task('stubVerifyToken', false)
+
+    // can't do a visit here as cypress requires only one domain
+    cy.request('/').its('body').should('contain', 'Sign in')
+  })
+
   describe('Header', () => {
-    it('should display the correct details for the logged in user', () => {
+    it('should display the correct details for the signed in user', () => {
       cy.task('stubSignIn')
       cy.signIn()
       const page = Page.verifyOnPage(HomePage)
 
-      page.loggedInName().contains('J. Smith')
+      page.headerUserName().contains('J. Smith')
       page.activeLocation().contains('Moorland')
 
       page

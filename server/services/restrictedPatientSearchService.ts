@@ -4,9 +4,10 @@ import type {
 } from '../data/restrictedPatientSearchClient'
 import RestrictedPatientSearchClient from '../data/restrictedPatientSearchClient'
 import RestrictedPatientSearchResult from '../data/restrictedPatientSearchResult'
-import { User } from '../data/hmppsAuthClient'
 
 import { convertToTitleCase } from '../utils/utils'
+
+import { Context } from './context'
 
 export interface RestrictedPatientSearchSummary extends RestrictedPatientSearchResult {
   displayName: string
@@ -29,7 +30,7 @@ export interface RestrictedPatientSearchCriteria {
 }
 
 export default class RestrictedPatientSearchService {
-  async search(search: RestrictedPatientSearchCriteria, user: User): Promise<RestrictedPatientSearchSummary[]> {
+  async search(search: RestrictedPatientSearchCriteria, user: Context): Promise<RestrictedPatientSearchSummary[]> {
     const searchTerm = search.searchTerm.replace(/,/g, ' ').replace(/\s\s+/g, ' ').trim()
 
     const searchRequest = isPrisonerIdentifier(searchTerm)

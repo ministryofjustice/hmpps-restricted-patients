@@ -1,31 +1,27 @@
 import { convertToTitleCase } from '../utils/utils'
-import type HmppsAuthClient from '../data/hmppsAuthClient'
+import type { User } from '../data/manageUsersApiClient'
+import ManageUsersApiClient from '../data/manageUsersApiClient'
 import PrisonApiClient, { CaseLoad } from '../data/prisonApiClient'
 
-interface UserDetails {
-  username: string
-  name: string
+export interface UserDetails extends User {
   displayName: string
-  allCaseLoads: CaseLoad[] | string[]
   activeCaseLoad: CaseLoad
 }
 
 export default class UserService {
-  constructor(private readonly hmppsAuthClient: HmppsAuthClient) {}
+  constructor(private readonly manageUsersApiClient: ManageUsersApiClient) {}
 
   async getUser(token: string): Promise<UserDetails> {
-    const user = await this.hmppsAuthClient.getUser(token)
+    const user = await this.manageUsersApiClient.getUser(token)
     const allCaseLoads = await new PrisonApiClient(token).getUserCaseLoads()
-
     return {
       ...user,
-      displayName: convertToTitleCase(user.name as string),
-      allCaseLoads,
+      displayName: convertToTitleCase(user.name),
       activeCaseLoad: allCaseLoads.find((caseLoad: CaseLoad) => caseLoad.currentlyActive),
     }
   }
 
   async getUserRoles(token: string): Promise<string[]> {
-    return this.hmppsAuthClient.getUserRoles(token)
+    return this.manageUsersApiClient.getUserRoles(token)
   }
 }

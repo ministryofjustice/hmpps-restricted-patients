@@ -1,8 +1,7 @@
-import 'reflect-metadata'
 import { Express } from 'express'
 import request from 'supertest'
 import PrisonerSearchService, { PrisonerSearchSummary } from '../../services/prisonerSearchService'
-import appWithAllRoutes, { mockJwtDecode } from '../testutils/appSetup'
+import { appWithAllRoutes, mockJwtDecode } from '../testutils/appSetup'
 
 jest.mock('../../services/prisonerSearchService')
 

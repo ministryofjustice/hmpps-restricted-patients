@@ -2,10 +2,10 @@ version: '3.1'
 services:
 
   redis:
-    image: 'redis:7.0'
+    image: 'redis:7.2'
     networks:
       - hmpps
-    container_name: redis 
+    container_name: redis
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
     ports:
@@ -15,14 +15,14 @@ services:
     image: quay.io/hmpps/hmpps-auth:latest
     networks:
       - hmpps
-    container_name: hmpps-auth 
+    container_name: hmpps-auth
     ports:
       - "9090:8080"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/auth/health"]
     environment:
       - SPRING_PROFILES_ACTIVE=dev
-      - DELIUS_ENABLED=false
+      - APPLICATION_AUTHENTICATION_UI_ALLOWLIST=0.0.0.0/0
 
   prison-api:
     image: quay.io/hmpps/prison-api:latest
@@ -40,26 +40,20 @@ services:
       - SPRING_PROFILES_ACTIVE=nomis-hsqldb
       - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://hmpps-auth:8080/auth/.well-known/jwks.json
 
-  wiremock:
-    image: wiremock/wiremock
-    networks:
-      - hmpps
-    container_name: wiremock
-    restart: always
-    command: "--global-response-templating --enable-stub-cors" # add command `--verbose` to output verbose request matching
-    ports:
-      - "8085:8080"
-    volumes:
-      - ./wiremock:/home/wiremock
-
   app:
-    build: .
+    build:
+      context: .
+      args:
+        BUILD_NUMBER: "1.0.0"
+        GIT_REF: "a1b2c3"
+        GIT_BRANCH: main
     networks:
       - hmpps
     depends_on: [redis]
     ports:
       - "3000:3000"
     environment:
+      - PRODUCT_ID=UNASSIGNED
       - REDIS_HOST=redis
       - HMPPS_AUTH_EXTERNAL_URL=http://localhost:9090/auth
       - HMPPS_AUTH_URL=http://hmpps-auth:8080/auth
@@ -68,6 +62,10 @@ services:
       - API_CLIENT_SECRET=client-secret
       - SYSTEM_CLIENT_ID=system-client-id
       - SYSTEM_CLIENT_SECRET=system-client-secret
+      - SESSION_SECRET=somesecretvalue
+      - TOKEN_VERIFICATION_API_URL=http://hmpps-auth:8080/auth
+      - TOKEN_VERIFICATION_ENABLED=false
+      - INGRESS_URL=http://localhost:3000
 
 networks:
   hmpps:

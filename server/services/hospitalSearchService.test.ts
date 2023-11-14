@@ -1,6 +1,7 @@
 import HospitalSearchService, { Hospital } from './hospitalSearchService'
 import PrisonApiClient from '../data/prisonApiClient'
-import { User } from '../data/hmppsAuthClient'
+
+import { Context } from './context'
 
 const getAgenciesByType = jest.fn()
 const getAgencyDetails = jest.fn()
@@ -12,10 +13,8 @@ jest.mock('../data/prisonApiClient', () =>
 
 const user = {
   username: 'user1',
-  name: 'User',
-  activeCaseLoadId: 'MDI',
   token: 'token-1',
-} as User
+} as Context
 
 describe('movePrisonerService', () => {
   let service: HospitalSearchService

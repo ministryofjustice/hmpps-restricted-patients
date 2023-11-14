@@ -18,7 +18,7 @@ context('Add prisoner', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubSignIn', { roles: ['RESTRICTED_PATIENT_MIGRATION'] })
-    cy.task('stubAuthUser')
+    cy.task('stubManageUser')
     cy.task('stubFrontendComponents')
     cy.task('stubUserRoles', [{ roleCode: 'RESTRICTED_PATIENT_MIGRATION' }])
     cy.task('stubSearch', {

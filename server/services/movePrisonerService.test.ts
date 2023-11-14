@@ -1,5 +1,6 @@
 import MovePrisonerService from './movePrisonerService'
-import { User } from '../data/hmppsAuthClient'
+
+import { Context } from './context'
 
 const dischargePatient = jest.fn()
 
@@ -8,10 +9,8 @@ jest.mock('../data/restrictedPatientApiClient', () => jest.fn().mockImplementati
 
 const user = {
   username: 'user1',
-  name: 'User',
-  activeCaseLoadId: 'MDI',
   token: 'token-1',
-} as User
+} as Context
 
 describe('movePrisonerService', () => {
   let service: MovePrisonerService
