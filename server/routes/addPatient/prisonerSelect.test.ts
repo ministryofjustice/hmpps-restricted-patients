@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { Express } from 'express'
 import request from 'supertest'
 import PrisonerSearchService, { PrisonerSearchSummary } from '../../services/prisonerSearchService'

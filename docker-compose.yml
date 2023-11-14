@@ -40,6 +40,18 @@ services:
       - SPRING_PROFILES_ACTIVE=nomis-hsqldb
       - SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK_SET_URI=http://hmpps-auth:8080/auth/.well-known/jwks.json
 
+  wiremock:
+    image: wiremock/wiremock
+    networks:
+      - hmpps_int
+    container_name: rp-wiremock
+    restart: always
+    command: "--global-response-templating --enable-stub-cors" # add command `--verbose` to output verbose request matching
+    volumes:
+      - ./wiremock/__files:/home/wiremock/__files
+    ports:
+      - "9091:8080"
+
   app:
     build:
       context: .

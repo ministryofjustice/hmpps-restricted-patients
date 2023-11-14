@@ -1,60 +1,60 @@
 {% extends "govuk/template.njk" %}
 
 {% block head %}
-    <!--[if !IE 8]><!-->
-    <link href="/assets/stylesheets/application.css?{{ version }}" rel="stylesheet" />
-    <!--<![endif]-->
+  <!--[if !IE 8]><!-->
+  <link href="/assets/stylesheets/application.css?{{ version }}" rel="stylesheet" />
+  <!--<![endif]-->
 
-    <!--[if lt IE 9]>
+  <!--[if lt IE 9]>
   <link href='/assets/stylesheets/application-ie8.css?{{ version }}' rel='stylesheet'/>
   <script src='/assets/js/html5shiv-3.7.3.min.js'></script>
   <![endif]-->
 
-    <script src="/assets/js/jquery.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
-            integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
-            nonce="{{ cspNonce }}"
-            crossorigin="anonymous"></script>
-    <link href="https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css" rel="stylesheet"
-          nonce="{{ cspNonce }}" crossorigin>
+  <script src="/assets/js/jquery.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+          integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+          nonce="{{ cspNonce }}"
+          crossorigin="anonymous"></script>
+  <link href="https://code.jquery.com/ui/1.12.1/themes/ui-lightness/jquery-ui.css" rel="stylesheet"
+        nonce="{{ cspNonce }}" crossorigin>
 
-    {% for js in frontendComponents.jsIncludes %}
-        <script src="{{ js }}" nonce="{{ cspNonce }}"></script>
-    {% endfor %}
+  {% for js in frontendComponents.jsIncludes %}
+    <script src="{{ js }}" nonce="{{ cspNonce }}"></script>
+  {% endfor %}
 
-    {% for css in frontendComponents.cssIncludes %}
-        <link href="{{ css }}" nonce="{{ cspNonce }}" rel="stylesheet" />
-    {% endfor %}
+  {% for css in frontendComponents.cssIncludes %}
+    <link href="{{ css }}" nonce="{{ cspNonce }}" rel="stylesheet" />
+  {% endfor %}
 {% endblock %}
 
-{% block pageTitle %}{% if errors.length %}Error: {% endif %}{{title}} - {{applicationName}} - Digital Prison Services{% endblock %}
+{% block pageTitle %}{% if errors.length %}Error: {% endif %}{{ title }} - {{ applicationName }} - Digital Prison Services{% endblock %}
 
 {% block header %}
-    {% if frontendComponents.headerHtml %}
-        {{ frontendComponents.headerHtml | safe }}
-    {% else %}
-        {% include "./header.njk" %}
-    {% endif %}
+  {% if frontendComponents.headerHtml %}
+    {{ frontendComponents.headerHtml | safe }}
+  {% else %}
+    {% include "./header.njk" %}
+  {% endif %}
 {% endblock %}
 
 {% block bodyStart %}
 {% endblock %}
 
 {% block footer %}
-    {% if frontendComponents.footerHtml %}
-        {{ frontendComponents.footerHtml | safe }}
-    {% else %}
-        {% include "./footer.njk" %}
-    {% endif %}
+  {% if frontendComponents.footerHtml %}
+    {{ frontendComponents.footerHtml | safe }}
+  {% else %}
+    {% include "./footer.njk" %}
+  {% endif %}
 {% endblock %}
 
 {% block bodyEnd %}
-    {# Run JavaScript at end of the
+  {# Run JavaScript at end of the
   <body>, to avoid blocking the initial render. #}
-    <script src="/assets/govuk/all.js"></script>
-    <script src="/assets/govukFrontendInit.js"></script>
-    <script src="/assets/moj/all.js"></script>
-    <script src="/assets/mojFrontendInit.js"></script>
-    {% block pageScripts %}
-    {% endblock %}
+  <script src="/assets/govuk/all.js"></script>
+  <script src="/assets/govukFrontendInit.js"></script>
+  <script src="/assets/moj/all.js"></script>
+  <script src="/assets/mojFrontendInit.js"></script>
+  {% block pageScripts %}
+  {% endblock %}
 {% endblock %}

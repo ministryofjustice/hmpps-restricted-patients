@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import { Express } from 'express'
 import request from 'supertest'
 import PrisonerSearchService, { PrisonerSearchSummary } from '../../services/prisonerSearchService'
@@ -104,14 +105,12 @@ describe('GET /select-prisoner', () => {
 
     it('should render not found page if user missing privileges', () => {
       mockJwtDecode.mockImplementation(() => ({ authorities: ['SEARCH_RESTRICTED_PATIENT'] }))
-      return (
-        request(app)
-          .get('/move-to-hospital/select-prisoner?searchTerm=Smith')
-          //   .expect('Content-Type', /html/)
-          .expect(res => {
-            expect(res.text).toContain('Page not found')
-          })
-      )
+      return request(app)
+        .get('/move-to-hospital/select-prisoner?searchTerm=Smith')
+        .expect('Content-Type', /html/)
+        .expect(res => {
+          expect(res.text).toContain('Page not found')
+        })
     })
   })
 

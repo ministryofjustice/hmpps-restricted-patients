@@ -1,4 +1,3 @@
-import 'reflect-metadata'
 import { plainToClass } from 'class-transformer'
 import config from '../config'
 import RestClient from './restClient'
