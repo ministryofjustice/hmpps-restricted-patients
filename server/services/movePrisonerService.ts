@@ -1,12 +1,13 @@
 import RestrictedPatientApiClient from '../data/restrictedPatientApiClient'
-import { User } from '../data/hmppsAuthClient'
+
+import { Context } from './context'
 
 export default class MovePrisonerService {
   async dischargePatientToHospital(
     prisonerNumber: string,
     currentPrisonId: string,
     hospitalId: string,
-    user: User,
+    user: Context,
   ): Promise<unknown> {
     const client = new RestrictedPatientApiClient(user.token)
     const request = {

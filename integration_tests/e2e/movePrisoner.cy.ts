@@ -19,7 +19,7 @@ context('Move prisoner', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubSignIn', { roles: ['TRANSFER_RESTRICTED_PATIENT'] })
-    cy.task('stubAuthUser')
+    cy.task('stubManageUser')
     cy.task('stubFrontendComponents')
     cy.task('stubUserRoles', [{ roleCode: 'TRANSFER_RESTRICTED_PATIENT' }])
     cy.task('stubSearch')

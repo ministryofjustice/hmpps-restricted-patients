@@ -1,9 +1,11 @@
 import RemoveRestrictedPatientService, { RestrictedPatientDetails } from './removeRestrictedPatientService'
-import HmppsAuthClient, { User } from '../data/hmppsAuthClient'
+import HmppsAuthClient from '../data/hmppsAuthClient'
 import RestrictedPatientApiClient from '../data/restrictedPatientApiClient'
 import PrisonApiClient from '../data/prisonApiClient'
 import PrisonerResult from '../data/prisonerResult'
 import RestrictedPatientResult from '../data/restrictedPatientResult'
+
+import { Context } from './context'
 
 const removePatient = jest.fn()
 const getPatient = jest.fn()
@@ -26,10 +28,8 @@ const hmppsAuthClient = new HmppsAuthClient(null) as jest.Mocked<HmppsAuthClient
 const token = 'some token'
 const user = {
   username: 'user1',
-  name: 'User',
-  activeCaseLoadId: 'MDI',
   token: 'token-1',
-} as User
+} as Context
 
 describe('removeRestrictedPatientService', () => {
   let service: RemoveRestrictedPatientService

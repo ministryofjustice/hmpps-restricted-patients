@@ -1,7 +1,8 @@
 import RestrictedPatientSearchService from './restrictedPatientSearchService'
 import RestrictedPatientSearchClient from '../data/restrictedPatientSearchClient'
 import RestrictedPatientSearchResult from '../data/restrictedPatientSearchResult'
-import { User } from '../data/hmppsAuthClient'
+
+import { Context } from './context'
 
 const search = jest.fn()
 
@@ -14,7 +15,7 @@ jest.mock('../data/restrictedPatientSearchClient', () => {
 
 const user = {
   token: 'token-1',
-} as User
+} as Context
 
 describe('restrictedPatientSearchService', () => {
   let service: RestrictedPatientSearchService

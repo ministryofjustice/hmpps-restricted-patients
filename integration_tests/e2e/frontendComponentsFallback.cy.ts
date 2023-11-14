@@ -6,7 +6,7 @@ context('Frontend Components Fallback', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubSignIn')
-    cy.task('stubAuthUser')
+    cy.task('stubManageUser', 'Bobby Brown')
     cy.task('stubGetComponentsMappingError')
     cy.task('stubUserRoles', [
       { roleCode: 'REMOVE_RESTRICTED_PATIENT' },
@@ -28,12 +28,12 @@ context('Frontend Components Fallback', () => {
   })
 
   describe('Header', () => {
-    it('should display the correct details for the logged in user', () => {
+    it('should display the correct details for the signed in user', () => {
       cy.task('stubSignIn')
       cy.signIn()
       const page = Page.verifyOnPage(HomePage)
 
-      page.loggedInName().contains('J. Smith')
+      page.headerUserName().contains('B. Brown')
 
       // location and manage account not displayed in fallback
       page.activeLocation().should('not.exist')

@@ -14,7 +14,6 @@ const stubGetComponentsMappingError = () =>
   })
 
 export default {
-  stubGetComponents: () => stubFor(getComponentMapping),
-  stubGetComponentAssets: () => stubFor(getAssetsMapping),
   stubGetComponentsMappingError,
+  stubFrontendComponents: () => Promise.all([stubFor(getComponentMapping), stubFor(getAssetsMapping)]),
 }

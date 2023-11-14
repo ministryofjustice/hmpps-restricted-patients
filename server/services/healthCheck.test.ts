@@ -1,6 +1,6 @@
 import healthCheck from './healthCheck'
+import type { ApplicationInfo } from '../applicationInfo'
 import type { HealthCheckCallback, HealthCheckService } from './healthCheck'
-import { ApplicationInfo } from '../applicationInfo'
 
 describe('Healthcheck', () => {
   const testAppInfo: ApplicationInfo = {
@@ -19,8 +19,14 @@ describe('Healthcheck', () => {
         expect.objectContaining({
           status: 'UP',
           components: {
-            check1: { status: 'UP', details: 'some message' },
-            check2: { status: 'UP', details: 'some message' },
+            check1: {
+              status: 'UP',
+              details: 'some message',
+            },
+            check2: {
+              status: 'UP',
+              details: 'some message',
+            },
           },
         }),
       )
@@ -29,6 +35,7 @@ describe('Healthcheck', () => {
 
     healthCheck(testAppInfo, callback, successfulChecks)
   })
+
   it('Healthcheck reports unhealthy', done => {
     const successfulChecks = [successfulCheck('check1'), erroredCheck('check2')]
 
@@ -37,8 +44,14 @@ describe('Healthcheck', () => {
         expect.objectContaining({
           status: 'DOWN',
           components: {
-            check1: { status: 'UP', details: 'some message' },
-            check2: { status: 'DOWN', details: 'some error' },
+            check1: {
+              status: 'UP',
+              details: 'some message',
+            },
+            check2: {
+              status: 'DOWN',
+              details: 'some error',
+            },
           },
         }),
       )

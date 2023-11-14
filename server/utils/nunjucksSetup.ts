@@ -1,12 +1,11 @@
 /* eslint-disable no-param-reassign */
+import path from 'path'
 import nunjucks from 'nunjucks'
 import express from 'express'
-import path from 'path'
-import { FormError } from '../@types/template'
-import config from '../config'
-
-import { possessive } from './utils'
+import { initialiseName, possessive } from './utils'
 import { ApplicationInfo } from '../applicationInfo'
+import config from '../config'
+import { FormError } from '../@types/template'
 
 const production = process.env.NODE_ENV === 'production'
 
@@ -44,21 +43,7 @@ export default function nunjucksSetup(app: express.Express, applicationInfo: App
     },
   )
 
-  // Expose the google tag manager container ID to the nunjucks environment
-  const {
-    analytics: { tagManagerContainerId },
-  } = config
-
-  njkEnv.addGlobal('tagManagerContainerId', tagManagerContainerId.trim())
-
-  njkEnv.addFilter('initialiseName', (fullName: string) => {
-    // this check is for the authError page
-    if (!fullName) {
-      return null
-    }
-    const array = fullName.split(' ')
-    return `${array[0][0]}. ${array.reverse()[0]}`
-  })
+  njkEnv.addFilter('initialiseName', initialiseName)
 
   njkEnv.addFilter('findError', (array: FormError[], formFieldId: string) => {
     const item = array.find(error => error.href === `#${formFieldId}`)

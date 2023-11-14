@@ -1,10 +1,10 @@
 import UserService from './userService'
-import HmppsAuthClient, { User } from '../data/hmppsAuthClient'
+import ManageUsersApiClient, { type User } from '../data/manageUsersApiClient'
 import { CaseLoad } from '../data/prisonApiClient'
 
 const getUserCaseLoads = jest.fn()
 
-jest.mock('../data/hmppsAuthClient')
+jest.mock('../data/manageUsersApiClient')
 jest.mock('../data/prisonApiClient', () => {
   return jest.fn().mockImplementation(() => {
     return { getUserCaseLoads }
@@ -14,17 +14,17 @@ jest.mock('../data/prisonApiClient', () => {
 const token = 'some token'
 
 describe('User service', () => {
-  let hmppsAuthClient: jest.Mocked<HmppsAuthClient>
+  let manageUsersApiClient: jest.Mocked<ManageUsersApiClient>
   let userService: UserService
 
   describe('getUser', () => {
     beforeEach(() => {
-      hmppsAuthClient = new HmppsAuthClient(null) as jest.Mocked<HmppsAuthClient>
-      userService = new UserService(hmppsAuthClient)
+      manageUsersApiClient = new ManageUsersApiClient() as jest.Mocked<ManageUsersApiClient>
+      userService = new UserService(manageUsersApiClient)
     })
 
     it('Retrieves and formats relevant user details', async () => {
-      hmppsAuthClient.getUser.mockResolvedValue({ name: 'john smith' } as User)
+      manageUsersApiClient.getUser.mockResolvedValue({ name: 'john smith' } as User)
       getUserCaseLoads.mockResolvedValue([
         {
           caseLoadId: 'MDI',
@@ -52,29 +52,13 @@ describe('User service', () => {
           description: 'Moorland',
           type: 'INST',
         },
-        allCaseLoads: [
-          {
-            caseLoadId: 'MDI',
-            caseloadFunction: 'TEST',
-            currentlyActive: true,
-            description: 'Moorland',
-            type: 'INST',
-          },
-          {
-            caseLoadId: 'LEI',
-            description: 'Leeds',
-            type: 'INST',
-            caseloadFunction: 'TEST',
-            currentlyActive: false,
-          },
-        ],
         displayName: 'John Smith',
         name: 'john smith',
       })
     })
 
     it('Propagates error', async () => {
-      hmppsAuthClient.getUser.mockRejectedValue(new Error('some error'))
+      manageUsersApiClient.getUser.mockRejectedValue(new Error('some error'))
 
       await expect(userService.getUser(token)).rejects.toEqual(new Error('some error'))
     })

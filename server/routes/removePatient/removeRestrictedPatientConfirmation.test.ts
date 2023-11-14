@@ -1,7 +1,7 @@
 import { Express } from 'express'
 import request from 'supertest'
 import RemoveRestrictedPatientService, { RestrictedPatientDetails } from '../../services/removeRestrictedPatientService'
-import appWithAllRoutes, { mockJwtDecode } from '../testutils/appSetup'
+import { appWithAllRoutes, mockJwtDecode } from '../testutils/appSetup'
 
 jest.mock('../../services/removeRestrictedPatientService')
 

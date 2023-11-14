@@ -1,0 +1,20 @@
+$govuk-global-styles: true;
+$path: "/assets/images/";
+$govuk-page-width: 1170px;
+$govuk-font-family-print: 'GDS Transport';
+
+@import 'govuk/all';
+@import 'moj/all';
+
+@import './pages/_homepage.scss';
+
+@import './components/card';
+@import './components/header-bar';
+@import './components/footer';
+@import './components/alert-flags';
+@import './components/results-table';
+@import './components/autocomplete';
+@import './components/feedback-banner';
+@import './local';
+@import 'horizontal-content';
+@import 'helpers';

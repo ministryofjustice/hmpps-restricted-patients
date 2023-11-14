@@ -1,6 +1,6 @@
 import { Express } from 'express'
 import request from 'supertest'
-import appWithAllRoutes, { mockJwtDecode } from '../testutils/appSetup'
+import { appWithAllRoutes, mockJwtDecode } from '../testutils/appSetup'
 
 let app: Express
 

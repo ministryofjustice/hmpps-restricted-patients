@@ -5,7 +5,7 @@ export default class HomePage extends Page {
     super('Manage restricted patients')
   }
 
-  loggedInName = (): PageElement => cy.get('[data-qa="header-user-name"]')
+  headerUserName = (): PageElement => cy.get('[data-qa="header-user-name"]')
 
   activeLocation = (): PageElement => cy.get('[data-qa="header-active-case-load"]')
 
@@ -25,7 +25,7 @@ export default class HomePage extends Page {
 
   signOutLink = (): PageElement => cy.get('[data-qa="signOut"]')
 
-  headerPhaseBanner = (): PageElement => cy.get('[data-qa=header-phase-banner]')
+  headerPhaseBanner = (): PageElement => cy.get('.govuk-phase-banner')
 
   static goTo(): HomePage {
     cy.visit('/')

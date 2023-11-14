@@ -1,8 +1,7 @@
-import 'reflect-metadata'
 import { Express } from 'express'
 import request from 'supertest'
 import { load, CheerioAPI } from 'cheerio'
-import appWithAllRoutes from '../testutils/appSetup'
+import { appWithAllRoutes } from '../testutils/appSetup'
 
 let app: Express
 

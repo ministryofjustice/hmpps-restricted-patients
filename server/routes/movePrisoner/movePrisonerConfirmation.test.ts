@@ -1,6 +1,6 @@
 import { Express } from 'express'
 import request from 'supertest'
-import appWithAllRoutes, { mockJwtDecode } from '../testutils/appSetup'
+import { appWithAllRoutes, mockJwtDecode } from '../testutils/appSetup'
 import PrisonerSearchService, { PrisonerResultSummary } from '../../services/prisonerSearchService'
 import MovePrisonerService from '../../services/movePrisonerService'
 import HospitalSearchService, { Hospital } from '../../services/hospitalSearchService'

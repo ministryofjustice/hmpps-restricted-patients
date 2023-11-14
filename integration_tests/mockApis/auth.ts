@@ -1,9 +1,10 @@
 import jwt from 'jsonwebtoken'
+import { Response } from 'superagent'
 
 import { stubFor, getMatchingRequests } from './wiremock'
 import tokenVerification from './tokenVerification'
 
-const createToken = (roles = []) => {
+const createToken = (roles: string[] = []) => {
   // authorities in the session are always prefixed by ROLE.
   const authorities = roles.map(role => (role.startsWith('ROLE_') ? role : `ROLE_${role}`))
   const payload = {
@@ -39,14 +40,14 @@ const favicon = () =>
     },
   })
 
-const ping = status =>
+const ping = () =>
   stubFor({
     request: {
       method: 'GET',
       urlPattern: '/auth/health/ping',
     },
     response: {
-      status,
+      status: 200,
     },
   })
 
@@ -81,7 +82,22 @@ const signOut = () =>
     },
   })
 
-const token = (roles = []) =>
+const manageDetails = () =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: '/auth/account-details.*',
+    },
+    response: {
+      status: 200,
+      headers: {
+        'Content-Type': 'text/html',
+      },
+      body: '<html><body><h1>Your account details</h1></body></html>',
+    },
+  })
+
+const token = (roles: string[] = []) =>
   stubFor({
     request: {
       method: 'POST',
@@ -103,48 +119,10 @@ const token = (roles = []) =>
       },
     },
   })
-
-const stubUser = () =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/auth/api/user/me',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: {
-        staffId: 231232,
-        username: 'USER1',
-        active: true,
-        name: 'john smith',
-        activeCaseLoadId: 'MDI',
-      },
-    },
-  })
-
-const stubUserRoles = (roles = []) =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/auth/api/user/me/roles',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: roles,
-    },
-  })
-
 export default {
   getSignInUrl,
-  stubPing: (status = 200) => Promise.all([ping(status), tokenVerification.stubTokenVerificationPing(status)]),
-  stubSignIn: (roles = []) =>
+  stubAuthPing: ping,
+  stubAuthManageDetails: manageDetails,
+  stubSignIn: (roles: string[]): Promise<[Response, Response, Response, Response, Response]> =>
     Promise.all([favicon(), redirect(), signOut(), token(roles), tokenVerification.stubVerifyToken()]),
-  stubUser: () => Promise.all([stubUser(), stubUserRoles()]),
-  stubUserRoles,
 }

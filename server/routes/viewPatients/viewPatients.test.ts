@@ -4,7 +4,7 @@ import request from 'supertest'
 import RestrictedPatientSearchService, {
   RestrictedPatientSearchSummary,
 } from '../../services/restrictedPatientSearchService'
-import appWithAllRoutes, { mockJwtDecode } from '../testutils/appSetup'
+import { appWithAllRoutes, mockJwtDecode } from '../testutils/appSetup'
 
 jest.mock('../../services/restrictedPatientSearchService')
 

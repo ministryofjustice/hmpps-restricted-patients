@@ -1,9 +1,7 @@
-/* eslint-disable import/no-extraneous-dependencies */
-
 import { defineConfig } from 'cypress'
 import { resetStubs } from './integration_tests/mockApis/wiremock'
-
 import auth from './integration_tests/mockApis/auth'
+import manageUsersApi from './integration_tests/mockApis/manageUsersApi'
 import tokenVerification from './integration_tests/mockApis/tokenVerification'
 import search from './integration_tests/mockApis/search'
 import prisonApi from './integration_tests/mockApis/prisonApi'
@@ -20,38 +18,24 @@ export default defineConfig({
     configFile: 'reporter-config.json',
   },
   taskTimeout: 60000,
-  viewportWidth: 1024,
-  viewportHeight: 768,
   e2e: {
     setupNodeEvents(on) {
       on('task', {
         reset: resetStubs,
-
-        getSignInUrl: auth.getSignInUrl,
-        stubSignIn: ({ caseLoads, roles } = {}) =>
-          Promise.all([auth.stubSignIn(roles), prisonApi.stubUserCaseloads(caseLoads)]),
-
-        stubAuthUser: auth.stubUser,
-        stubUserRoles: auth.stubUserRoles,
-        stubAuthPing: status => auth.stubPing(status),
-
-        stubTokenVerificationPing: tokenVerification.stubTokenVerificationPing,
-
-        stubSearch: search.stubSearch,
-        stubRestrictedPatientSearch: search.stubRestrictedPatientSearch,
-        stubSearchPing: status => search.stubRestrictedPatientPing(status),
-
+        ...auth,
+        ...manageUsersApi,
+        ...tokenVerification,
+        ...search,
         ...prisonApi,
         ...restrictedPatientApi,
-
         ...frontendComponents,
-        stubFrontendComponents: () =>
-          Promise.all([frontendComponents.stubGetComponents(), frontendComponents.stubGetComponentAssets()]),
+        stubSignIn: ({ caseLoads, roles } = {}) =>
+          Promise.all([auth.stubSignIn(roles), prisonApi.stubUserCaseloads(caseLoads)]),
       })
     },
-
     baseUrl: 'http://localhost:3007',
-    specPattern: 'integration_tests/integration/**/*.cy.{js,jsx,ts,tsx}',
+    excludeSpecPattern: '**/!(*.cy).ts',
+    specPattern: 'integration_tests/e2e/**/*.cy.{js,jsx,ts,tsx}',
     supportFile: 'integration_tests/support/index.ts',
   },
 })

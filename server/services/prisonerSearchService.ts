@@ -3,12 +3,14 @@ import type { PrisonerSearchByName, PrisonerSearchByPrisonerNumber } from '../da
 import PrisonerSearchClient from '../data/prisonerSearchClient'
 import PrisonApiClient from '../data/prisonApiClient'
 import PrisonerSearchResult from '../data/prisonerSearchResult'
-import HmppsAuthClient, { User } from '../data/hmppsAuthClient'
+import HmppsAuthClient from '../data/hmppsAuthClient'
 
 import { FormattedAlertType, getFormattedAlerts } from '../common/alertFlagValues'
 import { convertToTitleCase } from '../utils/utils'
 import PrisonerResult from '../data/prisonerResult'
 import type { SearchStatus } from '../routes/searchPatients/restrictedPatientSearchFilter'
+
+import { Context } from './context'
 
 export interface PrisonerSearchSummary extends PrisonerSearchResult {
   displayName: string
@@ -51,7 +53,7 @@ export default class PrisonerSearchService {
     }
   }
 
-  async search(search: PrisonerSearch, user: User): Promise<PrisonerSearchSummary[]> {
+  async search(search: PrisonerSearch, user: Context): Promise<PrisonerSearchSummary[]> {
     const searchTerm = search.searchTerm.replace(/,/g, ' ').replace(/\s\s+/g, ' ').trim()
     const { prisonIds } = search
 
@@ -74,12 +76,12 @@ export default class PrisonerSearchService {
     )
   }
 
-  async getPrisonerImage(prisonerNumber: string, user: User): Promise<Readable> {
+  async getPrisonerImage(prisonerNumber: string, user: Context): Promise<Readable> {
     const token = await this.hmppsAuthClient.getSystemClientToken(user.username)
     return new PrisonApiClient(token).getPrisonerImage(prisonerNumber)
   }
 
-  async getPrisonerDetails(prisonerNumber: string, user: User): Promise<PrisonerResultSummary> {
+  async getPrisonerDetails(prisonerNumber: string, user: Context): Promise<PrisonerResultSummary> {
     const token = await this.hmppsAuthClient.getSystemClientToken(user.username)
     const prisoner = await new PrisonApiClient(token).getPrisonerDetails(prisonerNumber)
 
