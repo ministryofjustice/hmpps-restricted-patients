@@ -82,20 +82,7 @@ context('Sign In', () => {
     })
 
     it('should show change location link when user has more than 1 caseload', () => {
-      cy.task('stubSignIn', {
-        caseLoads: [
-          {
-            caseLoadId: 'MDI',
-            description: 'Moorland',
-            currentlyActive: true,
-          },
-          {
-            caseLoadId: 'LEI',
-            description: 'Leeds',
-            currentlyActive: false,
-          },
-        ],
-      })
+      cy.task('stubSignIn')
       cy.signIn()
 
       const page = Page.verifyOnPage(HomePage)
