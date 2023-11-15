@@ -1,7 +1,6 @@
 import { convertToTitleCase } from '../utils/utils'
 import type { User } from '../data/manageUsersApiClient'
 import ManageUsersApiClient from '../data/manageUsersApiClient'
-import PrisonApiClient from '../data/prisonApiClient'
 
 export interface UserDetails extends User {
   displayName: string

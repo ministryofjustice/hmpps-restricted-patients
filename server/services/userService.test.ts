@@ -1,6 +1,5 @@
 import UserService from './userService'
 import ManageUsersApiClient, { type User } from '../data/manageUsersApiClient'
-import { CaseLoad } from '../data/prisonApiClient'
 
 jest.mock('../data/manageUsersApiClient')
 
