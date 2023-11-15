@@ -29,8 +29,6 @@ export default defineConfig({
         ...prisonApi,
         ...restrictedPatientApi,
         ...frontendComponents,
-        stubSignIn: ({ caseLoads, roles } = {}) =>
-          Promise.all([auth.stubSignIn(roles), prisonApi.stubUserCaseloads(caseLoads)]),
       })
     },
     baseUrl: 'http://localhost:3007',

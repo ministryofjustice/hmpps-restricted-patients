@@ -41,20 +41,7 @@ context('Frontend Components Fallback', () => {
     })
 
     it('should not show change location link in the fallback', () => {
-      cy.task('stubSignIn', {
-        caseLoads: [
-          {
-            caseLoadId: 'MDI',
-            description: 'Moorland',
-            currentlyActive: true,
-          },
-          {
-            caseLoadId: 'LEI',
-            description: 'Leeds',
-            currentlyActive: false,
-          },
-        ],
-      })
+      cy.task('stubSignIn')
       cy.signIn()
 
       const page = Page.verifyOnPage(HomePage)

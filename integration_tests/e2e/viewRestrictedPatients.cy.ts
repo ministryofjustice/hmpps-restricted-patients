@@ -13,7 +13,7 @@ const toOffender = $cell => ({
 context('View restricted patients', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubSignIn', { roles: ['SEARCH_RESTRICTED_PATIENT'] })
+    cy.task('stubSignIn', ['SEARCH_RESTRICTED_PATIENT'])
     cy.task('stubManageUser')
     cy.task('stubFrontendComponents')
     cy.task('stubUserRoles', [{ roleCode: 'SEARCH_RESTRICTED_PATIENT' }])
