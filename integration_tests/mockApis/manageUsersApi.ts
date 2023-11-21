@@ -20,7 +20,7 @@ const stubUser = (name: string = 'john smith') =>
     },
   })
 
-const stubUserRoles = (roles = []) =>
+const stubManageUserRoles = (roles = []) =>
   stubFor({
     request: {
       method: 'GET',
@@ -49,5 +49,5 @@ const ping = () =>
 export default {
   stubManageUser: stubUser,
   stubManageUsersPing: ping,
-  stubManageUserRoles: stubUserRoles,
+  stubManageUserRoles,
 }

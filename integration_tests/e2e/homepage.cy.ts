@@ -6,7 +6,7 @@ context('Homepage', () => {
     cy.task('stubSignIn')
     cy.task('stubManageUser')
     cy.task('stubFrontendComponents')
-    cy.task('stubUserRoles', [
+    cy.task('stubManageUserRoles', [
       { roleCode: 'REMOVE_RESTRICTED_PATIENT' },
       { roleCode: 'TRANSFER_RESTRICTED_PATIENT' },
       { roleCode: 'SEARCH_RESTRICTED_PATIENT' },
@@ -17,7 +17,7 @@ context('Homepage', () => {
 
   describe('Tasks', () => {
     it('should only show help page if there are no roles present', () => {
-      cy.task('stubUserRoles', [{ roleCode: 'RANDOM_ROLE' }])
+      cy.task('stubManageUserRoles', [{ roleCode: 'RANDOM_ROLE' }])
       const page = HomePage.goTo()
 
       page.searchRestrictedPatient().should('not.exist')
@@ -27,7 +27,7 @@ context('Homepage', () => {
       page.helpLink().should('exist')
     })
     it('should show search restricted patient', () => {
-      cy.task('stubUserRoles', [{ roleCode: 'SEARCH_RESTRICTED_PATIENT' }])
+      cy.task('stubManageUserRoles', [{ roleCode: 'SEARCH_RESTRICTED_PATIENT' }])
       const page = HomePage.goTo()
 
       page.searchRestrictedPatient().should('exist')
@@ -37,7 +37,7 @@ context('Homepage', () => {
       page.helpLink().should('exist')
     })
     it('should show move to hospital', () => {
-      cy.task('stubUserRoles', [{ roleCode: 'TRANSFER_RESTRICTED_PATIENT' }])
+      cy.task('stubManageUserRoles', [{ roleCode: 'TRANSFER_RESTRICTED_PATIENT' }])
 
       const page = HomePage.goTo()
 
@@ -48,7 +48,7 @@ context('Homepage', () => {
       page.helpLink().should('exist')
     })
     it('should show migrate into hospital', () => {
-      cy.task('stubUserRoles', [{ roleCode: 'RESTRICTED_PATIENT_MIGRATION' }])
+      cy.task('stubManageUserRoles', [{ roleCode: 'RESTRICTED_PATIENT_MIGRATION' }])
 
       const page = HomePage.goTo()
 
@@ -59,7 +59,7 @@ context('Homepage', () => {
       page.helpLink().should('exist')
     })
     it('should show remove from restricted patients', () => {
-      cy.task('stubUserRoles', [{ roleCode: 'REMOVE_RESTRICTED_PATIENT' }])
+      cy.task('stubManageUserRoles', [{ roleCode: 'REMOVE_RESTRICTED_PATIENT' }])
       const page = HomePage.goTo()
 
       page.removeFromRestrictedPatients().should('exist')
