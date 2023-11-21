@@ -1,6 +1,6 @@
 import { stubFor } from './wiremock'
 
-const stubUser = (name: string = 'Bill Smith') =>
+const stubUser = (name: string = 'john smith') =>
   stubFor({
     request: {
       method: 'GET',
@@ -20,7 +20,7 @@ const stubUser = (name: string = 'Bill Smith') =>
     },
   })
 
-const stubUserRoles = (roles = []) =>
+const stubManageUserRoles = (roles = []) =>
   stubFor({
     request: {
       method: 'GET',
@@ -49,5 +49,5 @@ const ping = () =>
 export default {
   stubManageUser: stubUser,
   stubManageUsersPing: ping,
-  stubUserRoles,
+  stubManageUserRoles,
 }

@@ -9,7 +9,7 @@ context('Sign In', () => {
     cy.task('stubSignIn')
     cy.task('stubManageUser')
     cy.task('stubFrontendComponents')
-    cy.task('stubUserRoles', [
+    cy.task('stubManageUserRoles', [
       { roleCode: 'REMOVE_RESTRICTED_PATIENT' },
       { roleCode: 'TRANSFER_RESTRICTED_PATIENT' },
       { roleCode: 'SEARCH_RESTRICTED_PATIENT' },

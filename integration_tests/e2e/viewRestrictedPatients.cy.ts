@@ -16,7 +16,7 @@ context('View restricted patients', () => {
     cy.task('stubSignIn', ['SEARCH_RESTRICTED_PATIENT'])
     cy.task('stubManageUser')
     cy.task('stubFrontendComponents')
-    cy.task('stubUserRoles', [{ roleCode: 'SEARCH_RESTRICTED_PATIENT' }])
+    cy.task('stubManageUserRoles', [{ roleCode: 'SEARCH_RESTRICTED_PATIENT' }])
     cy.task('stubRestrictedPatientSearch', {
       query: {
         equalToJson: {
@@ -44,7 +44,7 @@ context('View restricted patients', () => {
   })
 
   it('should show search restricted patient', () => {
-    cy.task('stubUserRoles', [{ roleCode: 'SEARCH_RESTRICTED_PATIENT' }])
+    cy.task('stubManageUserRoles', [{ roleCode: 'SEARCH_RESTRICTED_PATIENT' }])
     const page = Page.verifyOnPage(HomePage)
 
     page.searchRestrictedPatient().click()
