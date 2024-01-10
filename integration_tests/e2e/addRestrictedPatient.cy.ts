@@ -20,7 +20,6 @@ context('Add prisoner', () => {
     cy.task('stubSignIn', ['RESTRICTED_PATIENT_MIGRATION'])
     cy.task('stubManageUser')
     cy.task('stubFrontendComponents')
-    cy.task('stubManageUserRoles', [{ roleCode: 'RESTRICTED_PATIENT_MIGRATION' }])
     cy.task('stubSearch', {
       query: {
         equalToJson: {

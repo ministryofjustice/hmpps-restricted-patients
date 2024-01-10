@@ -21,7 +21,6 @@ context('Move prisoner', () => {
     cy.task('stubSignIn', ['TRANSFER_RESTRICTED_PATIENT'])
     cy.task('stubManageUser')
     cy.task('stubFrontendComponents')
-    cy.task('stubManageUserRoles', [{ roleCode: 'TRANSFER_RESTRICTED_PATIENT' }])
     cy.task('stubSearch')
     cy.task('stubGetAgenciesByType', {
       type: 'HOSPITAL',
