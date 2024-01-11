@@ -20,21 +20,6 @@ const stubUser = (name: string = 'john smith') =>
     },
   })
 
-const stubManageUserRoles = (roles = []) =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: '/manage-users-api/users/me/roles',
-    },
-    response: {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-      jsonBody: roles,
-    },
-  })
-
 const ping = () =>
   stubFor({
     request: {
@@ -49,5 +34,4 @@ const ping = () =>
 export default {
   stubManageUser: stubUser,
   stubManageUsersPing: ping,
-  stubManageUserRoles,
 }

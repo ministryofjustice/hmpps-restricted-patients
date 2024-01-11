@@ -19,7 +19,7 @@ afterEach(() => {
 
 describe('view tiles', () => {
   it('should get the home page with all tiles if the roles are present', () => {
-    userService.getUserRoles.mockResolvedValue([
+    userService.getUserRoles.mockReturnValue([
       'SEARCH_RESTRICTED_PATIENT',
       'TRANSFER_RESTRICTED_PATIENT',
       'REMOVE_RESTRICTED_PATIENT',
@@ -38,7 +38,7 @@ describe('view tiles', () => {
       })
   })
   it('should get the home page with appropriate tiles if not all of the roles are present', () => {
-    userService.getUserRoles.mockResolvedValue(['SEARCH_RESTRICTED_PATIENT', 'REMOVE_RESTRICTED_PATIENT'])
+    userService.getUserRoles.mockReturnValue(['SEARCH_RESTRICTED_PATIENT', 'REMOVE_RESTRICTED_PATIENT'])
     return request(app)
       .get('/')
       .expect('Content-Type', /html/)
@@ -52,7 +52,7 @@ describe('view tiles', () => {
       })
   })
   it('should get the home page with appropriate tiles if a single role is present', () => {
-    userService.getUserRoles.mockResolvedValue(['SEARCH_RESTRICTED_PATIENT'])
+    userService.getUserRoles.mockReturnValue(['SEARCH_RESTRICTED_PATIENT'])
     return request(app)
       .get('/')
       .expect('Content-Type', /html/)
@@ -66,7 +66,7 @@ describe('view tiles', () => {
       })
   })
   it('should show help page regardless of role', () => {
-    userService.getUserRoles.mockResolvedValue([])
+    userService.getUserRoles.mockReturnValue([])
     return request(app)
       .get('/')
       .expect('Content-Type', /html/)

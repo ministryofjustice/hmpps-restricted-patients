@@ -6,14 +6,9 @@ import HomePage from '../pages/home.page'
 context('Sign In', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubSignIn')
+    cy.task('stubSignIn', ['REMOVE_RESTRICTED_PATIENT', 'TRANSFER_RESTRICTED_PATIENT', 'SEARCH_RESTRICTED_PATIENT'])
     cy.task('stubManageUser')
     cy.task('stubFrontendComponents')
-    cy.task('stubManageUserRoles', [
-      { roleCode: 'REMOVE_RESTRICTED_PATIENT' },
-      { roleCode: 'TRANSFER_RESTRICTED_PATIENT' },
-      { roleCode: 'SEARCH_RESTRICTED_PATIENT' },
-    ])
   })
 
   it('Unauthenticated user directed to auth', () => {
