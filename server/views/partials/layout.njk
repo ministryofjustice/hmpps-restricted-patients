@@ -3,8 +3,6 @@
 {% block head %}
   <link href="/assets/stylesheets/application.css?{{ version }}" rel="stylesheet"/>
 
-  <script src="/assets/js/jquery.min.js"></script>
-
   {% for js in frontendComponents.jsIncludes %}
     <script src="{{ js }}" nonce="{{ cspNonce }}"></script>
   {% endfor %}
