@@ -2,6 +2,7 @@ import 'reflect-metadata'
 import express, { Express } from 'express'
 import cookieSession from 'cookie-session'
 import { NotFound } from 'http-errors'
+import { v4 as uuidv4 } from 'uuid'
 import jwtDecode from 'jwt-decode'
 
 import routes from '../index'
@@ -10,6 +11,7 @@ import errorHandler from '../../errorHandler'
 import * as auth from '../../authentication/auth'
 import type { Services } from '../../services'
 import type { ApplicationInfo } from '../../applicationInfo'
+import { PrisonUser } from '../../interfaces/hmppsUser'
 
 const testAppInfo: ApplicationInfo = {
   applicationName: 'test',
@@ -19,15 +21,15 @@ const testAppInfo: ApplicationInfo = {
   branchName: 'main',
 }
 
-export const user: Express.User = {
+export const user: PrisonUser = {
   name: 'FIRST LAST',
   userId: 'id',
   token: 'token',
   username: 'user1',
   displayName: 'First Last',
-  active: true,
+  authSource: 'nomis',
   activeCaseLoadId: 'MDI',
-  authSource: 'NOMIS',
+  userRoles: [],
 }
 
 export const flashProvider = jest.fn()
@@ -38,7 +40,7 @@ function appSetup(
   services: Services,
   production: boolean,
   session: Record<string, unknown>,
-  userSupplier: () => Express.User,
+  userSupplier: () => PrisonUser,
 ): Express {
   const app = express()
 
@@ -47,15 +49,19 @@ function appSetup(
   nunjucksSetup(app, testAppInfo)
   app.use(cookieSession({ keys: [''] }))
   app.use((req, res, next) => {
-    req.user = userSupplier()
+    req.user = userSupplier() as Express.User
     req.flash = flashProvider
     res.locals = {
-      user: { ...req.user },
+      user: { ...req.user } as PrisonUser,
     }
     Object.entries(session).forEach(([key, value]) => {
       // @ts-expect-error assignment of any type ignored
       req.session[key] = value
     })
+    next()
+  })
+  app.use((req, res, next) => {
+    req.id = uuidv4()
     next()
   })
   app.use(express.json())
@@ -77,7 +83,7 @@ export function appWithAllRoutes({
   production?: boolean
   services?: Partial<Services>
   session?: Record<string, unknown>
-  userSupplier?: () => Express.User
+  userSupplier?: () => PrisonUser
   roles?: string[]
 }): Express {
   auth.default.authenticationMiddleware = () => (req, res, next) => next()
