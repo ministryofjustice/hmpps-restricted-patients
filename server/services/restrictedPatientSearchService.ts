@@ -8,6 +8,7 @@ import RestrictedPatientSearchResult from '../data/restrictedPatientSearchResult
 import { convertToTitleCase } from '../utils/utils'
 
 import { Context } from './context'
+import PrisonApiClient, { Prison } from '../data/prisonApiClient'
 
 export interface RestrictedPatientSearchSummary extends RestrictedPatientSearchResult {
   displayName: string
@@ -37,12 +38,18 @@ export default class RestrictedPatientSearchService {
       ? searchByPrisonerIdentifier(searchTerm)
       : searchByName(searchTerm)
 
-    const results = await new RestrictedPatientSearchClient(user.token).search(searchRequest)
+    const [results, prisons]: [RestrictedPatientSearchResult[], Prison[]] = await Promise.all([
+      new RestrictedPatientSearchClient(user.token).search(searchRequest),
+      new PrisonApiClient(user.token).getAgenciesByType('INST'),
+    ])
+
+    const prisonMap = new Map(prisons.map(i => [i.agencyId, i.description]))
 
     const enhancedResults = results.map(prisoner => {
       return {
         ...prisoner,
         displayName: convertToTitleCase(`${prisoner.lastName}, ${prisoner.firstName}`),
+        supportingPrisonDescription: prisonMap.get(prisoner.supportingPrisonId),
       }
     })
 

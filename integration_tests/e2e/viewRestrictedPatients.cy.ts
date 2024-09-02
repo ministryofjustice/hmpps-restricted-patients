@@ -7,7 +7,8 @@ const toOffender = $cell => ({
   name: $cell[1].textContent,
   prisonerNumber: $cell[2].textContent,
   location: $cell[3].textContent,
-  addACaseNoteLink: $cell[4].textContent,
+  supportingPrison: $cell[4].textContent,
+  addACaseNoteLink: $cell[5].textContent,
 })
 
 context('View restricted patients', () => {
@@ -38,6 +39,25 @@ context('View restricted patients', () => {
           },
         ],
       },
+    })
+    cy.task('stubGetAgenciesByType', {
+      type: 'INST',
+      response: [
+        {
+          agencyId: 'MDI',
+          description: 'Moorland',
+          longDescription: 'HMP Moorland',
+          agencyType: 'INST',
+          active: true,
+        },
+        {
+          agencyId: 'DNI',
+          description: 'Doncaster',
+          longDescription: 'HMP Doncaster',
+          agencyType: 'INST',
+          active: true,
+        },
+      ],
     })
     cy.signIn()
   })
@@ -75,6 +95,7 @@ context('View restricted patients', () => {
         expect(offenders[1].name).to.contain('Smith, John')
         expect(offenders[1].prisonerNumber).to.eq('A1234AA')
         expect(offenders[1].location).to.eq('Hazelwood House')
+        expect(offenders[1].supportingPrison).to.eq('Doncaster')
         expect(offenders[1].addACaseNoteLink).to.contain('Add a case note')
       })
     viewRestrictedPatientsPage.viewPrisonerProfile().should('have.attr', 'href').and('include', '/prisoner/A1234AA')
