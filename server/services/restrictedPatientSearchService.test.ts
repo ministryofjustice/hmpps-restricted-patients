@@ -1,10 +1,12 @@
 import RestrictedPatientSearchService from './restrictedPatientSearchService'
 import RestrictedPatientSearchClient from '../data/restrictedPatientSearchClient'
 import RestrictedPatientSearchResult from '../data/restrictedPatientSearchResult'
+import { Prison } from '../data/prisonApiClient'
 
 import { Context } from './context'
 
 const search = jest.fn()
+const getAgenciesByType = jest.fn()
 
 jest.mock('../data/hmppsAuthClient')
 jest.mock('../data/restrictedPatientSearchClient', () => {
@@ -12,6 +14,7 @@ jest.mock('../data/restrictedPatientSearchClient', () => {
     return { search }
   })
 })
+jest.mock('../data/prisonApiClient', () => jest.fn().mockImplementation(() => ({ getAgenciesByType })))
 
 const user = {
   token: 'token-1',
@@ -22,6 +25,22 @@ describe('restrictedPatientSearchService', () => {
 
   beforeEach(() => {
     service = new RestrictedPatientSearchService()
+    getAgenciesByType.mockResolvedValue([
+      {
+        agencyId: 'MDI',
+        description: 'Moorland',
+        longDescription: 'HMP Moorland',
+        agencyType: 'INST',
+        active: true,
+      } as Prison,
+      {
+        agencyId: 'LEI',
+        description: 'Leeds',
+        longDescription: 'HMP Leeds',
+        agencyType: 'INST',
+        active: true,
+      } as Prison,
+    ])
   })
 
   afterEach(() => {
@@ -109,6 +128,37 @@ describe('restrictedPatientSearchService', () => {
     it('search by prisoner identifier with extra spaces', async () => {
       await service.search({ searchTerm: '    A1234AA ' }, user)
       expect(search).toBeCalledWith({ prisonerIdentifier: 'A1234AA' })
+    })
+
+    it('augments supporting prison with description', async () => {
+      search.mockResolvedValue([
+        {
+          firstName: 'JOHN',
+          lastName: 'SMITH',
+          prisonName: 'HMP Moorland',
+          prisonerNumber: 'A1234AA',
+          supportingPrisonId: 'MDI',
+          dischargedHospitalId: 'HAZLWD',
+          dischargeDate: '2021-06-07',
+        } as RestrictedPatientSearchResult,
+        {
+          firstName: 'JOHN',
+          lastName: 'SMITH',
+          prisonName: 'HMP Leeds',
+          prisonerNumber: 'A1234AA',
+          supportingPrisonId: 'LEI',
+          dischargedHospitalId: 'HAZLWD',
+          dischargeDate: '2021-06-07',
+        } as RestrictedPatientSearchResult,
+      ])
+
+      const results = await service.search({ searchTerm: 'Smith, John' }, user)
+      expect(results).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({ supportingPrisonId: 'MDI', supportingPrisonDescription: 'Moorland' }),
+          expect.objectContaining({ supportingPrisonId: 'LEI', supportingPrisonDescription: 'Leeds' }),
+        ]),
+      )
     })
   })
 })

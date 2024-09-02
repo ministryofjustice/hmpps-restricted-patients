@@ -48,6 +48,7 @@
       },
       { text: prisoner.prisonerNumber },
       { text: prisoner.dischargedHospitalDescription },
+      { text: prisoner.supportingPrisonDescription },
       { html: addCaseNoteLinkHtml }
     ]), rows) %}
   {% endfor %}
@@ -68,6 +69,12 @@
           { text: "Prison number" },
           {
             text: "Location",
+            attributes: {
+              "aria-sort": "none"
+            }
+          },
+          {
+            text: "Supporting prison",
             attributes: {
               "aria-sort": "none"
             }

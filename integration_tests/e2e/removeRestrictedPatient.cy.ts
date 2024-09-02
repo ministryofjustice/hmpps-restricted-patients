@@ -40,6 +40,25 @@ context('Remove restricted patient', () => {
         ],
       },
     })
+    cy.task('stubGetAgenciesByType', {
+      type: 'INST',
+      response: [
+        {
+          agencyId: 'MDI',
+          description: 'Moorland',
+          longDescription: 'HMP Moorland',
+          agencyType: 'INST',
+          active: true,
+        },
+        {
+          agencyId: 'DNI',
+          description: 'Doncaster',
+          longDescription: 'HMP Doncaster',
+          agencyType: 'INST',
+          active: true,
+        },
+      ],
+    })
     cy.task('stubGetPrisonerDetails', {
       prisonerNumber: 'A1234AA',
       response: {
