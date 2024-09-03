@@ -1,12 +1,12 @@
 accessibleAutocomplete.enhanceSelectElement({
   defaultValue: '',
-  selectElement: document.querySelector('#hospital'),
+  selectElement: document.querySelector('#agency'),
 })
 
 $(function () {
-  $('.js-hospital-submit').on('click', function () {
+  $('.js-agency-submit').on('click', function () {
     if (!$.trim($('.autocomplete__input').val()).length) {
-      $('.js-hospital-select').val('')
+      $('.js-agency-select').val('')
     }
   })
 })
