@@ -54,7 +54,7 @@ describe('GET /prisoner-changed', () => {
   afterEach(() => {
     jest.resetAllMocks()
   })
-  it('should load the prisoner change completed page', () => {
+  it('should load the prison change completed page', () => {
     return request(app)
       .get('/change-supporting-prison/prisoner-changed?prisonerNumber=A1234AA&prisonId=MDI')
       .expect('Content-Type', /html/)
@@ -110,7 +110,7 @@ describe('GET /prisoner-changed - no session item (user jumped to page)', () => 
   afterEach(() => {
     jest.resetAllMocks()
   })
-  it('should load the prisoner change completed page', () => {
+  it('should load the prison change completed page', () => {
     return request(app)
       .get('/change-supporting-prison/prisoner-changed?prisonerNumber=A1234AA&prisonId=MDI')
       .expect('Content-Type', /html/)

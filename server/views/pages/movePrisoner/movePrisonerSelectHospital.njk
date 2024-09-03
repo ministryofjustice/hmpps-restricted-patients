@@ -58,14 +58,14 @@
         <input type="hidden" name="_csrf" value="{{ csrfToken }}" />
 
         {{ govukSelect({
-          id: "hospital",
+          id: "agency",
           name: "hospital",
           label: {
             text: "Enter the hospital " + prisoner.friendlyName + " is moving to"
           },
           items: formattedHospitals,
           errorMessage: errors | findError("hospital"),
-          classes: "js-hospital-select",
+          classes: "js-agency-select",
           attributes: {
             "data-test": "select-hospital-input"
           }
@@ -74,7 +74,7 @@
         {{ govukButton({ 
           text: "Continue",
           preventDoubleClick: true,
-          classes: "govuk-!-margin-right-3 js-hospital-submit",
+          classes: "govuk-!-margin-right-3 js-agency-submit",
           type: "submit",
           attributes: { "data-test": "select-hospital-submit" }
         }) }}
@@ -93,5 +93,5 @@
 
 {% block pageScripts %}
   <script src="/assets/js/accessible-autocomplete.min.js"></script>
-  <script src="/assets/js/autocomplete-hospital.js"></script>
+  <script src="/assets/js/autocomplete-agency.js"></script>
 {% endblock %}
