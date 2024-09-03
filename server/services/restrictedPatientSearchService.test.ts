@@ -1,7 +1,7 @@
 import RestrictedPatientSearchService from './restrictedPatientSearchService'
 import RestrictedPatientSearchClient from '../data/restrictedPatientSearchClient'
 import RestrictedPatientSearchResult from '../data/restrictedPatientSearchResult'
-import { Prison } from '../data/prisonApiClient'
+import { Agency } from '../data/prisonApiClient'
 
 import { Context } from './context'
 
@@ -32,14 +32,14 @@ describe('restrictedPatientSearchService', () => {
         longDescription: 'HMP Moorland',
         agencyType: 'INST',
         active: true,
-      } as Prison,
+      } as Agency,
       {
         agencyId: 'LEI',
         description: 'Leeds',
         longDescription: 'HMP Leeds',
         agencyType: 'INST',
         active: true,
-      } as Prison,
+      } as Agency,
     ])
   })
 

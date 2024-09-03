@@ -1,5 +1,5 @@
 import AgencySearchService from './agencySearchService'
-import PrisonApiClient, { Prison } from '../data/prisonApiClient'
+import PrisonApiClient, { Agency } from '../data/prisonApiClient'
 
 import { Context } from './context'
 
@@ -37,14 +37,14 @@ describe('agencySearchService', () => {
             longDescription: 'Sheffield Teaching Hospital',
             agencyType: 'HOSP',
             active: true,
-          } as Prison,
+          } as Agency,
           {
             agencyId: 'BURNLY',
             description: 'Burnley Hospital',
             longDescription: 'Burnley Teaching Hospital',
             agencyType: 'HOSP',
             active: false,
-          } as Prison,
+          } as Agency,
         ])
         .mockResolvedValueOnce([
           {
@@ -53,7 +53,7 @@ describe('agencySearchService', () => {
             longDescription: 'Rotherham General Hospital',
             agencyType: 'HSHOSP',
             active: true,
-          } as Prison,
+          } as Agency,
         ])
     })
 
@@ -91,14 +91,14 @@ describe('agencySearchService', () => {
           longDescription: 'HMP Moorland',
           agencyType: 'INST',
           active: true,
-        } as Prison,
+        } as Agency,
         {
           agencyId: 'DNI',
           description: 'Doncaster',
           longDescription: 'HMP Doncaster',
           agencyType: 'INST',
           active: false,
-        } as unknown as Prison,
+        } as unknown as Agency,
       ])
     })
 
@@ -127,7 +127,7 @@ describe('agencySearchService', () => {
         longDescription: 'Sheffield Teaching Hospital',
         agencyType: 'HOSP',
         active: true,
-      } as Prison)
+      } as Agency)
     })
 
     it('makes the correct calls and returns the hospital details', async () => {

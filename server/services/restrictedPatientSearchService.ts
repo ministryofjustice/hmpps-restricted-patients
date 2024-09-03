@@ -8,7 +8,7 @@ import RestrictedPatientSearchResult from '../data/restrictedPatientSearchResult
 import { convertToTitleCase } from '../utils/utils'
 
 import { Context } from './context'
-import PrisonApiClient, { Prison } from '../data/prisonApiClient'
+import PrisonApiClient, { Agency } from '../data/prisonApiClient'
 
 export interface RestrictedPatientSearchSummary extends RestrictedPatientSearchResult {
   displayName: string
@@ -38,7 +38,7 @@ export default class RestrictedPatientSearchService {
       ? searchByPrisonerIdentifier(searchTerm)
       : searchByName(searchTerm)
 
-    const [results, prisons]: [RestrictedPatientSearchResult[], Prison[]] = await Promise.all([
+    const [results, prisons]: [RestrictedPatientSearchResult[], Agency[]] = await Promise.all([
       new RestrictedPatientSearchClient(user.token).search(searchRequest),
       new PrisonApiClient(user.token).getAgenciesByType('INST'),
     ])

@@ -3,7 +3,7 @@ import request from 'supertest'
 import { appWithAllRoutes, mockJwtDecode } from '../testutils/appSetup'
 import PrisonerSearchService, { PrisonerResultSummary } from '../../services/prisonerSearchService'
 import AgencySearchService from '../../services/agencySearchService'
-import { Prison } from '../../data/prisonApiClient'
+import { Agency } from '../../data/prisonApiClient'
 
 jest.mock('../../services/prisonerSearchService')
 jest.mock('../../services/agencySearchService')
@@ -28,7 +28,7 @@ describe('GET /prisoner-moved-to-hospital', () => {
       longDescription: 'Sheffield Teaching Hospital',
       agencyType: 'HOSP',
       active: true,
-    } as Prison)
+    } as Agency)
     prisonerSearchService.getPrisonerDetails.mockResolvedValue({
       assignedLivingUnit: {
         agencyId: 'MDI',
@@ -84,7 +84,7 @@ describe('GET /prisoner-moved-to-hospital - no session item (user jumped to page
       longDescription: 'Sheffield Teaching Hospital',
       agencyType: 'HOSP',
       active: true,
-    } as Prison)
+    } as Agency)
     prisonerSearchService.getPrisonerDetails.mockResolvedValue({
       assignedLivingUnit: {
         agencyId: 'MDI',

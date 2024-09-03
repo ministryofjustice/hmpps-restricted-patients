@@ -6,19 +6,11 @@ import logger from '../../logger'
 import RestClient from './restClient'
 import PrisonerResult from './prisonerResult'
 
-export interface Prison {
+export interface Agency {
   agencyId: string
   description: string
   agencyType: string
   active: boolean
-}
-
-export interface CaseLoad {
-  caseLoadId: string
-  description: string
-  type: string
-  caseloadFunction: string
-  currentlyActive: boolean
 }
 
 export default class PrisonApiClient {
@@ -38,14 +30,14 @@ export default class PrisonApiClient {
     }) as Promise<Readable>
   }
 
-  getAgenciesByType(type: string, active = true): Promise<Prison[]> {
-    return this.restClient.get<Prison[]>({
+  getAgenciesByType(type: string, active = true): Promise<Agency[]> {
+    return this.restClient.get<Agency[]>({
       path: `/api/agencies/type/${type}?active=${active}`,
     })
   }
 
-  getAgencyDetails(id: string): Promise<Prison> {
-    return this.restClient.get<Prison>({
+  getAgencyDetails(id: string): Promise<Agency> {
+    return this.restClient.get<Agency>({
       path: `/api/agencies/${id}`,
     })
   }
