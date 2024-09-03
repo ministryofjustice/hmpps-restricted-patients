@@ -110,7 +110,7 @@ describe('GET /prisoner-changed - no session item (user jumped to page)', () => 
   afterEach(() => {
     jest.resetAllMocks()
   })
-  it('should load the prison change completed page', () => {
+  it('should render not found', () => {
     return request(app)
       .get('/change-supporting-prison/prisoner-changed?prisonerNumber=A1234AA&prisonId=MDI')
       .expect('Content-Type', /html/)

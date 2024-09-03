@@ -110,7 +110,7 @@ describe('GET /prisoner-moved-to-hospital - no session item (user jumped to page
   afterEach(() => {
     jest.resetAllMocks()
   })
-  it('should load the prisoner move completed page', () => {
+  it('should render not found', () => {
     return request(app)
       .get('/move-to-hospital/prisoner-moved-to-hospital?prisonerNumber=A1234AA&hospitalId=SHEFF')
       .expect('Content-Type', /html/)

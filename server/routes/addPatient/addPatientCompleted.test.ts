@@ -110,7 +110,7 @@ describe('GET /prisoner-added - no session item (user jumped to page)', () => {
   afterEach(() => {
     jest.resetAllMocks()
   })
-  it('should load the prisoner add completed page', () => {
+  it('should render not found', () => {
     return request(app)
       .get('/add-restricted-patient/prisoner-added?prisonerNumber=A1234AA&hospitalId=SHEFF')
       .expect('Content-Type', /html/)
