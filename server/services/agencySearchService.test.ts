@@ -1,5 +1,5 @@
-import HospitalSearchService, { Hospital } from './hospitalSearchService'
-import PrisonApiClient from '../data/prisonApiClient'
+import AgencySearchService from './agencySearchService'
+import PrisonApiClient, { Prison } from '../data/prisonApiClient'
 
 import { Context } from './context'
 
@@ -16,11 +16,11 @@ const user = {
   token: 'token-1',
 } as Context
 
-describe('movePrisonerService', () => {
-  let service: HospitalSearchService
+describe('agencySearchService', () => {
+  let service: AgencySearchService
 
   beforeEach(() => {
-    service = new HospitalSearchService()
+    service = new AgencySearchService()
   })
 
   afterEach(() => {
@@ -37,14 +37,14 @@ describe('movePrisonerService', () => {
             longDescription: 'Sheffield Teaching Hospital',
             agencyType: 'HOSP',
             active: true,
-          } as Hospital,
+          } as Prison,
           {
             agencyId: 'BURNLY',
             description: 'Burnley Hospital',
             longDescription: 'Burnley Teaching Hospital',
             agencyType: 'HOSP',
             active: false,
-          } as unknown as Hospital,
+          } as Prison,
         ])
         .mockResolvedValueOnce([
           {
@@ -53,7 +53,7 @@ describe('movePrisonerService', () => {
             longDescription: 'Rotherham General Hospital',
             agencyType: 'HSHOSP',
             active: true,
-          } as Hospital,
+          } as Prison,
         ])
     })
 
@@ -82,7 +82,44 @@ describe('movePrisonerService', () => {
     })
   })
 
-  describe('getHospital', () => {
+  describe('getPrisons', () => {
+    beforeEach(() => {
+      getAgenciesByType.mockResolvedValue([
+        {
+          agencyId: 'MDI',
+          description: 'Moorland',
+          longDescription: 'HMP Moorland',
+          agencyType: 'INST',
+          active: true,
+        } as Prison,
+        {
+          agencyId: 'DNI',
+          description: 'Doncaster',
+          longDescription: 'HMP Doncaster',
+          agencyType: 'INST',
+          active: false,
+        } as unknown as Prison,
+      ])
+    })
+
+    it('makes the correct calls and returns the prisons', async () => {
+      const results = await service.getPrisons(user)
+
+      expect(PrisonApiClient).toBeCalledWith(user.token)
+      expect(getAgenciesByType).toBeCalledWith('INST')
+      expect(results).toStrictEqual([
+        {
+          active: true,
+          agencyId: 'MDI',
+          agencyType: 'INST',
+          description: 'Moorland',
+          longDescription: 'HMP Moorland',
+        },
+      ])
+    })
+  })
+
+  describe('getAgency', () => {
     beforeEach(() => {
       getAgencyDetails.mockResolvedValue({
         agencyId: 'SHEFF',
@@ -90,11 +127,11 @@ describe('movePrisonerService', () => {
         longDescription: 'Sheffield Teaching Hospital',
         agencyType: 'HOSP',
         active: true,
-      } as Hospital)
+      } as Prison)
     })
 
     it('makes the correct calls and returns the hospital details', async () => {
-      const results = await service.getHospital('SHEFF', user)
+      const results = await service.getAgency('SHEFF', user)
 
       expect(PrisonApiClient).toBeCalledWith(user.token)
       expect(getAgencyDetails).toBeCalledWith('SHEFF')

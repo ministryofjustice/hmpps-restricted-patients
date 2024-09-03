@@ -7,17 +7,17 @@ import PrisonerSelectRoutes from './prisonerSelect'
 import AddPatientCompletedRoutes from './addPatientCompleted'
 import AddPatientConfirmationRoutes from './addPatientConfirmation'
 import authorisationMiddleware from '../../middleware/authorisationMiddleware'
-import HospitalSearchService from '../../services/hospitalSearchService'
+import AgencySearchService from '../../services/agencySearchService'
 import HospitalSelectRoutes from './hospitalSelect'
 import MigratePrisonerService from '../../services/migratePrisonerService'
 
 export default function addPrisonerRoutes({
-  hospitalSearchService,
+  agencySearchService,
   prisonerSearchService,
   migratePrisonerService,
 }: {
   prisonerSearchService: PrisonerSearchService
-  hospitalSearchService: HospitalSearchService
+  agencySearchService: AgencySearchService
   migratePrisonerService: MigratePrisonerService
 }): Router {
   const router = express.Router({ mergeParams: true })
@@ -28,12 +28,12 @@ export default function addPrisonerRoutes({
 
   const prisonerSearch = new PrisonerSearchRoutes()
   const prisonerSelect = new PrisonerSelectRoutes(prisonerSearchService)
-  const hospitalSelect = new HospitalSelectRoutes(hospitalSearchService, prisonerSearchService)
-  const addPatientCompleted = new AddPatientCompletedRoutes(prisonerSearchService, hospitalSearchService)
+  const hospitalSelect = new HospitalSelectRoutes(agencySearchService, prisonerSearchService)
+  const addPatientCompleted = new AddPatientCompletedRoutes(prisonerSearchService, agencySearchService)
   const addPatientConfirmation = new AddPatientConfirmationRoutes(
     migratePrisonerService,
     prisonerSearchService,
-    hospitalSearchService,
+    agencySearchService,
   )
 
   get('/search-for-prisoner', prisonerSearch.view)

@@ -3,32 +3,33 @@ import request from 'supertest'
 import { appWithAllRoutes, mockJwtDecode } from '../testutils/appSetup'
 import PrisonerSearchService, { PrisonerResultSummary } from '../../services/prisonerSearchService'
 import MovePrisonerService from '../../services/movePrisonerService'
-import HospitalSearchService, { Hospital } from '../../services/hospitalSearchService'
+import AgencySearchService from '../../services/agencySearchService'
+import { Prison } from '../../data/prisonApiClient'
 
 jest.mock('../../services/prisonerSearchService')
 jest.mock('../../services/movePrisonerService')
-jest.mock('../../services/hospitalSearchService')
+jest.mock('../../services/agencySearchService')
 
 const prisonerSearchService = new PrisonerSearchService(null) as jest.Mocked<PrisonerSearchService>
 const movePrisonerService = new MovePrisonerService() as jest.Mocked<MovePrisonerService>
-const hospitalSearchService = new HospitalSearchService() as jest.Mocked<HospitalSearchService>
+const agencySearchService = new AgencySearchService() as jest.Mocked<AgencySearchService>
 
 let app: Express
 
 beforeEach(() => {
   app = appWithAllRoutes({
     production: false,
-    services: { prisonerSearchService, movePrisonerService, hospitalSearchService },
+    services: { prisonerSearchService, movePrisonerService, agencySearchService },
     roles: ['TRANSFER_RESTRICTED_PATIENT'],
   })
 
-  hospitalSearchService.getHospital.mockResolvedValue({
+  agencySearchService.getAgency.mockResolvedValue({
     agencyId: 'SHEFF',
     description: 'Sheffield Hospital',
     longDescription: 'Sheffield Teaching Hospital',
     agencyType: 'HOSP',
     active: true,
-  } as Hospital)
+  } as Prison)
   prisonerSearchService.getPrisonerDetails.mockResolvedValue({
     assignedLivingUnit: {
       agencyId: 'MDI',

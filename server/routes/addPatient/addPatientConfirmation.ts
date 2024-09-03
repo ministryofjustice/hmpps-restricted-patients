@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
 import PrisonerSearchService from '../../services/prisonerSearchService'
-import HospitalSearchService from '../../services/hospitalSearchService'
+import AgencySearchService from '../../services/agencySearchService'
 import MigratePrisonerService from '../../services/migratePrisonerService'
 
 export default class AddPatientConfirmationRoutes {
   constructor(
     private readonly migratePrisonerService: MigratePrisonerService,
     private readonly prisonerSearchService: PrisonerSearchService,
-    private readonly hospitalSearchService: HospitalSearchService,
+    private readonly agencySearchService: AgencySearchService,
   ) {}
 
   private renderView = async (req: Request, res: Response): Promise<void> => {
@@ -16,7 +16,7 @@ export default class AddPatientConfirmationRoutes {
     const { user } = res.locals
 
     const [hospital, prisoner] = await Promise.all([
-      this.hospitalSearchService.getHospital(hospitalId, user),
+      this.agencySearchService.getAgency(hospitalId, user),
       this.prisonerSearchService.getPrisonerDetails(prisonerNumber, user),
     ])
 
