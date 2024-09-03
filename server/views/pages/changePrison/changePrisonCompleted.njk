@@ -1,0 +1,29 @@
+{% extends "../../partials/layout.njk" %}
+
+{% from "govuk/components/panel/macro.njk" import govukPanel %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set title = "Supporting prison changed" %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-three-quarters">
+      {{ govukPanel({
+        titleText: 'The supporting prison for ' + prisoner.friendlyName + ' has been changed',
+        classes: "govuk-!-margin-bottom-6"
+      }) }}
+
+      <div data-test="prisoner-change-completed-help-text">
+        <p class="govuk-body">{{ prisoner.friendlyName | possessive }} supporting prison is now {{ prison.description }}.</p>
+      </div>
+
+      {{ govukButton({
+        text: "Finish",
+        element: 'a',
+        href: '/',
+        classes: "govuk-button--secondary",
+        attributes: { "data-test": "prisoner-change-completed-finish" }
+      }) }}
+    </div>
+  </div>
+{% endblock %}

@@ -5,6 +5,7 @@ import movePrisonerRoutes from './movePrisoner'
 import viewPatientsRoutes from './viewPatients'
 import removePatientRoutes from './removePatient'
 import homepageRoutes from './homepage'
+import changeSupportingPrisonRoutes from './changeSupportingPrison'
 
 import addPrisonerRoutes from './addPatient'
 import helpRoutes from './help'
@@ -36,6 +37,10 @@ export default function routes({
   router.use(
     '/add-restricted-patient',
     addPrisonerRoutes({ agencySearchService, prisonerSearchService, migratePrisonerService }),
+  )
+  router.use(
+    '/change-supporting-prison',
+    changeSupportingPrisonRoutes({ agencySearchService, prisonerSearchService, movePrisonerService }),
   )
   router.use('/prisoner', prisonerRoutes({ prisonerSearchService }))
   router.use('/help', helpRoutes())
