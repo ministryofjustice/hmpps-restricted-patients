@@ -1,13 +1,13 @@
 import { Request } from 'express'
 
 import HospitalSelectRoutes from '../selectHospital/hospitalSelect'
-import HospitalSearchService from '../../services/hospitalSearchService'
+import AgencySearchService from '../../services/agencySearchService'
 import PrisonerSearchService from '../../services/prisonerSearchService'
 
 export default class MovePrisonerHospitalSelectRoutes extends HospitalSelectRoutes {
-  constructor(hospitalSearchService: HospitalSearchService, prisonerSearchService: PrisonerSearchService) {
+  constructor(agencySearchService: AgencySearchService, prisonerSearchService: PrisonerSearchService) {
     super(
-      hospitalSearchService,
+      agencySearchService,
       prisonerSearchService,
       '/move-to-hospital/confirm-move',
       'pages/movePrisoner/movePrisonerSelectHospital',

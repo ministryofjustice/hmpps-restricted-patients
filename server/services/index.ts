@@ -4,7 +4,7 @@ import PrisonerSearchService from './prisonerSearchService'
 import MovePrisonerService from './movePrisonerService'
 import RestrictedPatientSearchService from './restrictedPatientSearchService'
 import RemoveRestrictedPatientService from './removeRestrictedPatientService'
-import HospitalSearchService from './hospitalSearchService'
+import AgencySearchService from './agencySearchService'
 import MigratePrisonerService from './migratePrisonerService'
 import FrontendComponentsService from './frontendComponentsService'
 
@@ -14,7 +14,7 @@ export const services = () => {
   const userService = new UserService(manageUsersApiClient)
   const prisonerSearchService = new PrisonerSearchService(hmppsAuthClient)
   const movePrisonerService = new MovePrisonerService()
-  const hospitalSearchService = new HospitalSearchService()
+  const agencySearchService = new AgencySearchService()
   const restrictedPatientSearchService = new RestrictedPatientSearchService()
   const removeRestrictedPatientService = new RemoveRestrictedPatientService(hmppsAuthClient)
   const migratePrisonerService = new MigratePrisonerService()
@@ -27,7 +27,7 @@ export const services = () => {
     movePrisonerService,
     restrictedPatientSearchService,
     removeRestrictedPatientService,
-    hospitalSearchService,
+    agencySearchService,
     migratePrisonerService,
     frontendComponentsService,
   }

@@ -3,7 +3,7 @@ import asyncMiddleware from '../../middleware/asyncMiddleware'
 
 import HospitalSelectRoutes from './hospitalSelect'
 import MovePrisonerService from '../../services/movePrisonerService'
-import HospitalSearchService from '../../services/hospitalSearchService'
+import AgencySearchService from '../../services/agencySearchService'
 import PrisonerSearchService from '../../services/prisonerSearchService'
 import MovePrisonerConfirmationRoutes from './movePrisonerConfirmation'
 import MovePrisonerCompletedRoutes from './movePrisonerCompleted'
@@ -14,11 +14,11 @@ import authorisationMiddleware from '../../middleware/authorisationMiddleware'
 export default function movePrisonerRoutes({
   movePrisonerService,
   prisonerSearchService,
-  hospitalSearchService,
+  agencySearchService,
 }: {
   movePrisonerService: MovePrisonerService
   prisonerSearchService: PrisonerSearchService
-  hospitalSearchService: HospitalSearchService
+  agencySearchService: AgencySearchService
 }): Router {
   const router = express.Router({ mergeParams: true })
   router.use(authorisationMiddleware(true, ['TRANSFER_RESTRICTED_PATIENT']))
@@ -28,13 +28,13 @@ export default function movePrisonerRoutes({
 
   const prisonerSearch = new PrisonerSearchRoutes()
   const prisonerSelect = new PrisonerSelectRoutes(prisonerSearchService)
-  const movePrisoner = new HospitalSelectRoutes(hospitalSearchService, prisonerSearchService)
+  const movePrisoner = new HospitalSelectRoutes(agencySearchService, prisonerSearchService)
   const movePrisonerConfirmation = new MovePrisonerConfirmationRoutes(
     movePrisonerService,
     prisonerSearchService,
-    hospitalSearchService,
+    agencySearchService,
   )
-  const movePrisonerCompleted = new MovePrisonerCompletedRoutes(prisonerSearchService, hospitalSearchService)
+  const movePrisonerCompleted = new MovePrisonerCompletedRoutes(prisonerSearchService, agencySearchService)
 
   get('/search-for-prisoner', prisonerSearch.view)
   post('/search-for-prisoner', prisonerSearch.submit)
