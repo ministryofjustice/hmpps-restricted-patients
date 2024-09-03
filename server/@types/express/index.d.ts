@@ -12,6 +12,7 @@ export declare module 'express-session' {
     newMovePrisonerJourney: boolean
     newRemoveRestrictedPatientJourney: boolean
     newAddRestrictedPatientJourney: boolean
+    newChangeSupportingPrisonJourney: boolean
   }
 }
 

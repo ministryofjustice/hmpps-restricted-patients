@@ -18,4 +18,14 @@ export default class MovePrisonerService {
 
     return client.dischargePatient(request)
   }
+
+  async changeSupportingPrison(prisonerNumber: string, newPrisonId: string, user: Context): Promise<unknown> {
+    const client = new RestrictedPatientApiClient(user.token)
+    const request = {
+      offenderNo: prisonerNumber,
+      prisonId: newPrisonId,
+    }
+
+    return client.changeSupportingPrison(request)
+  }
 }

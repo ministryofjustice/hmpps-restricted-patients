@@ -14,6 +14,10 @@ export interface RestrictedPatientAddRequest {
   offenderNo: string
   hospitalLocationCode: string
 }
+export interface ChangeSupportingPrisonRequest {
+  offenderNo: string
+  prisonId: string
+}
 
 export default class RestrictedPatientApiClient {
   restClient: RestClient
@@ -47,6 +51,13 @@ export default class RestrictedPatientApiClient {
   async removePatient(prisonerNumber: string): Promise<Record<string, unknown>> {
     return this.restClient.delete<Record<string, unknown>>({
       path: `/restricted-patient/prison-number/${prisonerNumber}`,
+    })
+  }
+
+  async changeSupportingPrison(searchRequest: ChangeSupportingPrisonRequest): Promise<unknown> {
+    return this.restClient.post<ChangeSupportingPrisonRequest>({
+      path: `/change-supporting-prison`,
+      data: { ...searchRequest },
     })
   }
 }
