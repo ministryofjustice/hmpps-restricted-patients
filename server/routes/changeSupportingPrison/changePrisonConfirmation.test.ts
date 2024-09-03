@@ -56,10 +56,10 @@ afterEach(() => {
   jest.resetAllMocks()
 })
 
-describe('GET /confirm-change', () => {
+describe('GET /', () => {
   it('should load the confirm add page', () => {
     return request(app)
-      .get('/change-supporting-prison/confirm-change?prisonerNumber=A1234AA&prisonId=MDI')
+      .get('/change-supporting-prison?prisonerNumber=A1234AA&prisonId=MDI')
       .expect('Content-Type', /html/)
       .expect(res => {
         expect(res.text).toContain('You are changing John Smith’s supporting prison to Moorland')
@@ -69,7 +69,7 @@ describe('GET /confirm-change', () => {
   it('should render not found page if user missing privileges', () => {
     mockJwtDecode.mockImplementation(() => ({ authorities: ['SEARCH_RESTRICTED_PATIENT'] }))
     return request(app)
-      .get('/change-supporting-prison/confirm-change?prisonerNumber=A1234AA&prisonId=MDI')
+      .get('/change-supporting-prison?prisonerNumber=A1234AA&prisonId=MDI')
       .expect('Content-Type', /html/)
       .expect(res => {
         expect(res.text).toContain('Page not found')
@@ -77,7 +77,7 @@ describe('GET /confirm-change', () => {
   })
 })
 
-describe('POST /confirm-change', () => {
+describe('POST /', () => {
   it('should redirect to prisoner-moved page on success', () => {
     movePrisonerService.changeSupportingPrison.mockResolvedValue({
       restrictivePatient: {
@@ -86,7 +86,7 @@ describe('POST /confirm-change', () => {
     })
 
     return request(app)
-      .post('/change-supporting-prison/confirm-change?prisonerNumber=A1234AA&prisonId=MDI')
+      .post('/change-supporting-prison?prisonerNumber=A1234AA&prisonId=MDI')
       .send({ currentAgencyId: 'MDI' })
       .expect('Location', '/change-supporting-prison/prisoner-changed?prisonerNumber=A1234AA&prisonId=MDI')
   })
@@ -95,7 +95,7 @@ describe('POST /confirm-change', () => {
     movePrisonerService.changeSupportingPrison.mockRejectedValue(new Error('some error'))
 
     return request(app)
-      .post('/change-supporting-prison/confirm-change?prisonerNumber=A1234AA&prisonId=MDI')
+      .post('/change-supporting-prison?prisonerNumber=A1234AA&prisonId=MDI')
       .expect('Content-Type', /html/)
       .expect(res => {
         expect(res.text).toContain('Error: some error')
@@ -105,7 +105,7 @@ describe('POST /confirm-change', () => {
   it('should render not found page if user missing privileges', () => {
     mockJwtDecode.mockImplementation(() => ({ authorities: ['SEARCH_RESTRICTED_PATIENT'] }))
     return request(app)
-      .post('/change-supporting-prison/confirm-change?prisonerNumber=A1234AA&prisonId=MDI')
+      .post('/change-supporting-prison?prisonerNumber=A1234AA&prisonId=MDI')
       .expect('Content-Type', /html/)
       .expect(res => {
         expect(res.text).toContain('Page not found')

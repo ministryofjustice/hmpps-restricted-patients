@@ -1,0 +1,86 @@
+{% extends "../../partials/layout.njk" %}
+{% from "../../partials/breadcrumb.njk" import breadcrumb %}
+{% from "../../macros/alertFlags.njk" import alertFlags %}
+{% from "../../macros/categoryFlag.njk" import categoryFlag %}
+
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% set title = "Select a restricted patient to change" %}
+
+{% block beforeContent %}
+  {{ breadcrumb() }}
+{% endblock %}
+
+{% block content %}
+  {% if errors | length %}
+    {{ govukErrorSummary({
+      titleText: "There is a problem",
+      errorList: errors,
+      attributes: { "data-test": "error-summary" }
+    }) }}
+  {% endif %}
+
+  <h1 class="govuk-heading-l">{{ title }}</h1>
+  
+  {% include "../../partials/restrictedPatientSearchForm.njk" %}
+
+  {% set rows = [] %}
+  {% for prisoner in searchResults %}
+    {% set prisonerImageHtml %}
+      <img src="/prisoner/{{ prisoner.prisonerNumber }}/image" alt="Photograph of {{ prisoner.displayName }}" class="results-table__image" />
+    {% endset -%}
+    {% set prisonerLinkHtml %}
+      <a href="{{ pshUrl }}/prisoner/{{ prisoner.prisonerNumber }}" class="govuk-link" data-test="view-prisoner-profile">{{ prisoner.displayName }}</a>
+    {% endset -%}
+    {% set changeSupportingPrisonLinkHtml %}
+      <a href="/change-supporting-prison?prisonerNumber={{ prisoner.prisonerNumber }}&journeyStartUrl={{ journeyStartUrl }}" class="govuk-link" data-test="change-restricted-patient-link"><span class="govuk-visually-hidden">{{ prisoner.displayName }} - </span>Change supporting prison</a>
+    {% endset -%}
+    {% set rows = (rows.push([
+      { html: prisonerImageHtml },
+      {
+        html: prisonerLinkHtml,
+        attributes: {
+          "data-sort-value": prisoner.displayName
+        }
+      },
+      { text: prisoner.prisonerNumber },
+      { text: prisoner.dischargedHospitalDescription },
+      { html: changeSupportingPrisonLinkHtml }
+    ]), rows) %}
+  {% endfor %}
+
+  {% if rows | length %}
+    <p class="align-right"><strong>People listed:</strong> {{ rows.length }}</p>
+
+    <div class="results-table">
+      {{ govukTable({
+        head: [
+          { html: '<span class="govuk-visually-hidden">Picture</span>' },
+          {
+            text: "Name",
+            attributes: {
+              "aria-sort": "ascending"
+            }
+          },
+          { text: "Prison number" },
+          {
+            text: "Hospital",
+            attributes: {
+              "aria-sort": "none"
+            }
+          },
+          { text: "" }
+        ],
+        rows: rows,
+        attributes: { "data-test": "patient-search-results-table", "data-module": "moj-sortable-table" }
+      }) }}
+    </div>
+  {% else %}
+    {% if not errors | length %}
+      <p class="govuk-!-padding-top-3" data-test="no-results-message">There are no results for the details you have entered.</p>
+    {% endif %}
+  {% endif %}
+{% endblock %}

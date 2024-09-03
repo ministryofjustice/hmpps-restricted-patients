@@ -40,7 +40,12 @@ export default function routes({
   )
   router.use(
     '/change-supporting-prison',
-    changeSupportingPrisonRoutes({ agencySearchService, prisonerSearchService, movePrisonerService }),
+    changeSupportingPrisonRoutes({
+      agencySearchService,
+      restrictedPatientSearchService,
+      prisonerSearchService,
+      movePrisonerService,
+    }),
   )
   router.use('/prisoner', prisonerRoutes({ prisonerSearchService }))
   router.use('/help', helpRoutes())
