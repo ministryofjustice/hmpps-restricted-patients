@@ -65,10 +65,24 @@ const stubRemovePatient = ({ prisonerNumber, status = 200, response = {} }) =>
     },
   })
 
+const stubChangeSupportingPrison = ({ status, response = [] }) =>
+  stubFor({
+    request: {
+      method: 'POST',
+      urlPattern: '/restrictedPatientApi/change-supporting-prison',
+    },
+    response: {
+      status,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: response,
+    },
+  })
+
 export default {
   stubRestrictedPatientApiPing,
   stubDischargeToHospital,
   stubGetPatient,
   stubRemovePatient,
   stubMigrateToHospital,
+  stubChangeSupportingPrison,
 }
