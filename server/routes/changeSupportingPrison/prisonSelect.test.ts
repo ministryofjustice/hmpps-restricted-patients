@@ -1,14 +1,17 @@
 import { Express } from 'express'
 import request from 'supertest'
 import { appWithAllRoutes, mockJwtDecode } from '../testutils/appSetup'
-import PrisonerSearchService, { PrisonerResultSummary } from '../../services/prisonerSearchService'
-import AgencySearchService from '../../services/agencySearchService'
+import RestrictedPatientSearchService, {
+  RestrictedPatientSearchSummary,
+} from '../../services/restrictedPatientSearchService'
 import { Agency } from '../../data/prisonApiClient'
+import AgencySearchService from '../../services/agencySearchService'
 
-jest.mock('../../services/prisonerSearchService')
+jest.mock('../../services/restrictedPatientSearchService')
 jest.mock('../../services/agencySearchService')
 
-const prisonerSearchService = new PrisonerSearchService(null) as jest.Mocked<PrisonerSearchService>
+const restrictedPatientSearchService =
+  new RestrictedPatientSearchService() as jest.Mocked<RestrictedPatientSearchService>
 const agencySearchService = new AgencySearchService() as jest.Mocked<AgencySearchService>
 
 let app: Express
@@ -16,7 +19,7 @@ let app: Express
 beforeEach(() => {
   app = appWithAllRoutes({
     production: false,
-    services: { prisonerSearchService, agencySearchService },
+    services: { restrictedPatientSearchService, agencySearchService },
     roles: ['RESTRICTED_PATIENT_MIGRATION'],
   })
 
@@ -29,23 +32,26 @@ beforeEach(() => {
       active: true,
     } as Agency,
   ])
-  prisonerSearchService.getPrisonerDetails.mockResolvedValue({
-    locationDescription: 'Outside - released from Doncaster',
-    alerts: [
-      { alertType: 'T', alertCode: 'TCPA' },
-      { alertType: 'X', alertCode: 'XCU' },
-    ],
-    displayName: 'Smith, John',
-    formattedAlerts: [
-      {
-        alertCodes: ['XCU'],
-        classes: 'alert-status alert-status--controlled-unlock',
-        label: 'Controlled unlock',
-      },
-    ],
-    friendlyName: 'John Smith',
-    prisonerNumber: 'A1234AA',
-  } as PrisonerResultSummary)
+  restrictedPatientSearchService.search.mockResolvedValue([
+    {
+      alerts: [
+        { alertType: 'T', alertCode: 'TCPA' },
+        { alertType: 'X', alertCode: 'XCU' },
+      ],
+      cellLocation: '1-2-015',
+      firstName: 'John',
+      lastName: 'Smith',
+      displayName: 'Smith, John',
+      prisonerNumber: 'A1234AA',
+      prisonName: 'HMP Moorland',
+      supportingPrisonId: 'DNI',
+      supportingPrisonDescription: 'HMP Doncaster',
+      dischargedHospitalId: 'YEWTHO',
+      dischargedHospitalDescription: 'Yew Trees',
+      dischargeDate: '2021-06-08',
+      dischargeDetails: 'Psychiatric Hospital Discharge to Yew Trees',
+    } as unknown as RestrictedPatientSearchSummary,
+  ])
 })
 
 afterEach(() => {
@@ -63,13 +69,36 @@ describe('GET /select-prison', () => {
           '<img src="/prisoner/A1234AA/image" alt="Photograph of John Smith" class="horizontal-information__prisoner-image" />',
         )
         expect(res.text).toContain('Smith, John')
-        expect(res.text).toContain('Outside - released from Doncaster')
-        expect(res.text).toContain('Controlled unlock')
+        expect(res.text).toContain('Yew Trees')
+        expect(res.text).toContain('HMP Doncaster')
       })
   })
 
   it('should render not found page if user missing privileges', () => {
     mockJwtDecode.mockImplementation(() => ({ authorities: ['SEARCH_RESTRICTED_PATIENT'] }))
+    return request(app)
+      .get('/change-supporting-prison/select-prison?prisonerNumber=A1234AA')
+      .expect('Content-Type', /html/)
+      .expect(res => {
+        expect(res.text).toContain('Page not found')
+      })
+  })
+
+  it('should render not found page if no results from search', () => {
+    restrictedPatientSearchService.search.mockResolvedValue([])
+    return request(app)
+      .get('/change-supporting-prison/select-prison?prisonerNumber=A1234AA')
+      .expect('Content-Type', /html/)
+      .expect(res => {
+        expect(res.text).toContain('Page not found')
+      })
+  })
+
+  it('should render not found page if too many results from search', () => {
+    restrictedPatientSearchService.search.mockResolvedValue([
+      {} as unknown as RestrictedPatientSearchSummary,
+      {} as unknown as RestrictedPatientSearchSummary,
+    ])
     return request(app)
       .get('/change-supporting-prison/select-prison?prisonerNumber=A1234AA')
       .expect('Content-Type', /html/)
@@ -84,7 +113,7 @@ describe('POST /change-supporting-prison', () => {
     return request(app)
       .post('/change-supporting-prison/select-prison?prisonerNumber=A1234AA')
       .send({ prison: 'MDI' })
-      .expect('Location', '/change-supporting-prison/confirm-change?prisonerNumber=A1234AA&prisonId=MDI')
+      .expect('Location', '/change-supporting-prison?prisonerNumber=A1234AA&prisonId=MDI')
   })
 
   it('should render validation messages', () => {

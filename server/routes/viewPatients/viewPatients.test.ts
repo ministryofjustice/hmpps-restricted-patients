@@ -39,11 +39,12 @@ describe('GET /view-restricted-patients', () => {
           prisonerNumber: 'A1234AA',
           prisonName: 'HMP Moorland',
           supportingPrisonId: 'DNI',
+          supportingPrisonDescription: 'HMP Doncaster',
           dischargedHospitalId: 'YEWTHO',
           dischargedHospitalDescription: 'Yew Trees',
           dischargeDate: '2021-06-08',
           dischargeDetails: 'Psychiatric Hospital Discharge to Yew Trees',
-        } as RestrictedPatientSearchSummary,
+        } as unknown as RestrictedPatientSearchSummary,
       ])
     })
 
@@ -59,6 +60,7 @@ describe('GET /view-restricted-patients', () => {
           )
           expect(res.text).toContain('Smith, John')
           expect(res.text).toContain('Yew Trees')
+          expect(res.text).toContain('HMP Doncaster')
           expect(res.text).toContain(
             '<a href="http://localhost:3002/prisoner/A1234AA/add-case-note" class="govuk-link" data-test="patient-add-case-note-link"><span class="govuk-visually-hidden">Smith, John - </span>Add a case note</a>',
           )

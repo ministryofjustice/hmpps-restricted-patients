@@ -1,7 +1,5 @@
 {% extends "../../partials/layout.njk" %}
 {% from "../../partials/breadcrumb.njk" import breadcrumb %}
-{% from "../../macros/alertFlags.njk" import alertFlags %}
-{% from "../../macros/categoryFlag.njk" import categoryFlag %}
 
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
@@ -36,7 +34,7 @@
       <a href="{{ pshUrl }}/prisoner/{{ prisoner.prisonerNumber }}" class="govuk-link" data-test="view-prisoner-profile">{{ prisoner.displayName }}</a>
     {% endset -%}
     {% set changeSupportingPrisonLinkHtml %}
-      <a href="/change-supporting-prison?prisonerNumber={{ prisoner.prisonerNumber }}&journeyStartUrl={{ journeyStartUrl }}" class="govuk-link" data-test="change-restricted-patient-link"><span class="govuk-visually-hidden">{{ prisoner.displayName }} - </span>Change supporting prison</a>
+      <a href="/change-supporting-prison/select-prison?prisonerNumber={{ prisoner.prisonerNumber }}&journeyStartUrl={{ journeyStartUrl }}" class="govuk-link" data-test="change-supporting-prison-link"><span class="govuk-visually-hidden">{{ prisoner.displayName }} - </span>Change supporting prison</a>
     {% endset -%}
     {% set rows = (rows.push([
       { html: prisonerImageHtml },
@@ -48,6 +46,7 @@
       },
       { text: prisoner.prisonerNumber },
       { text: prisoner.dischargedHospitalDescription },
+      { text: prisoner.supportingPrisonDescription },
       { html: changeSupportingPrisonLinkHtml }
     ]), rows) %}
   {% endfor %}
@@ -68,6 +67,12 @@
           { text: "Prison number" },
           {
             text: "Hospital",
+            attributes: {
+              "aria-sort": "none"
+            }
+          },
+          {
+            text: "Supporting prison",
             attributes: {
               "aria-sort": "none"
             }

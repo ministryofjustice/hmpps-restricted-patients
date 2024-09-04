@@ -4,6 +4,8 @@ import RestrictedPatientApiClient from '../data/restrictedPatientApiClient'
 import { convertToTitleCase } from '../utils/utils'
 
 import { Context } from './context'
+import RestrictedPatientResult from '../data/restrictedPatientResult'
+import PrisonerResult from '../data/prisonerResult'
 
 export interface RestrictedPatientDetails {
   displayName: string
@@ -23,7 +25,7 @@ export default class RemoveRestrictedPatientService {
   }
 
   async getRestrictedPatient(prisonerNumber: string, user: Context): Promise<RestrictedPatientDetails> {
-    const [patientDetails, prisonerDetails] = await Promise.all([
+    const [patientDetails, prisonerDetails]: [RestrictedPatientResult, PrisonerResult] = await Promise.all([
       new RestrictedPatientApiClient(user.token).getPatient(prisonerNumber),
       new PrisonApiClient(user.token).getPrisonerDetails(prisonerNumber),
     ])
