@@ -21,6 +21,8 @@ export default class HomePage extends Page {
 
   removeFromRestrictedPatients = (): PageElement => cy.get('[data-test="remove-from-restricted-patients"]')
 
+  changeSupportingPrison = (): PageElement => cy.get('[data-test="change-supporting-prison"]')
+
   helpLink = (): PageElement => cy.get('[data-test="help"]')
 
   signOutLink = (): PageElement => cy.get('[data-qa="signOut"]')
