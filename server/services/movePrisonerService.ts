@@ -23,7 +23,7 @@ export default class MovePrisonerService {
     const client = new RestrictedPatientApiClient(user.token)
     const request = {
       offenderNo: prisonerNumber,
-      prisonId: newPrisonId,
+      supportingPrisonId: newPrisonId,
     }
 
     return client.changeSupportingPrison(request)

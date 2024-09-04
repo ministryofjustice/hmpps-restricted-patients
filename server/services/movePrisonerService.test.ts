@@ -65,7 +65,7 @@ describe('movePrisonerService', () => {
 
       expect(changeSupportingPrison).toBeCalledWith({
         offenderNo: 'A1234AA',
-        prisonId: 'MDI',
+        supportingPrisonId: 'MDI',
       })
       expect(results).toStrictEqual({
         restrictedPatient: {
