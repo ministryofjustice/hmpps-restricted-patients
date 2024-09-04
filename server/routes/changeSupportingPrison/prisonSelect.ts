@@ -1,14 +1,17 @@
 import { Request } from 'express'
 import AgencySearchService from '../../services/agencySearchService'
-import PrisonerSearchService from '../../services/prisonerSearchService'
 import PrisonSelectRoutes from '../selectPrison/prisonSelect'
+import RestrictedPatientSearchService from '../../services/restrictedPatientSearchService'
 
 export default class ChangeSupportingPrisonSelectRoutes extends PrisonSelectRoutes {
-  constructor(agencySearchService: AgencySearchService, prisonerSearchService: PrisonerSearchService) {
+  constructor(
+    agencySearchService: AgencySearchService,
+    restrictedPatientSearchService: RestrictedPatientSearchService,
+  ) {
     super(
       agencySearchService,
-      prisonerSearchService,
-      '/change-supporting-prison/confirm-change',
+      restrictedPatientSearchService,
+      '/change-supporting-prison',
       'pages/changePrison/changeSupportingPrisonSelect',
     )
   }

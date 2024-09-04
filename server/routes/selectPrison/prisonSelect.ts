@@ -1,9 +1,13 @@
 import { Request, Response } from 'express'
 import { FormError } from '../../@types/template'
 import validateMovePrisonerForm from './prisonSelectValidation'
-import PrisonerSearchService from '../../services/prisonerSearchService'
-import { addSelect } from '../../utils/utils'
+import { addSelect, convertToTitleCase } from '../../utils/utils'
 import AgencySearchService from '../../services/agencySearchService'
+import { Agency } from '../../data/prisonApiClient'
+import logger from '../../../logger'
+import RestrictedPatientSearchService, {
+  RestrictedPatientSearchSummary,
+} from '../../services/restrictedPatientSearchService'
 
 type PageData = {
   error?: FormError
@@ -12,7 +16,7 @@ type PageData = {
 export default abstract class PrisonSelectRoutes {
   protected constructor(
     private readonly agencySearchService: AgencySearchService,
-    private readonly prisonerSearchService: PrisonerSearchService,
+    private readonly restrictedPatientSearchService: RestrictedPatientSearchService,
     private readonly path: string,
     private readonly page: string,
   ) {}
@@ -22,10 +26,14 @@ export default abstract class PrisonSelectRoutes {
     const { user } = res.locals
     const { error } = pageData
 
-    const [prisons, prisoner] = await Promise.all([
+    const [prisons, prisoners]: [Agency[], RestrictedPatientSearchSummary[]] = await Promise.all([
       this.agencySearchService.getPrisons(user),
-      this.prisonerSearchService.getPrisonerDetails(prisonerNumber, user),
+      this.restrictedPatientSearchService.search({ searchTerm: prisonerNumber }, user),
     ])
+    if (prisoners.length !== 1) {
+      logger.error(`Found ${prisoners.length} when searching for ${prisonerNumber}`)
+      return res.render('pages/notFound.njk')
+    }
 
     const formattedPrisons = addSelect(
       prisons.map(prison => ({
@@ -34,6 +42,10 @@ export default abstract class PrisonSelectRoutes {
       })),
       'Select a prison',
     )
+    const prisoner = {
+      ...prisoners[0],
+      friendlyName: convertToTitleCase(`${prisoners[0].firstName} ${prisoners[0].lastName}`),
+    }
 
     return res.render(this.page, {
       errors: error ? [error] : [],

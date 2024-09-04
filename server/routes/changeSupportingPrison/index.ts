@@ -31,7 +31,7 @@ export default function changeSupportingPrisonRoutes({
 
   const patientSearch = new RestrictedPatientSearchRoutes()
   const patientSelect = new RestrictedPatientSelectRoutes(restrictedPatientSearchService)
-  const prisonSelect = new PrisonSelectRoutes(agencySearchService, prisonerSearchService)
+  const prisonSelect = new PrisonSelectRoutes(agencySearchService, restrictedPatientSearchService)
   const changePrisonCompleted = new ChangePrisonCompletedRoutes(prisonerSearchService, agencySearchService)
   const changePrisonConfirmation = new ChangePrisonConfirmationRoutes(
     movePrisonerService,

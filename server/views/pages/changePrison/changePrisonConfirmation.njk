@@ -3,7 +3,7 @@
 
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% set title = "Confirm move" %}
+{% set title = "Confirm change" %}
 
 {% block beforeContent %}
   {{ breadcrumb() }}
@@ -20,7 +20,7 @@
       preventDoubleClick: true,
       classes: "govuk-!-margin-right-3",
       type: "submit",
-      attributes: { "data-test": "confirm-prisoner-change-submit" }
+      attributes: { "data-test": "confirm-patient-change-submit" }
     }) }}
 
     {{ govukButton({
@@ -28,7 +28,7 @@
       element: 'a',
       href: '/back-to-start',
       classes: "govuk-button--secondary",
-      attributes: { "data-test": "confirm-prisoner-change-cancel" }
+      attributes: { "data-test": "confirm-patient-change-cancel" }
     }) }}
   </form>
 {% endblock %}

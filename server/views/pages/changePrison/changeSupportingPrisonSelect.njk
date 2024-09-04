@@ -1,7 +1,5 @@
 {% extends "../../partials/layout.njk" %}
 {% from "../../partials/breadcrumb.njk" import breadcrumb %}
-{% from "../../macros/alertFlags.njk" import alertFlags %}
-{% from "../../macros/categoryFlag.njk" import categoryFlag %}
 
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
@@ -36,19 +34,12 @@
       <p class="govuk-!-margin-bottom-0" data-test="prisoner-number">{{ prisoner.prisonerNumber }}</p>
     </div>
     <div class="horizontal-information__item">
-      <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Location</h3>
-      <p class="govuk-!-margin-bottom-0" data-test="prisoner-location">{{ prisoner.locationDescription }}</p>
+      <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Hospital</h3>
+      <p class="govuk-!-margin-bottom-0" data-test="prisoner-location">{{ prisoner.dischargedHospitalDescription }}</p>
     </div>
-    <div class="horizontal-information__item horizontal-information__item--quarter">
-      <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Relevant alerts</h3>
-      {% if prisoner.formattedAlerts | length or prisoner.categoryCode %}
-        <div data-test="prisoner-relevant-alerts">
-          {{ alertFlags(prisoner.formattedAlerts) }}
-          {{ categoryFlag('', prisoner.categoryCode, false) }}
-        </div>
-      {% else %}
-        <p class="govuk-!-margin-bottom-0" data-test="no-alerts">No relevant alerts</p>
-      {% endif %}
+    <div class="horizontal-information__item">
+      <h3 class="govuk-heading-s govuk-!-margin-bottom-1">Supporting prison</h3>
+      <p class="govuk-!-margin-bottom-0" data-test="prisoner-supporting-prison">{{ prisoner.supportingPrisonDescription }}</p>
     </div>
   </div>
 
