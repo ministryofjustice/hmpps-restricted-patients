@@ -16,7 +16,7 @@ export interface RestrictedPatientAddRequest {
 }
 export interface ChangeSupportingPrisonRequest {
   offenderNo: string
-  prisonId: string
+  supportingPrisonId: string
 }
 
 export default class RestrictedPatientApiClient {
