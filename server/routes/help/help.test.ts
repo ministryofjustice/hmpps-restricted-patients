@@ -73,7 +73,7 @@ describe('GET /help', () => {
           'A restricted patient is being sent back to prison - how do we bring them in?',
         )
         expect(getDetailText($, 'sending-patients-back-to-prison')).toContain(
-          'Simply book the offender back into NOMIS',
+          'Simply book the prisoner back into NOMIS',
         )
       })
   })

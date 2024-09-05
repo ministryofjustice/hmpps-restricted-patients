@@ -15,7 +15,7 @@ export default class RolesHelp implements HelpContent {
       content: `
 <p>Allows a user to remove someone as a restricted patient if they have been released from a hospital to the community, or have died.</p>
 <p>Intended users are OMU hub managers and MHCS staff.</p>
-<p>This role is visible to LSAs.</p> 
+<p>This role is visible to LSAs.</p>
 `.trim(),
     },
     {
@@ -23,9 +23,9 @@ export default class RolesHelp implements HelpContent {
       category: this.category,
       heading: 'Restricted Patient Search',
       content: `
-<p>This role is primarily for users within Mental Health Casework Section and allows them to search the restricted patients database to find the current secure hospital location of an offender.</p> 
+<p>This role is primarily for users within Mental Health Casework Section and allows them to search the restricted patients database to find the current secure hospital location of an prisoner.</p>
 <p>Intended users are MHCS staff and Head of OMU.</p>
-<p>It is not visible to LSAs and should not be given to regular users.</p> 
+<p>It is not visible to LSAs and should not be given to regular users.</p>
 `.trim(),
     },
     {
@@ -35,7 +35,7 @@ export default class RolesHelp implements HelpContent {
       content: `
 <p>Allows the release of a prisoner from Prison, to a secure hospital, where they are being detained under the mental health act.</p>
 <p>Intended users are Reception staff and OMU hub managers.</p>
-<p>This role is visible to LSAs.</p> 
+<p>This role is visible to LSAs.</p>
 `.trim(),
     },
   ]
