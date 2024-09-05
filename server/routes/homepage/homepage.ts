@@ -48,6 +48,15 @@ export const tasks: TaskType[] = [
     enabled: true,
   },
   {
+    id: 'change-supporting-prison',
+    heading: 'Change a supporting prison',
+    description:
+      'Change the supporting prison of an existing restricted patient.  Note that this does not amend the prison that the patient was released from, instead it alters the prison that is currently responsible for the patient.',
+    href: '/change-supporting-prison/search-for-patient',
+    roles: ['RESTRICTED_PATIENT_MIGRATION'],
+    enabled: true,
+  },
+  {
     id: 'help',
     heading: 'Help and support',
     description: 'View help and FAQ.',

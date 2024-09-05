@@ -4,6 +4,7 @@ import SelectPrisonPage from '../pages/changeSupportingPrison/selectPrison.page'
 import ChangePrisonConfirmationPage from '../pages/changeSupportingPrison/changePrisonConfirmation.page'
 import ChangePrisonCompletedPage from '../pages/changeSupportingPrison/changePrisonCompleted.page'
 import Page from '../pages/page'
+import HomePage from '../pages/home.page'
 
 const toOffender = $cell => ({
   name: $cell[1].textContent,
@@ -88,11 +89,11 @@ context('Change supporting prison', () => {
     cy.signIn()
   })
 
-  // it('should display the change supporting prison from the HomePage', () => {
-  //   const page = Page.verifyOnPage(HomePage)
-  //   page.changeSupportingPrison().click()
-  //   Page.verifyOnPage(PatientSearchPage)
-  // })
+  it('should display the change supporting prison from the HomePage', () => {
+    const page = Page.verifyOnPage(HomePage)
+    page.changeSupportingPrison().click()
+    Page.verifyOnPage(PatientSearchPage)
+  })
 
   it('Completes a change supporting prison journey', () => {
     cy.visit('/change-supporting-prison/search-for-patient')
