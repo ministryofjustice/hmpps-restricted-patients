@@ -41,7 +41,7 @@ export default class IssuesHelp implements HelpContent {
       content: `
 <p>POMs can access their restricted patient prisoners' records via their caseload in the MPC (POM) service.</p>
 <p>The POM needs to check that the prisoner has actually been allocated to them in the MPC service.  Many prisoners have been booked into secure hospitals but key data was missing from their records.  This meant that they were not allocated in MPC as they were presumed ineligible due to missing data.</p>
-<p>Also ensure that the prison caseload the prisoner was discharged from matches that of the POM.  Following some splits (e.g. Parc), prisoners were assigned to the wrong caseloads.</p>
+<p>Also ensure that the supporting prison for that prisoner matches that of the POM, please see <a href="/help?section=change-supporting-prison">How do I change a restricted patient's supporting prison?</a> below'.  Following some splits (e.g. Parc), prisoners were assigned to the wrong caseloads.</p>
 <p>If there is missing data on the prisoner's record which means that they are not showing in MPC, the POM should correct this. See the help on <a href="/help?section=updating-restricted-patient-in-nomis">updating restricted patients in NOMIS</a>.</p>
 <p>For an prisoner to be visible for allocation in MPC they must be:</p>
 <ul>
@@ -52,6 +52,15 @@ export default class IssuesHelp implements HelpContent {
   <li>If a lifer case, sometimes the case record needs to be 'reset' by un-ticking and re-ticking the lifer box</li>
   <li>Have their sentence calculation completed</li>
 </ul>
+        `.trim(),
+    },
+    {
+      id: 'change-supporting-prison',
+      category: this.category,
+      heading: "How do I change a restricted patient's supporting prison?",
+      content: `
+<p>If the prisoner was released from one prison and a different prison is now supporting the patient then the supporting prison needs to be amended. In this situation contact the Support team to process the change.</p>
+<p>If you need support with the RP service contact the Helpdesk by calling 0800 917 5148, or #6598 from inside a prison. Ask the agent who takes your call to read the Knowledge Article KB0020285 which clearly outlines the process they need to follow to correctly route your ticket to the RP Service Support Team.</p>
         `.trim(),
     },
     {
