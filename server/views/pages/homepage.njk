@@ -8,6 +8,8 @@
   Manage restricted patients
 {% endblock %}
 
+{% set bodyAttributes = {'data-page': 'homepage'} %}
+
 {% block content %}
   <div class="govuk-width-container">
     {{ govukBreadcrumbs({
@@ -39,8 +41,4 @@
         </ul>
       </div>
   </div>
-{% endblock %}
-
-{% block pageScripts %}
-  <script src="/assets/js/card.js"></script>
 {% endblock %}
