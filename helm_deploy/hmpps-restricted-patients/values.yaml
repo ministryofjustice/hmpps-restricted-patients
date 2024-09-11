@@ -28,7 +28,6 @@ generic-service:
     REDIS_ENABLED: "true"
     REDIS_TLS_ENABLED: "true"
     TOKEN_VERIFICATION_ENABLED: "true"
-    FRONTEND_COMPONENTS_ENABLED: "true"
     APPLICATIONINSIGHTS_CONNECTION_STRING: "InstrumentationKey=$(APPINSIGHTS_INSTRUMENTATIONKEY);IngestionEndpoint=https://northeurope-0.in.applicationinsights.azure.com/;LiveEndpoint=https://northeurope.livediagnostics.monitor.azure.com/"
 
   # Pre-existing kubernetes secrets to load as environment variables in the deployment.
@@ -37,12 +36,12 @@ generic-service:
   #     [name of environment variable as seen by app]: [key of kubernetes secret to load]
   namespace_secrets:
     hmpps-restricted-patients:
-      APPINSIGHTS_INSTRUMENTATIONKEY: "APPINSIGHTS_INSTRUMENTATIONKEY"
-      API_CLIENT_ID: "API_CLIENT_ID"
-      API_CLIENT_SECRET: "API_CLIENT_SECRET"
-      SYSTEM_CLIENT_ID: "SYSTEM_CLIENT_ID"
-      SYSTEM_CLIENT_SECRET: "SYSTEM_CLIENT_SECRET"
-      SESSION_SECRET: "SESSION_SECRET"
+      APPINSIGHTS_INSTRUMENTATIONKEY: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+      AUTH_CODE_CLIENT_ID: 'API_CLIENT_ID'
+      AUTH_CODE_CLIENT_SECRET: 'API_CLIENT_SECRET'
+      CLIENT_CREDS_CLIENT_ID: 'SYSTEM_CLIENT_ID'
+      CLIENT_CREDS_CLIENT_SECRET: 'SYSTEM_CLIENT_SECRET'
+      SESSION_SECRET: 'SESSION_SECRET'
     elasticache-redis:
       REDIS_HOST: "primary_endpoint_address"
       REDIS_AUTH_TOKEN: "auth_token"

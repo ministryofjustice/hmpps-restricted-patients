@@ -7,19 +7,9 @@ import jwtDecode from 'jwt-decode'
 import routes from '../index'
 import nunjucksSetup from '../../utils/nunjucksSetup'
 import errorHandler from '../../errorHandler'
-import * as auth from '../../authentication/auth'
 import type { Services } from '../../services'
-import type { ApplicationInfo } from '../../applicationInfo'
 import { PrisonUser } from '../../interfaces/hmppsUser'
 import setUpWebSession from '../../middleware/setUpWebSession'
-
-const testAppInfo: ApplicationInfo = {
-  applicationName: 'test',
-  buildNumber: '1',
-  gitRef: 'long ref',
-  gitShortHash: 'short ref',
-  branchName: 'main',
-}
 
 export const user: PrisonUser = {
   name: 'FIRST LAST',
@@ -46,7 +36,7 @@ function appSetup(
 
   app.set('view engine', 'njk')
 
-  nunjucksSetup(app, testAppInfo)
+  nunjucksSetup(app)
   app.use(setUpWebSession())
   app.use((req, res, next) => {
     req.user = userSupplier() as Express.User
@@ -86,7 +76,6 @@ export function appWithAllRoutes({
   userSupplier?: () => PrisonUser
   roles?: string[]
 }): Express {
-  auth.default.authenticationMiddleware = () => (req, res, next) => next()
   const authorities = roles.map(role => (role.startsWith('ROLE_') ? role : `ROLE_${role}`))
   mockJwtDecode.mockImplementation(() => ({ authorities }))
   return appSetup(services as Services, production, session, userSupplier)
