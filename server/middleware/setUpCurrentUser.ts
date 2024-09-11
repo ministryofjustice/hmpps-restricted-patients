@@ -24,10 +24,10 @@ export default function setUpCurrentUser({ userService }: Services): Router {
 
       res.locals.user = {
         ...res.locals.user,
-        ...user,
         userId,
         name,
         displayName: convertToTitleCase(name),
+        ...user,
         userRoles: roles.map(role => role.substring(role.indexOf('_') + 1)),
       } as unknown as PrisonUser
 
