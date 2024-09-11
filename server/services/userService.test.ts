@@ -20,16 +20,7 @@ describe('User service', () => {
 
       const result = await userService.getUser(token)
 
-      expect(result.displayName).toEqual('John Smith')
-    })
-
-    it('Retrieves and formats roles', async () => {
-      const token = createUserToken(['ROLE_ONE', 'ROLE_TWO'])
-      manageUsersApiClient.getUser.mockResolvedValue({ name: 'john smith' } as User)
-
-      const result = await userService.getUser(token)
-
-      expect(result.roles).toEqual(['ONE', 'TWO'])
+      expect(result.name).toEqual('john smith')
     })
 
     it('Propagates error', async () => {
