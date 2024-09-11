@@ -6,6 +6,7 @@
 {% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 
 {% set title = "Select a supporting prison" %}
+{% set bodyAttributes = {'data-page': 'agency-autocomplete'} %}
 
 {% block beforeContent %}
   {{ breadcrumb() }}
@@ -80,9 +81,4 @@
       </form>
     </div>
   </div>
-{% endblock %}
-
-{% block pageScripts %}
-  <script src="/assets/js/accessible-autocomplete.min.js"></script>
-  <script src="/assets/js/autocomplete-agency.js"></script>
 {% endblock %}
