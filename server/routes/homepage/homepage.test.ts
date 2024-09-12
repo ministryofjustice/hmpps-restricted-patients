@@ -2,6 +2,7 @@ import { Express } from 'express'
 import request from 'supertest'
 import { appWithAllRoutes } from '../testutils/appSetup'
 import UserService from '../../services/userService'
+import { PrisonUser } from '../../interfaces/hmppsUser'
 
 jest.mock('../../services/userService.ts')
 
@@ -9,22 +10,25 @@ const userService = new UserService(null) as jest.Mocked<UserService>
 
 let app: Express
 
-beforeEach(() => {
-  app = appWithAllRoutes({ production: false, services: { userService } })
-})
-
 afterEach(() => {
   jest.resetAllMocks()
 })
 
 describe('view tiles', () => {
   it('should get the home page with all tiles if the roles are present', () => {
-    userService.getUserRoles.mockReturnValue([
-      'SEARCH_RESTRICTED_PATIENT',
-      'TRANSFER_RESTRICTED_PATIENT',
-      'REMOVE_RESTRICTED_PATIENT',
-      'RESTRICTED_PATIENT_MIGRATION',
-    ])
+    app = appWithAllRoutes({
+      production: false,
+      services: { userService },
+      userSupplier: () =>
+        ({
+          userRoles: [
+            'SEARCH_RESTRICTED_PATIENT',
+            'TRANSFER_RESTRICTED_PATIENT',
+            'REMOVE_RESTRICTED_PATIENT',
+            'RESTRICTED_PATIENT_MIGRATION',
+          ],
+        }) as PrisonUser,
+    })
     return request(app)
       .get('/')
       .expect('Content-Type', /html/)
@@ -39,7 +43,14 @@ describe('view tiles', () => {
       })
   })
   it('should get the home page with appropriate tiles if not all of the roles are present', () => {
-    userService.getUserRoles.mockReturnValue(['SEARCH_RESTRICTED_PATIENT', 'REMOVE_RESTRICTED_PATIENT'])
+    app = appWithAllRoutes({
+      production: false,
+      services: { userService },
+      userSupplier: () =>
+        ({
+          userRoles: ['SEARCH_RESTRICTED_PATIENT', 'REMOVE_RESTRICTED_PATIENT'],
+        }) as PrisonUser,
+    })
     return request(app)
       .get('/')
       .expect('Content-Type', /html/)
@@ -54,7 +65,14 @@ describe('view tiles', () => {
       })
   })
   it('should get the home page with appropriate tiles if a single role is present', () => {
-    userService.getUserRoles.mockReturnValue(['SEARCH_RESTRICTED_PATIENT'])
+    app = appWithAllRoutes({
+      production: false,
+      services: { userService },
+      userSupplier: () =>
+        ({
+          userRoles: ['SEARCH_RESTRICTED_PATIENT'],
+        }) as PrisonUser,
+    })
     return request(app)
       .get('/')
       .expect('Content-Type', /html/)
@@ -69,7 +87,10 @@ describe('view tiles', () => {
       })
   })
   it('should show help page regardless of role', () => {
-    userService.getUserRoles.mockReturnValue([])
+    app = appWithAllRoutes({
+      production: false,
+      services: { userService },
+    })
     return request(app)
       .get('/')
       .expect('Content-Type', /html/)

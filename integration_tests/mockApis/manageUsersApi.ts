@@ -1,6 +1,6 @@
 import { stubFor } from './wiremock'
 
-const stubUser = (name: string = 'john smith') =>
+const stubUser = () =>
   stubFor({
     request: {
       method: 'GET',
@@ -14,7 +14,6 @@ const stubUser = (name: string = 'john smith') =>
       jsonBody: {
         username: 'USER1',
         active: true,
-        name,
         activeCaseLoadId: 'MDI',
       },
     },

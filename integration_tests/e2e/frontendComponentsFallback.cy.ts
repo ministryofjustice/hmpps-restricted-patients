@@ -8,7 +8,7 @@ context('Frontend Components Fallback', () => {
     cy.task('stubSignIn', {
       roles: ['REMOVE_RESTRICTED_PATIENT', 'TRANSFER_RESTRICTED_PATIENT', 'SEARCH_RESTRICTED_PATIENT'],
     })
-    cy.task('stubManageUser', 'Bobby Brown')
+    cy.task('stubManageUser')
     cy.task('stubGetComponentsMappingError')
   })
 
@@ -26,7 +26,7 @@ context('Frontend Components Fallback', () => {
 
   describe('Header', () => {
     it('should display the correct details for the signed in user', () => {
-      cy.task('stubSignIn')
+      cy.task('stubSignIn', { name: 'Bobby Brown' })
       cy.signIn()
       const page = Page.verifyOnPage(HomePage)
 

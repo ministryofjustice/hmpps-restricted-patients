@@ -70,7 +70,7 @@ export default class HomepageRoutes {
   constructor(private readonly userService: UserService) {}
 
   view = async (req: Request, res: Response): Promise<void> => {
-    const userRoles = await this.userService.getUserRoles(res.locals.user.token)
+    const { userRoles } = res.locals.user
     const availableTasks = tasks.filter(task => task.enabled).filter(task => hasAnyRole(task.roles, userRoles))
 
     if (!availableTasks.length)
