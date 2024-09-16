@@ -9,9 +9,6 @@ parameters:
     type: string
     default: dps_alerts_security
 
-  releases-slack-channel:
-    type: string
-    default: dps-releases
 
   node-version:
     type: string
@@ -169,7 +166,6 @@ workflows:
           pipeline_id: <<pipeline.id>>
           pipeline_number: <<pipeline.number>>
           slack_notification: true
-          slack_channel_name: << pipeline.parameters.releases-slack-channel >>
           context:
             - hmpps-common-vars
             - hmpps-restricted-patients-prod
