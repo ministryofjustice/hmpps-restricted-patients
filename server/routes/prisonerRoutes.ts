@@ -20,7 +20,7 @@ export default function prisonerRoutes({
           data.pipe(res)
         })
         .catch(() => {
-          const placeHolder = path.join(process.cwd(), '/assets/images/image-missing.jpg')
+          const placeHolder = path.join(process.cwd(), '/dist/assets/images/image-missing.jpg')
           res.sendFile(placeHolder)
         })
     }),
