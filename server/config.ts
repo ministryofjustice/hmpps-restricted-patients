@@ -119,7 +119,7 @@ export default {
       enabled: get('FRONTEND_COMPONENTS_ENABLED', 'false') === 'true',
     },
   },
-  domain: get('INGRESS_URL', 'http://localhost:3000', requiredInProduction),
+  ingressUrl: get('INGRESS_URL', 'http://localhost:3000', requiredInProduction),
   pshUrl: get('PSH_URL', 'http://localhost:3002', requiredInProduction),
   dpsUrl: get('DPS_URL', 'http://localhost:8281', requiredInProduction),
   environmentName: get('ENVIRONMENT_NAME', ''),
