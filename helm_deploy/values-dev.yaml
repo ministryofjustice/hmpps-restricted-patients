@@ -29,3 +29,6 @@ generic-prometheus-alerts:
   businessHoursOnly: true
   alertSeverity: digital-prison-service-dev
 
+  elastiCacheAlertsClusterIds:
+    cp-072966302b0ced74-001: "HMPPS Restricted Patients ElastiCache Cluster Node 1"
+    cp-072966302b0ced74-002: "HMPPS Restricted Patients ElastiCache Cluster Node 2"
