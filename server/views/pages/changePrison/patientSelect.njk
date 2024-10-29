@@ -31,7 +31,7 @@
       <img src="/prisoner/{{ prisoner.prisonerNumber }}/image" alt="Photograph of {{ prisoner.displayName }}" class="results-table__image" />
     {% endset -%}
     {% set prisonerLinkHtml %}
-      <a href="{{ pshUrl }}/prisoner/{{ prisoner.prisonerNumber }}" class="govuk-link" data-test="view-prisoner-profile">{{ prisoner.displayName }}</a>
+      <a href="{{ prisonerProfileUrl }}/prisoner/{{ prisoner.prisonerNumber }}" class="govuk-link" data-test="view-prisoner-profile">{{ prisoner.displayName }}</a>
     {% endset -%}
     {% set changeSupportingPrisonLinkHtml %}
       <a href="/change-supporting-prison/select-prison?prisonerNumber={{ prisoner.prisonerNumber }}&journeyStartUrl={{ journeyStartUrl }}" class="govuk-link" data-test="change-supporting-prison-link"><span class="govuk-visually-hidden">{{ prisoner.displayName }} - </span>Change supporting prison</a>

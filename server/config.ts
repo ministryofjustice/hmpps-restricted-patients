@@ -120,7 +120,7 @@ export default {
     },
   },
   ingressUrl: get('INGRESS_URL', 'http://localhost:3000', requiredInProduction),
-  pshUrl: get('PSH_URL', 'http://localhost:3002', requiredInProduction),
   dpsUrl: get('DPS_URL', 'http://localhost:8281', requiredInProduction),
+  prisonerProfileUrl: get('PRISONER_PROFILE_URL', 'http://localhost:3002', requiredInProduction),
   environmentName: get('ENVIRONMENT_NAME', ''),
 }

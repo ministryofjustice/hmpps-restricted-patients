@@ -51,7 +51,8 @@ export default function nunjucksSetup(app: express.Express): void {
     return null
   })
 
-  njkEnv.addGlobal('pshUrl', config.pshUrl)
+  njkEnv.addGlobal('dpsUrl', config.dpsUrl)
+  njkEnv.addGlobal('prisonerProfileUrl', config.prisonerProfileUrl)
   njkEnv.addGlobal('authUrl', config.apis.hmppsAuth.url)
   njkEnv.addFilter('possessive', possessive)
 }
