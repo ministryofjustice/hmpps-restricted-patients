@@ -31,10 +31,10 @@
       <img src="/prisoner/{{ prisoner.prisonerNumber }}/image" alt="Photograph of {{ prisoner.displayName }}" class="results-table__image" />
     {% endset -%}
     {% set prisonerLinkHtml %}
-      <a href="{{ pshUrl }}/prisoner/{{ prisoner.prisonerNumber }}" class="govuk-link" data-test="view-prisoner-profile">{{ prisoner.displayName }}</a>
+      <a href="{{ prisonerProfileUrl }}/prisoner/{{ prisoner.prisonerNumber }}" class="govuk-link" data-test="view-prisoner-profile">{{ prisoner.displayName }}</a>
     {% endset -%}
     {% set addCaseNoteLinkHtml %}
-      <a href="{{ pshUrl }}/prisoner/{{ prisoner.prisonerNumber }}/add-case-note" class="govuk-link" data-test="patient-add-case-note-link"><span class="govuk-visually-hidden">{{ prisoner.displayName }} - </span>Add a case note</a>
+      <a href="{{ prisonerProfileUrl }}/prisoner/{{ prisoner.prisonerNumber }}/add-case-note" class="govuk-link" data-test="patient-add-case-note-link"><span class="govuk-visually-hidden">{{ prisoner.displayName }} - </span>Add a case note</a>
     {% endset -%}
     {% set rows = (rows.push([
       { html: prisonerImageHtml },

@@ -76,7 +76,7 @@ export default class HomepageRoutes {
     if (!availableTasks.length)
       return res.status(401).render('pages/error', {
         title: 'You do not have permission to view this page',
-        url: config.pshUrl,
+        url: config.dpsUrl,
       })
     return res.render('pages/homepage', {
       tasks: availableTasks,
