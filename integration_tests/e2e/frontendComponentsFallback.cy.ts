@@ -25,14 +25,13 @@ context('Frontend Components Fallback', () => {
   })
 
   describe('Header', () => {
-    it('should display the correct details for the signed in user', () => {
+    it('should not should user name for the signed in user', () => {
       cy.task('stubSignIn', { name: 'Bobby Brown' })
       cy.signIn()
       const page = Page.verifyOnPage(HomePage)
 
-      page.headerUserName().contains('B. Brown')
-
-      // location and manage account not displayed in fallback
+      // headder, location and manage account not displayed in fallback
+      page.headerUserName().should('not.exist')
       page.activeLocation().should('not.exist')
       page.manageAccountLink().should('not.exist')
     })
@@ -44,12 +43,6 @@ context('Frontend Components Fallback', () => {
       const page = Page.verifyOnPage(HomePage)
 
       page.changeLocationLink().should('not.exist')
-    })
-
-    it('Phase banner visible in header', () => {
-      cy.signIn()
-      const page = Page.verifyOnPage(HomePage)
-      page.headerPhaseBanner().should('contain.text', 'dev')
     })
   })
 })

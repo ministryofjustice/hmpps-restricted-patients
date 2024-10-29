@@ -109,15 +109,6 @@ export default {
       },
       agent: new AgentConfig(Number(get('RESTRICTED_PATIENT_API_TIMEOUT_RESPONSE', 30000))),
     },
-    frontendComponents: {
-      url: get('FRONTEND_COMPONENTS_URL', 'http://localhost:8085/frontend-components', requiredInProduction),
-      timeout: {
-        response: Number(get('FRONTEND_COMPONENTS_TIMEOUT_RESPONSE', 5000)),
-        deadline: Number(get('FRONTEND_COMPONENTS_TIMEOUT_DEADLINE', 5000)),
-      },
-      agent: new AgentConfig(Number(get('FRONTEND_COMPONENTS_TIMEOUT_RESPONSE', 5000))),
-      enabled: get('FRONTEND_COMPONENTS_ENABLED', 'false') === 'true',
-    },
   },
   ingressUrl: get('INGRESS_URL', 'http://localhost:3000', requiredInProduction),
   dpsUrl: get('DPS_URL', 'http://localhost:8281', requiredInProduction),

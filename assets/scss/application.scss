@@ -8,6 +8,9 @@ $govuk-font-family-print: 'GDS Transport';
 @import "govuk-frontend/dist/govuk/all";
 @import "@ministryofjustice/frontend/moj/all";
 
+@import '@ministryofjustice/hmpps-connect-dps-components/dist/assets/footer';
+@import '@ministryofjustice/hmpps-connect-dps-components/dist/assets/header-bar';
+
 @import './pages/_homepage.scss';
 
 @import './components/card';
