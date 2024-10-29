@@ -2,6 +2,7 @@ import 'reflect-metadata'
 import express from 'express'
 
 import createError from 'http-errors'
+import dpsComponents from '@ministryofjustice/hmpps-connect-dps-components'
 
 import nunjucksSetup from './utils/nunjucksSetup'
 import errorHandler from './errorHandler'
@@ -16,10 +17,10 @@ import setUpStaticResources from './middleware/setUpStaticResources'
 import setUpWebRequestParsing from './middleware/setupRequestParsing'
 import setUpWebSecurity from './middleware/setUpWebSecurity'
 import setUpWebSession from './middleware/setUpWebSession'
-import setupFrontendComponents from './middleware/setupFrontendComponents'
 import setupJourneyStart from './routes/journeyStartRouter'
 
 import routes from './routes'
+import config from './config'
 import type { Services } from './services'
 
 export default function createApp(services: Services): express.Application {
@@ -39,8 +40,16 @@ export default function createApp(services: Services): express.Application {
   app.use(setUpAuthentication())
   app.use(authorisationMiddleware())
   app.use(setUpCsrf())
+
+  app.get(
+    '*',
+    dpsComponents.getPageComponents({
+      includeMeta: true,
+      dpsUrl: config.dpsUrl,
+    }),
+  )
+
   app.use(setUpCurrentUser(services))
-  app.use(setupFrontendComponents(services))
 
   app.use(setupJourneyStart())
   app.use(routes(services))

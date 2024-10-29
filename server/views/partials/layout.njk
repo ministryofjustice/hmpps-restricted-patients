@@ -5,11 +5,11 @@
 
   <script src="/assets/js/jquery.min.js"></script>
 
-  {% for js in frontendComponents.jsIncludes %}
+  {% for js in feComponents.jsIncludes %}
     <script src="{{ js }}" nonce="{{ cspNonce }}"></script>
   {% endfor %}
 
-  {% for css in frontendComponents.cssIncludes %}
+  {% for css in feComponents.cssIncludes %}
     <link href="{{ css }}" nonce="{{ cspNonce }}" rel="stylesheet" />
   {% endfor %}
 {% endblock %}
@@ -17,22 +17,14 @@
 {% block pageTitle %}{% if errors.length %}Error: {% endif %}{{ title }} - {{ applicationName }} - Digital Prison Services{% endblock %}
 
 {% block header %}
-  {% if frontendComponents.headerHtml %}
-    {{ frontendComponents.headerHtml | safe }}
-  {% else %}
-    {% include "./header.njk" %}
-  {% endif %}
+  {{ feComponents.header | safe }}
 {% endblock %}
 
 {% block bodyStart %}
 {% endblock %}
 
 {% block footer %}
-  {% if frontendComponents.footerHtml %}
-    {{ frontendComponents.footerHtml | safe }}
-  {% else %}
-    {% include "./footer.njk" %}
-  {% endif %}
+  {{ feComponents.footer | safe }}
 {% endblock %}
 
 {% block bodyEnd %}
