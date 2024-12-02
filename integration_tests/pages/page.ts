@@ -21,7 +21,17 @@ export default abstract class Page {
     cy.get('h1').contains(this.title)
   }
 
-  signOut = (): PageElement => cy.get('[data-qa=signOut]')
-
   manageDetails = (): PageElement => cy.get('[data-qa=manageDetails]')
+
+  headerUserName = (): PageElement => cy.get('[data-qa="header-user-name"]')
+
+  activeLocation = (): PageElement => cy.get('[data-qa="header-active-case-load"]')
+
+  manageAccountLink = (): PageElement => cy.get('[data-test="manage-account-link"]')
+
+  changeLocationLink = (): PageElement => cy.get('[data-qa="changeCaseLoad"]')
+
+  signOutLink = (): PageElement => cy.get('[data-qa="signOut"]')
+
+  headerPhaseBanner = (): PageElement => cy.get('.govuk-phase-banner')
 }
