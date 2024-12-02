@@ -41,7 +41,7 @@ export default function createApp(services: Services): express.Application {
   app.use(authorisationMiddleware())
   app.use(setUpCsrf())
 
-  app.get(
+  app.use(
     '*',
     dpsComponents.getPageComponents({
       includeMeta: true,
