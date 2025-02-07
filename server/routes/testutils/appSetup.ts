@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import express, { Express } from 'express'
 import { NotFound } from 'http-errors'
-import jwtDecode from 'jwt-decode'
+import JwtDecode from 'jwt-decode'
 
 import { randomUUID } from 'crypto'
 import routes from '../index'
@@ -24,7 +24,7 @@ export const user: PrisonUser = {
 
 export const flashProvider = jest.fn()
 jest.mock('jwt-decode', () => ({ jwtDecode: jest.fn() }))
-export const mockJwtDecode = jwtDecode.jwtDecode as jest.Mock
+export const mockJwtDecode = JwtDecode.jwtDecode as jest.Mock
 
 function appSetup(
   services: Services,
