@@ -12,7 +12,7 @@ describe('prisonApiClient', () => {
   const token = 'token-1'
 
   beforeEach(() => {
-    fakePrisonApi = nock(config.apis.prison.url)
+    fakePrisonApi = nock(config.apis.prisonApi.url)
     client = new PrisonApiClient(token)
   })
 

@@ -44,7 +44,7 @@ export default function createApp(services: Services): express.Application {
   app.use(
     '*',
     dpsComponents.getPageComponents({
-      includeMeta: true,
+      includeSharedData: true,
       dpsUrl: config.dpsUrl,
     }),
   )

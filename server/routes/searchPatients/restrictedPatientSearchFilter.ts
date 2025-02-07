@@ -1,6 +1,5 @@
 import { PrisonerSearchSummary } from '../../services/prisonerSearchService'
 
-// eslint-disable-next-line no-shadow
 export enum SearchStatus {
   INCLUDE = 'include',
   EXCLUDE_POST_CRD = 'exclude-post-crd',

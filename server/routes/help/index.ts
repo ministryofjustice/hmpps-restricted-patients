@@ -15,7 +15,7 @@ export default function helpRoutes(): Router {
 }
 
 // TODO this shadow error is supposed to be fixed https://github.com/typescript-eslint/tslint-to-eslint-config/issues/856
-// eslint-disable-next-line no-shadow
+
 export enum HelpCategory {
   ABOUT_PATIENTS = 'about-restricted-patients',
   ISSUES = 'operational-issues',
