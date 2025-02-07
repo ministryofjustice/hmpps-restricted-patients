@@ -17,7 +17,7 @@ export default class PrisonApiClient {
   restClient: RestClient
 
   constructor(token: string) {
-    this.restClient = new RestClient('Prison API', config.apis.prison, token)
+    this.restClient = new RestClient('Prison API', config.apis.prisonApi, token)
   }
 
   getPrisonerImage(prisonerNumber: string): Promise<Readable> {

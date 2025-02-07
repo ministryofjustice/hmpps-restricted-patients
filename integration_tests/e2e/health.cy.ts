@@ -17,12 +17,12 @@ context('Healthcheck', () => {
     it('All dependant APIs are healthy', () => {
       cy.request('/health').then(response => {
         expect(response.body.components).to.deep.eq({
-          hmppsAuth: { status: 'UP', details: 'UP' },
-          manageUsersApi: { status: 'UP', details: 'UP' },
-          prisonerOffenderSearch: { status: 'UP', details: 'UP' },
-          tokenVerification: { status: 'UP', details: 'UP' },
-          prisonApi: { status: 'UP', details: 'UP' },
-          restrictedPatientApi: { status: 'UP', details: 'UP' },
+          hmppsAuth: { status: 'UP' },
+          manageUsersApi: { status: 'UP' },
+          prisonerSearch: { status: 'UP' },
+          tokenVerification: { status: 'UP' },
+          prisonApi: { status: 'UP' },
+          restrictedPatientApi: { status: 'UP' },
         })
       })
     })
@@ -63,8 +63,8 @@ context('Healthcheck', () => {
     it('Some dependant APIs are unhealthy', () => {
       cy.request({ url: '/health', method: 'GET', failOnStatusCode: false }).then(response => {
         expect(response.body.components.hmppsAuth.status).to.equal('UP')
-        expect(response.body.components.prisonerOffenderSearch.status).to.equal('DOWN')
-        expect(response.body.components.prisonerOffenderSearch.details).to.contain({ status: 500, retries: 2 })
+        expect(response.body.components.prisonerSearch.status).to.equal('DOWN')
+        expect(response.body.components.prisonerSearch.details).to.contain({ status: 500, retries: 2 })
         expect(response.body.components.tokenVerification.status).to.equal('DOWN')
         expect(response.body.components.tokenVerification.details).to.contain({ status: 500, retries: 2 })
         expect(response.body.components.prisonApi.status).to.equal('DOWN')
