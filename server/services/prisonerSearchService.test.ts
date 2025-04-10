@@ -1,13 +1,14 @@
+import { Readable } from 'stream'
+
 import PrisonerSearchService, { PrisonerSearchSummary } from './prisonerSearchService'
 import PrisonerSearchClient from '../data/prisonerSearchClient'
 import PrisonApiClient from '../data/prisonApiClient'
 import HmppsAuthClient from '../data/hmppsAuthClient'
 
 import { Context } from './context'
+import PrisonerResult from '../data/prisonerResult'
 
 const search = jest.fn()
-const getPrisonerImage = jest.fn()
-const getPrisonerDetails = jest.fn()
 
 jest.mock('../data/hmppsAuthClient')
 jest.mock('../data/prisonerSearchClient', () => {
@@ -16,13 +17,10 @@ jest.mock('../data/prisonerSearchClient', () => {
   })
 })
 
-jest.mock('../data/prisonApiClient', () => {
-  return jest.fn().mockImplementation(() => {
-    return { getPrisonerImage, getPrisonerDetails }
-  })
-})
+jest.mock('../data/prisonApiClient')
 
 const hmppsAuthClient = new HmppsAuthClient(null) as jest.Mocked<HmppsAuthClient>
+const prisonApiClient = new PrisonApiClient(null) as jest.Mocked<PrisonApiClient>
 
 const token = 'some token'
 const prisonIds = ['PR1', 'PR2']
@@ -37,7 +35,7 @@ describe('prisonerSearchService', () => {
   beforeEach(() => {
     hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
 
-    service = new PrisonerSearchService(hmppsAuthClient)
+    service = new PrisonerSearchService(hmppsAuthClient, prisonApiClient)
   })
 
   afterEach(() => {
@@ -158,22 +156,24 @@ describe('prisonerSearchService', () => {
 
   describe('getPrisonerImage', () => {
     it('uses prison api to request image data', async () => {
-      getPrisonerImage.mockResolvedValue('image data')
+      prisonApiClient.getPrisonerImage.mockResolvedValue(Readable.from('image data'))
 
       const result = await service.getPrisonerImage('A1234AA', {
         username: 'user1',
         token: 'token-1',
       })
 
-      expect(result).toEqual('image data')
-      expect(PrisonApiClient).toBeCalledWith(token)
-      expect(getPrisonerImage).toBeCalledWith('A1234AA')
+      expect(result.read()).toEqual('image data')
+      expect(prisonApiClient.getPrisonerImage).toBeCalledWith('A1234AA', {
+        tokenType: 'SYSTEM_TOKEN',
+        user: { username: 'user1' },
+      })
     })
   })
 
   describe('getPrisonerDetails', () => {
     it('returns correctly formatted prisoner details', async () => {
-      getPrisonerDetails.mockResolvedValue({
+      prisonApiClient.getPrisonerDetails.mockResolvedValue({
         offenderNo: 'A1234AA',
         firstName: 'JOHN',
         lastName: 'SMITH',
@@ -184,7 +184,7 @@ describe('prisonerSearchService', () => {
           { expired: false, alertType: 'X', alertCode: 'XCU' },
           { expired: true, alertType: 'X', alertCode: 'XGANG' },
         ],
-      })
+      } as PrisonerResult)
 
       const result = await service.getPrisonerDetails('A1234AA', {
         username: 'user1',
@@ -213,8 +213,10 @@ describe('prisonerSearchService', () => {
         offenderNo: 'A1234AA',
         prisonerNumber: 'A1234AA',
       })
-      expect(PrisonApiClient).toBeCalledWith(token)
-      expect(getPrisonerDetails).toBeCalledWith('A1234AA')
+      expect(prisonApiClient.getPrisonerDetails).toBeCalledWith('A1234AA', {
+        tokenType: 'SYSTEM_TOKEN',
+        user: { username: 'user1' },
+      })
     })
   })
 })

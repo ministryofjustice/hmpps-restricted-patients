@@ -1,4 +1,6 @@
 import nock from 'nock'
+import { asUser, AuthenticationClient } from '@ministryofjustice/hmpps-rest-client'
+
 import config from '../config'
 import logger from '../../logger'
 import PrisonApiClient from './prisonApiClient'
@@ -8,12 +10,16 @@ jest.mock('../../logger')
 describe('prisonApiClient', () => {
   let fakePrisonApi: nock.Scope
   let client: PrisonApiClient
+  let mockAuthenticationClient: jest.Mocked<AuthenticationClient>
 
   const token = 'token-1'
 
   beforeEach(() => {
     fakePrisonApi = nock(config.apis.prisonApi.url)
-    client = new PrisonApiClient(token)
+    mockAuthenticationClient = {
+      getToken: jest.fn().mockResolvedValue('test-system-token'),
+    } as unknown as jest.Mocked<AuthenticationClient>
+    client = new PrisonApiClient(mockAuthenticationClient)
   })
 
   afterEach(() => {
@@ -27,7 +33,7 @@ describe('prisonApiClient', () => {
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, 'image data', { 'Content-Type': 'image/jpeg' })
 
-      const response = await client.getPrisonerImage('A1234AA')
+      const response = await client.getPrisonerImage('A1234AA', asUser(token))
 
       expect(response.read()).toEqual(Buffer.from('image data'))
     })
@@ -40,7 +46,7 @@ describe('prisonApiClient', () => {
 
       expect.assertions(3)
 
-      await expect(client.getPrisonerImage('A1234AA')).rejects.toEqual(new Error('Not Found'))
+      await expect(client.getPrisonerImage('A1234AA', asUser(token))).rejects.toEqual(new Error('Not Found'))
 
       expect(logger.info).toHaveBeenCalled()
       expect(logger.warn).not.toHaveBeenCalled()
@@ -48,7 +54,7 @@ describe('prisonApiClient', () => {
   })
 
   describe('getPrisonerDetails', () => {
-    it('should return only the neccessary prisoner details', async () => {
+    it('should return only the necessary prisoner details', async () => {
       const result = {
         offenderNo: 'A1234AA',
         firstName: 'JOHN',
@@ -64,7 +70,7 @@ describe('prisonApiClient', () => {
       }
       fakePrisonApi.get('/api/offenders/A1234AA').matchHeader('authorization', `Bearer ${token}`).reply(200, result)
 
-      const response = await client.getPrisonerDetails('A1234AA')
+      const response = await client.getPrisonerDetails('A1234AA', asUser(token))
 
       expect(response).toEqual({
         offenderNo: 'A1234AA',

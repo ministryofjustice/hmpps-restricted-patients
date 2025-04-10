@@ -7,6 +7,7 @@ jest.mock('../../services/removeRestrictedPatientService')
 
 const removeRestrictedPatientService = new RemoveRestrictedPatientService(
   null,
+  null,
 ) as jest.Mocked<RemoveRestrictedPatientService>
 
 let app: Express

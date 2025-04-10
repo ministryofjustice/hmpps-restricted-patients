@@ -1,3 +1,5 @@
+import { asUser } from '@ministryofjustice/hmpps-rest-client'
+
 import type {
   RestrictedPatientSearchByName,
   RestrictedPatientSearchByPrisonerNumber,
@@ -31,6 +33,8 @@ export interface RestrictedPatientSearchCriteria {
 }
 
 export default class RestrictedPatientSearchService {
+  constructor(private readonly prisonApiClient: PrisonApiClient) {}
+
   async search(search: RestrictedPatientSearchCriteria, user: Context): Promise<RestrictedPatientSearchSummary[]> {
     const searchTerm = search.searchTerm.replace(/,/g, ' ').replace(/\s\s+/g, ' ').trim()
 
@@ -40,7 +44,7 @@ export default class RestrictedPatientSearchService {
 
     const [results, prisons]: [RestrictedPatientSearchResult[], Agency[]] = await Promise.all([
       new RestrictedPatientSearchClient(user.token).search(searchRequest),
-      new PrisonApiClient(user.token).getAgenciesByType('INST'),
+      this.prisonApiClient.getAgenciesByType('INST', asUser(user.token)),
     ])
 
     const prisonMap = new Map(prisons.map(i => [i.agencyId, i.description]))

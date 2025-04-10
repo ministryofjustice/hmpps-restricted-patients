@@ -6,7 +6,7 @@ import { appWithAllRoutes, mockJwtDecode } from '../testutils/appSetup'
 
 jest.mock('../../services/prisonerSearchService')
 
-const prisonerSearchService = new PrisonerSearchService(null) as jest.Mocked<PrisonerSearchService>
+const prisonerSearchService = new PrisonerSearchService(null, null) as jest.Mocked<PrisonerSearchService>
 
 let app: Express
 

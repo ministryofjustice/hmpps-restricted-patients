@@ -9,7 +9,6 @@ import { Context } from './context'
 
 const removePatient = jest.fn()
 const getPatient = jest.fn()
-const getPrisonerDetails = jest.fn()
 
 jest.mock('../data/hmppsAuthClient')
 jest.mock('../data/restrictedPatientApiClient', () => {
@@ -17,13 +16,10 @@ jest.mock('../data/restrictedPatientApiClient', () => {
     return { getPatient, removePatient }
   })
 })
-jest.mock('../data/prisonApiClient', () => {
-  return jest.fn().mockImplementation(() => {
-    return { getPrisonerDetails }
-  })
-})
+jest.mock('../data/prisonApiClient')
 
 const hmppsAuthClient = new HmppsAuthClient(null) as jest.Mocked<HmppsAuthClient>
+const prisonApiClient = new PrisonApiClient(null) as jest.Mocked<PrisonApiClient>
 
 const token = 'some token'
 const user = {
@@ -37,7 +33,7 @@ describe('removeRestrictedPatientService', () => {
   beforeEach(() => {
     hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
 
-    service = new RemoveRestrictedPatientService(hmppsAuthClient)
+    service = new RemoveRestrictedPatientService(hmppsAuthClient, prisonApiClient)
   })
 
   afterEach(() => {
@@ -58,7 +54,7 @@ describe('removeRestrictedPatientService', () => {
 
   describe('getRestrictedPatient', () => {
     it('makes the correct calls and returns the correctly formatted data', async () => {
-      getPrisonerDetails.mockResolvedValue({
+      prisonApiClient.getPrisonerDetails.mockResolvedValue({
         lastName: 'SMITH',
         firstName: 'JOHN',
       } as PrisonerResult)
@@ -69,8 +65,11 @@ describe('removeRestrictedPatientService', () => {
 
       const response = await service.getRestrictedPatient('A1234AA', user)
 
-      expect(RestrictedPatientApiClient).toBeCalledWith(user.token)
-      expect(PrisonApiClient).toBeCalledWith(user.token)
+      expect(RestrictedPatientApiClient).toHaveBeenCalledWith(user.token)
+      expect(prisonApiClient.getPrisonerDetails).toHaveBeenCalledWith('A1234AA', {
+        tokenType: 'USER_TOKEN',
+        user: { token: 'token-1' },
+      })
       expect(response).toStrictEqual({
         displayName: 'Smith, John',
         friendlyName: 'John Smith',

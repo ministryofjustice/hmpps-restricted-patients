@@ -1,12 +1,11 @@
 import RestrictedPatientSearchService from './restrictedPatientSearchService'
 import RestrictedPatientSearchClient from '../data/restrictedPatientSearchClient'
 import RestrictedPatientSearchResult from '../data/restrictedPatientSearchResult'
-import { Agency } from '../data/prisonApiClient'
+import PrisonApiClient, { Agency } from '../data/prisonApiClient'
 
 import { Context } from './context'
 
 const search = jest.fn()
-const getAgenciesByType = jest.fn()
 
 jest.mock('../data/hmppsAuthClient')
 jest.mock('../data/restrictedPatientSearchClient', () => {
@@ -14,18 +13,20 @@ jest.mock('../data/restrictedPatientSearchClient', () => {
     return { search }
   })
 })
-jest.mock('../data/prisonApiClient', () => jest.fn().mockImplementation(() => ({ getAgenciesByType })))
+jest.mock('../data/prisonApiClient')
 
 const user = {
   token: 'token-1',
 } as Context
 
+const prisonApiClient = new PrisonApiClient(null) as jest.Mocked<PrisonApiClient>
+
 describe('restrictedPatientSearchService', () => {
   let service: RestrictedPatientSearchService
 
   beforeEach(() => {
-    service = new RestrictedPatientSearchService()
-    getAgenciesByType.mockResolvedValue([
+    service = new RestrictedPatientSearchService(prisonApiClient)
+    prisonApiClient.getAgenciesByType.mockResolvedValue([
       {
         agencyId: 'MDI',
         description: 'Moorland',
