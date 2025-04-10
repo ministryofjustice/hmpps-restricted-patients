@@ -1,15 +1,15 @@
-import PrisonApiClient, { Agency } from '../data/prisonApiClient'
+import { asUser } from '@ministryofjustice/hmpps-rest-client'
 
+import PrisonApiClient, { Agency } from '../data/prisonApiClient'
 import { Context } from './context'
 
 export default class AgencySearchService {
-  async getHospitals(user: Context): Promise<Agency[]> {
-    // agencies endpoint just needs a valid token without any special roles required
-    const client = new PrisonApiClient(user.token)
+  constructor(private readonly client: PrisonApiClient) {}
 
+  async getHospitals(user: Context): Promise<Agency[]> {
     const [hospitalType, hshospType]: [Agency[], Agency[]] = await Promise.all([
-      client.getAgenciesByType('HOSPITAL'),
-      client.getAgenciesByType('HSHOSP'),
+      this.client.getAgenciesByType('HOSPITAL', asUser(user.token)),
+      this.client.getAgenciesByType('HSHOSP', asUser(user.token)),
     ])
 
     return [...hospitalType, ...hshospType]
@@ -18,18 +18,12 @@ export default class AgencySearchService {
   }
 
   async getPrisons(user: Context): Promise<Agency[]> {
-    // agencies endpoint just needs a valid token without any special roles required
-    const client = new PrisonApiClient(user.token)
-
-    const prisons = await client.getAgenciesByType('INST')
+    const prisons = await this.client.getAgenciesByType('INST', asUser(user.token))
 
     return prisons.filter(h => h.active).sort((a: Agency, b: Agency) => a.description.localeCompare(b.description))
   }
 
   async getAgency(agencyId: string, user: Context): Promise<Agency> {
-    // agency endpoint just needs a valid token without any special roles required
-    const client = new PrisonApiClient(user.token)
-
-    return client.getAgencyDetails(agencyId)
+    return this.client.getAgencyDetails(agencyId, asUser(user.token))
   }
 }

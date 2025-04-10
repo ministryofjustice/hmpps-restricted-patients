@@ -10,9 +10,10 @@ import AgencySearchService from '../../services/agencySearchService'
 jest.mock('../../services/restrictedPatientSearchService')
 jest.mock('../../services/agencySearchService')
 
-const restrictedPatientSearchService =
-  new RestrictedPatientSearchService() as jest.Mocked<RestrictedPatientSearchService>
-const agencySearchService = new AgencySearchService() as jest.Mocked<AgencySearchService>
+const restrictedPatientSearchService = new RestrictedPatientSearchService(
+  null,
+) as jest.Mocked<RestrictedPatientSearchService>
+const agencySearchService = new AgencySearchService(null) as jest.Mocked<AgencySearchService>
 
 let app: Express
 

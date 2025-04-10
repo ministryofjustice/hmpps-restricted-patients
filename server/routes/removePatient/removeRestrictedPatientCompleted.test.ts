@@ -5,7 +5,7 @@ import PrisonerSearchService, { PrisonerResultSummary } from '../../services/pri
 
 jest.mock('../../services/prisonerSearchService')
 
-const prisonerSearchService = new PrisonerSearchService(null) as jest.Mocked<PrisonerSearchService>
+const prisonerSearchService = new PrisonerSearchService(null, null) as jest.Mocked<PrisonerSearchService>
 
 let app: Express
 

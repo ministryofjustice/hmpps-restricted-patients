@@ -3,13 +3,10 @@ import PrisonApiClient, { Agency } from '../data/prisonApiClient'
 
 import { Context } from './context'
 
-const getAgenciesByType = jest.fn()
-const getAgencyDetails = jest.fn()
-
 jest.mock('../data/hmppsAuthClient')
-jest.mock('../data/prisonApiClient', () =>
-  jest.fn().mockImplementation(() => ({ getAgenciesByType, getAgencyDetails })),
-)
+jest.mock('../data/prisonApiClient')
+
+const prisonApiClient = new PrisonApiClient(null) as jest.Mocked<PrisonApiClient>
 
 const user = {
   username: 'user1',
@@ -20,7 +17,7 @@ describe('agencySearchService', () => {
   let service: AgencySearchService
 
   beforeEach(() => {
-    service = new AgencySearchService()
+    service = new AgencySearchService(prisonApiClient)
   })
 
   afterEach(() => {
@@ -29,7 +26,7 @@ describe('agencySearchService', () => {
 
   describe('getHospitals', () => {
     beforeEach(() => {
-      getAgenciesByType
+      prisonApiClient.getAgenciesByType
         .mockResolvedValue([
           {
             agencyId: 'SHEFF',
@@ -60,9 +57,14 @@ describe('agencySearchService', () => {
     it('makes the correct calls and returns the hospitals', async () => {
       const results = await service.getHospitals(user)
 
-      expect(PrisonApiClient).toBeCalledWith(user.token)
-      expect(getAgenciesByType).toBeCalledWith('HOSPITAL')
-      expect(getAgenciesByType).toBeCalledWith('HSHOSP')
+      expect(prisonApiClient.getAgenciesByType).toBeCalledWith('HOSPITAL', {
+        tokenType: 'USER_TOKEN',
+        user: { token: 'token-1' },
+      })
+      expect(prisonApiClient.getAgenciesByType).toBeCalledWith('HSHOSP', {
+        tokenType: 'USER_TOKEN',
+        user: { token: 'token-1' },
+      })
       expect(results).toStrictEqual([
         {
           active: true,
@@ -84,7 +86,7 @@ describe('agencySearchService', () => {
 
   describe('getPrisons', () => {
     beforeEach(() => {
-      getAgenciesByType.mockResolvedValue([
+      prisonApiClient.getAgenciesByType.mockResolvedValue([
         {
           agencyId: 'MDI',
           description: 'Moorland',
@@ -105,8 +107,10 @@ describe('agencySearchService', () => {
     it('makes the correct calls and returns the prisons', async () => {
       const results = await service.getPrisons(user)
 
-      expect(PrisonApiClient).toBeCalledWith(user.token)
-      expect(getAgenciesByType).toBeCalledWith('INST')
+      expect(prisonApiClient.getAgenciesByType).toBeCalledWith('INST', {
+        tokenType: 'USER_TOKEN',
+        user: { token: 'token-1' },
+      })
       expect(results).toStrictEqual([
         {
           active: true,
@@ -121,7 +125,7 @@ describe('agencySearchService', () => {
 
   describe('getAgency', () => {
     beforeEach(() => {
-      getAgencyDetails.mockResolvedValue({
+      prisonApiClient.getAgencyDetails.mockResolvedValue({
         agencyId: 'SHEFF',
         description: 'Sheffield Hospital',
         longDescription: 'Sheffield Teaching Hospital',
@@ -133,8 +137,10 @@ describe('agencySearchService', () => {
     it('makes the correct calls and returns the hospital details', async () => {
       const results = await service.getAgency('SHEFF', user)
 
-      expect(PrisonApiClient).toBeCalledWith(user.token)
-      expect(getAgencyDetails).toBeCalledWith('SHEFF')
+      expect(prisonApiClient.getAgencyDetails).toBeCalledWith('SHEFF', {
+        tokenType: 'USER_TOKEN',
+        user: { token: 'token-1' },
+      })
       expect(results).toStrictEqual({
         active: true,
         agencyId: 'SHEFF',

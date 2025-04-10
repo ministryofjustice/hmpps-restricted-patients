@@ -1,3 +1,5 @@
+import { asUser } from '@ministryofjustice/hmpps-rest-client'
+
 import HmppsAuthClient from '../data/hmppsAuthClient'
 import PrisonApiClient from '../data/prisonApiClient'
 import RestrictedPatientApiClient from '../data/restrictedPatientApiClient'
@@ -15,7 +17,10 @@ export interface RestrictedPatientDetails {
 }
 
 export default class RemoveRestrictedPatientService {
-  constructor(private readonly hmppsAuthClient: HmppsAuthClient) {}
+  constructor(
+    private readonly hmppsAuthClient: HmppsAuthClient,
+    private readonly prisonApiClient: PrisonApiClient,
+  ) {}
 
   async removeRestrictedPatient(prisonerNumber: string, user: Context): Promise<Record<string, unknown>> {
     const token = await this.hmppsAuthClient.getSystemClientToken(user.username)
@@ -27,7 +32,7 @@ export default class RemoveRestrictedPatientService {
   async getRestrictedPatient(prisonerNumber: string, user: Context): Promise<RestrictedPatientDetails> {
     const [patientDetails, prisonerDetails]: [RestrictedPatientResult, PrisonerResult] = await Promise.all([
       new RestrictedPatientApiClient(user.token).getPatient(prisonerNumber),
-      new PrisonApiClient(user.token).getPrisonerDetails(prisonerNumber),
+      this.prisonApiClient.getPrisonerDetails(prisonerNumber, asUser(user.token)),
     ])
 
     return {

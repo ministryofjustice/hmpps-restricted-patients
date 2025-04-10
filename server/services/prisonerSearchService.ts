@@ -1,4 +1,6 @@
 import { Readable } from 'stream'
+import { asSystem } from '@ministryofjustice/hmpps-rest-client'
+
 import type { PrisonerSearchByName, PrisonerSearchByPrisonerNumber } from '../data/prisonerSearchClient'
 import PrisonerSearchClient from '../data/prisonerSearchClient'
 import PrisonApiClient from '../data/prisonApiClient'
@@ -44,7 +46,10 @@ export interface PrisonerSearch {
 }
 
 export default class PrisonerSearchService {
-  constructor(private readonly hmppsAuthClient: HmppsAuthClient) {}
+  constructor(
+    private readonly hmppsAuthClient: HmppsAuthClient,
+    private readonly prisonApiClient: PrisonApiClient,
+  ) {}
 
   private static enhancePrisoner(prisoner: PrisonerSearchResult | PrisonerResult) {
     return {
@@ -77,13 +82,11 @@ export default class PrisonerSearchService {
   }
 
   async getPrisonerImage(prisonerNumber: string, user: Context): Promise<Readable> {
-    const token = await this.hmppsAuthClient.getSystemClientToken(user.username)
-    return new PrisonApiClient(token).getPrisonerImage(prisonerNumber)
+    return this.prisonApiClient.getPrisonerImage(prisonerNumber, asSystem(user.username))
   }
 
   async getPrisonerDetails(prisonerNumber: string, user: Context): Promise<PrisonerResultSummary> {
-    const token = await this.hmppsAuthClient.getSystemClientToken(user.username)
-    const prisoner = await new PrisonApiClient(token).getPrisonerDetails(prisonerNumber)
+    const prisoner = await this.prisonApiClient.getPrisonerDetails(prisonerNumber, asSystem(user.username))
 
     return {
       ...prisoner,

@@ -8,8 +8,8 @@ import { Agency } from '../../data/prisonApiClient'
 jest.mock('../../services/prisonerSearchService')
 jest.mock('../../services/agencySearchService')
 
-const prisonerSearchService = new PrisonerSearchService(null) as jest.Mocked<PrisonerSearchService>
-const agencySearchService = new AgencySearchService() as jest.Mocked<AgencySearchService>
+const prisonerSearchService = new PrisonerSearchService(null, null) as jest.Mocked<PrisonerSearchService>
+const agencySearchService = new AgencySearchService(null) as jest.Mocked<AgencySearchService>
 
 let app: Express
 

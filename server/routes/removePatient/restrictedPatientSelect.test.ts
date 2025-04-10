@@ -8,8 +8,9 @@ import { appWithAllRoutes, mockJwtDecode } from '../testutils/appSetup'
 
 jest.mock('../../services/restrictedPatientSearchService')
 
-const restrictedPatientSearchService =
-  new RestrictedPatientSearchService() as jest.Mocked<RestrictedPatientSearchService>
+const restrictedPatientSearchService = new RestrictedPatientSearchService(
+  null,
+) as jest.Mocked<RestrictedPatientSearchService>
 
 let app: Express
 

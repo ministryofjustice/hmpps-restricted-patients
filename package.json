@@ -77,8 +77,10 @@
   },
   "dependencies": {
     "@ministryofjustice/frontend": "^3.7.0",
+    "@ministryofjustice/hmpps-auth-clients": "^0.0.1-alpha.4",
     "@ministryofjustice/hmpps-connect-dps-components": "^2.1.0",
     "@ministryofjustice/hmpps-monitoring": "^0.0.1-beta.2",
+    "@ministryofjustice/hmpps-rest-client": "^0.0.1-alpha.8",
     "accessible-autocomplete": "^3.0.1",
     "agentkeepalive": "^4.6.0",
     "applicationinsights": "^2.9.6",

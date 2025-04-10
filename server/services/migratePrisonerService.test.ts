@@ -35,7 +35,7 @@ describe('migratePrisonerService', () => {
     it('makes the correct calls and returns the received data', async () => {
       const results = await service.migrateToHospital('A1234AA', 'SHEFF', user)
 
-      expect(migratePatient).toBeCalledWith({
+      expect(migratePatient).toHaveBeenCalledWith({
         offenderNo: 'A1234AA',
         hospitalLocationCode: 'SHEFF',
       })
