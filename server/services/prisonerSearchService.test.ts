@@ -1,28 +1,21 @@
 import { Readable } from 'stream'
+import 'reflect-metadata'
 
 import PrisonerSearchService, { PrisonerSearchSummary } from './prisonerSearchService'
 import PrisonerSearchClient from '../data/prisonerSearchClient'
 import PrisonApiClient from '../data/prisonApiClient'
-import HmppsAuthClient from '../data/hmppsAuthClient'
 
 import { Context } from './context'
 import PrisonerResult from '../data/prisonerResult'
-
-const search = jest.fn()
+import PrisonerSearchResult from '../data/prisonerSearchResult'
 
 jest.mock('../data/hmppsAuthClient')
-jest.mock('../data/prisonerSearchClient', () => {
-  return jest.fn().mockImplementation(() => {
-    return { search }
-  })
-})
-
+jest.mock('../data/prisonerSearchClient')
 jest.mock('../data/prisonApiClient')
 
-const hmppsAuthClient = new HmppsAuthClient(null) as jest.Mocked<HmppsAuthClient>
 const prisonApiClient = new PrisonApiClient(null) as jest.Mocked<PrisonApiClient>
+const prisonerSearchClient = new PrisonerSearchClient(null) as jest.Mocked<PrisonerSearchClient>
 
-const token = 'some token'
 const prisonIds = ['PR1', 'PR2']
 const user = {
   username: 'user1',
@@ -33,9 +26,7 @@ describe('prisonerSearchService', () => {
   let service: PrisonerSearchService
 
   beforeEach(() => {
-    hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
-
-    service = new PrisonerSearchService(hmppsAuthClient, prisonApiClient)
+    service = new PrisonerSearchService(prisonApiClient, prisonerSearchClient)
   })
 
   afterEach(() => {
@@ -44,7 +35,7 @@ describe('prisonerSearchService', () => {
 
   describe('search', () => {
     it('search by prisoner identifier', async () => {
-      search.mockResolvedValue([
+      prisonerSearchClient.search.mockResolvedValue([
         {
           alerts: [
             { expired: false, alertType: 'T', alertCode: 'TCPA' },
@@ -55,7 +46,7 @@ describe('prisonerSearchService', () => {
           prisonName: 'HMP Moorland',
           prisonerNumber: 'A1234AA',
           cellLocation: '1-2-015',
-        },
+        } as PrisonerSearchResult,
         {
           alerts: [],
           firstName: 'STEVE',
@@ -63,7 +54,7 @@ describe('prisonerSearchService', () => {
           prisonName: 'HMP Moorland',
           prisonerNumber: 'A1234AB',
           cellLocation: '1-2-016',
-        },
+        } as PrisonerSearchResult,
       ])
       const results = await service.search({ searchTerm: 'a1234aA', prisonIds }, user)
       expect(results).toStrictEqual([
@@ -103,20 +94,19 @@ describe('prisonerSearchService', () => {
           lastName: 'SMITH',
           prisonerNumber: 'A1234AA',
           prisonName: 'HMP Moorland',
-        } as PrisonerSearchSummary,
+        },
       ])
-      expect(PrisonerSearchClient).toBeCalledWith(token)
-      expect(search).toBeCalledWith({ prisonerIdentifier: 'A1234AA', prisonIds })
+      expect(prisonerSearchClient.search).toBeCalledWith({ prisonerIdentifier: 'A1234AA', prisonIds }, 'user1')
     })
 
     it('search by prisoner name', async () => {
-      search.mockResolvedValue([
+      prisonerSearchClient.search.mockResolvedValue([
         {
           firstName: 'JOHN',
           lastName: 'SMITH',
           prisonName: 'HMP Moorland',
           prisonerNumber: 'A1234AA',
-        },
+        } as PrisonerSearchSummary,
       ])
       const results = await service.search({ searchTerm: 'Smith, John', prisonIds }, user)
       expect(results).toStrictEqual([
@@ -127,30 +117,29 @@ describe('prisonerSearchService', () => {
           lastName: 'SMITH',
           prisonerNumber: 'A1234AA',
           prisonName: 'HMP Moorland',
-        } as PrisonerSearchSummary,
+        },
       ])
-      expect(PrisonerSearchClient).toBeCalledWith(token)
-      expect(search).toBeCalledWith({ lastName: 'Smith', firstName: 'John', prisonIds })
+      expect(prisonerSearchClient.search).toBeCalledWith({ lastName: 'Smith', firstName: 'John', prisonIds }, 'user1')
     })
 
     it('search by prisoner surname only', async () => {
       await service.search({ searchTerm: 'Smith', prisonIds }, user)
-      expect(search).toBeCalledWith({ lastName: 'Smith', prisonIds })
+      expect(prisonerSearchClient.search).toBeCalledWith({ lastName: 'Smith', prisonIds }, 'user1')
     })
 
     it('search by prisoner name separated by a space', async () => {
       await service.search({ searchTerm: 'Smith John', prisonIds }, user)
-      expect(search).toBeCalledWith({ lastName: 'Smith', firstName: 'John', prisonIds })
+      expect(prisonerSearchClient.search).toBeCalledWith({ lastName: 'Smith', firstName: 'John', prisonIds }, 'user1')
     })
 
     it('search by prisoner name separated by many spaces', async () => {
       await service.search({ searchTerm: '    Smith   John ', prisonIds }, user)
-      expect(search).toBeCalledWith({ lastName: 'Smith', firstName: 'John', prisonIds })
+      expect(prisonerSearchClient.search).toBeCalledWith({ lastName: 'Smith', firstName: 'John', prisonIds }, 'user1')
     })
 
     it('search by prisoner identifier with extra spaces', async () => {
       await service.search({ searchTerm: '    A1234AA ', prisonIds }, user)
-      expect(search).toBeCalledWith({ prisonerIdentifier: 'A1234AA', prisonIds })
+      expect(prisonerSearchClient.search).toBeCalledWith({ prisonerIdentifier: 'A1234AA', prisonIds }, 'user1')
     })
   })
 

@@ -17,6 +17,7 @@ import { createRedisClient } from './redisClient'
 import config from '../config'
 import PrisonApiClient from './prisonApiClient'
 import logger from '../../logger'
+import PrisonerSearchClient from './prisonerSearchClient'
 
 export const dataAccess = () => {
   const authenticationClient = new AuthenticationClient(
@@ -32,6 +33,7 @@ export const dataAccess = () => {
     ),
     manageUsersApiClient: new ManageUsersApiClient(),
     prisonApiClient: new PrisonApiClient(authenticationClient),
+    prisonerSearchClient: new PrisonerSearchClient(authenticationClient),
   }
 }
 

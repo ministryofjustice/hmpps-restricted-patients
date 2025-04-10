@@ -5,7 +5,6 @@ import type { PrisonerSearchByName, PrisonerSearchByPrisonerNumber } from '../da
 import PrisonerSearchClient from '../data/prisonerSearchClient'
 import PrisonApiClient from '../data/prisonApiClient'
 import PrisonerSearchResult from '../data/prisonerSearchResult'
-import HmppsAuthClient from '../data/hmppsAuthClient'
 
 import { FormattedAlertType, getFormattedAlerts } from '../common/alertFlagValues'
 import { convertToTitleCase } from '../utils/utils'
@@ -47,8 +46,8 @@ export interface PrisonerSearch {
 
 export default class PrisonerSearchService {
   constructor(
-    private readonly hmppsAuthClient: HmppsAuthClient,
     private readonly prisonApiClient: PrisonApiClient,
+    private readonly prisonerSearchClient: PrisonerSearchClient,
   ) {}
 
   private static enhancePrisoner(prisoner: PrisonerSearchResult | PrisonerResult) {
@@ -66,8 +65,7 @@ export default class PrisonerSearchService {
       ? searchByPrisonerIdentifier(searchTerm, prisonIds)
       : searchByName(searchTerm, prisonIds)
 
-    const token = await this.hmppsAuthClient.getSystemClientToken(user.username)
-    const results = await new PrisonerSearchClient(token).search(searchRequest)
+    const results = await this.prisonerSearchClient.search(searchRequest, user.username)
 
     const enhancedResults = results.map(prisoner => {
       return {
