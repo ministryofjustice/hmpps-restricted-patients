@@ -1,17 +1,21 @@
+import { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
+
 import 'reflect-metadata'
 import nock from 'nock'
 import config from '../config'
-import PrisonSearchClient from './prisonerSearchClient'
+import PrisonerSearchClient from './prisonerSearchClient'
 
 describe('prisonerSearchClient', () => {
   let fakePrisonerSearchApi: nock.Scope
-  let client: PrisonSearchClient
-
-  const token = 'token-1'
+  let client: PrisonerSearchClient
+  let mockAuthenticationClient: jest.Mocked<AuthenticationClient>
 
   beforeEach(() => {
     fakePrisonerSearchApi = nock(config.apis.prisonerSearch.url)
-    client = new PrisonSearchClient(token)
+    mockAuthenticationClient = {
+      getToken: jest.fn().mockResolvedValue('test-system-token'),
+    } as unknown as jest.Mocked<AuthenticationClient>
+    client = new PrisonerSearchClient(mockAuthenticationClient)
   })
 
   afterEach(() => {
@@ -25,12 +29,13 @@ describe('prisonerSearchClient', () => {
         `/prisoner-search/match-prisoners`,
         '{"includeAliases":false,"prisonerIdentifier":"A1234AA","prisonIds":["PR1","PR2"]}',
       )
-      .matchHeader('authorization', `Bearer ${token}`)
+      .matchHeader('authorization', 'Bearer test-system-token')
       .reply(200, results)
 
-    const output = await client.search({ prisonerIdentifier: 'A1234AA', prisonIds: ['PR1', 'PR2'] })
+    const output = await client.search({ prisonerIdentifier: 'A1234AA', prisonIds: ['PR1', 'PR2'] }, 'user1')
 
     expect(output).toEqual(results)
+    expect(nock.isDone()).toBe(true)
   })
 
   it('search by prisoner name', async () => {
@@ -40,24 +45,26 @@ describe('prisonerSearchClient', () => {
         `/prisoner-search/match-prisoners`,
         '{"includeAliases":false,"firstName":"John","lastName":"Smith","prisonIds":["PR1","PR2"]}',
       )
-      .matchHeader('authorization', `Bearer ${token}`)
+      .matchHeader('authorization', 'Bearer test-system-token')
       .reply(200, results)
 
-    const output = await client.search({ firstName: 'John', lastName: 'Smith', prisonIds: ['PR1', 'PR2'] })
+    const output = await client.search({ firstName: 'John', lastName: 'Smith', prisonIds: ['PR1', 'PR2'] }, 'user1')
 
     expect(output).toEqual(results)
+    expect(nock.isDone()).toBe(true)
   })
 
   it('search including aliases', async () => {
     const results: unknown[] = []
     fakePrisonerSearchApi
       .post(`/prisoner-search/match-prisoners`, '{"includeAliases":true,"prisonerIdentifier":"A1234AA"}')
-      .matchHeader('authorization', `Bearer ${token}`)
+      .matchHeader('authorization', 'Bearer test-system-token')
       .reply(200, results)
 
-    const output = await client.search({ includeAliases: true, prisonerIdentifier: 'A1234AA' })
+    const output = await client.search({ includeAliases: true, prisonerIdentifier: 'A1234AA' }, 'user1')
 
     expect(output).toEqual(results)
+    expect(nock.isDone()).toBe(true)
   })
 
   it('parses response correctly', async () => {
@@ -86,10 +93,10 @@ describe('prisonerSearchClient', () => {
 
     fakePrisonerSearchApi
       .post(`/prisoner-search/match-prisoners`, '{"includeAliases":false,"prisonerIdentifier":"A1234AA"}')
-      .matchHeader('authorization', `Bearer ${token}`)
+      .matchHeader('authorization', 'Bearer test-system-token')
       .reply(200, response)
 
-    const output = await client.search({ prisonerIdentifier: 'A1234AA' })
+    const output = await client.search({ prisonerIdentifier: 'A1234AA' }, 'user1')
 
     expect(output).toEqual([
       {
@@ -112,5 +119,6 @@ describe('prisonerSearchClient', () => {
         releaseDate: new Date(Date.UTC(2020, 8, 24)),
       },
     ])
+    expect(nock.isDone()).toBe(true)
   })
 })
