@@ -1,4 +1,6 @@
 import nock from 'nock'
+import { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
+
 import config from '../config'
 import RestrictedPatientApiClient, {
   RestrictedPatientAddRequest,
@@ -8,6 +10,7 @@ import RestrictedPatientApiClient, {
 describe('restrictedPatientSearchClient', () => {
   let fakeRestrictedPatientApi: nock.Scope
   let client: RestrictedPatientApiClient
+  let mockAuthenticationClient: jest.Mocked<AuthenticationClient>
 
   const token = 'token-1'
 
@@ -26,7 +29,10 @@ describe('restrictedPatientSearchClient', () => {
 
   beforeEach(() => {
     fakeRestrictedPatientApi = nock(config.apis.restrictedPatientApi.url)
-    client = new RestrictedPatientApiClient(token)
+    mockAuthenticationClient = {
+      getToken: jest.fn().mockResolvedValue('test-system-token'),
+    } as unknown as jest.Mocked<AuthenticationClient>
+    client = new RestrictedPatientApiClient(mockAuthenticationClient)
   })
 
   afterEach(() => {
@@ -41,9 +47,10 @@ describe('restrictedPatientSearchClient', () => {
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, results)
 
-      const output = await client.dischargePatient(dischargeToHospitalRequest)
+      const output = await client.dischargePatient(dischargeToHospitalRequest, token)
 
       expect(output).toEqual(results)
+      expect(nock.isDone()).toBe(true)
     })
 
     it('throws an error on 500', async () => {
@@ -54,7 +61,7 @@ describe('restrictedPatientSearchClient', () => {
         .reply(500)
 
       await client
-        .dischargePatient(dischargeToHospitalRequest)
+        .dischargePatient(dischargeToHospitalRequest, token)
         .then(() => {
           // eslint-disable-next-line no-console
           console.log('Should not get here')
@@ -63,6 +70,7 @@ describe('restrictedPatientSearchClient', () => {
           expect(error.message).toEqual('Internal Server Error')
           nock.cleanAll()
         })
+      expect(nock.isDone()).toBe(true)
     })
   })
 
@@ -74,9 +82,10 @@ describe('restrictedPatientSearchClient', () => {
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, results)
 
-      const output = await client.migratePatient(migrateToHospitalRequest)
+      const output = await client.migratePatient(migrateToHospitalRequest, token)
 
       expect(output).toEqual(results)
+      expect(nock.isDone()).toBe(true)
     })
 
     it('throws an error on 500', async () => {
@@ -87,7 +96,7 @@ describe('restrictedPatientSearchClient', () => {
         .reply(500)
 
       await client
-        .migratePatient(migrateToHospitalRequest)
+        .migratePatient(migrateToHospitalRequest, token)
         .then(() => {
           // eslint-disable-next-line no-console
           console.log('Should not get here')
@@ -96,6 +105,7 @@ describe('restrictedPatientSearchClient', () => {
           expect(error.message).toEqual('Internal Server Error')
           nock.cleanAll()
         })
+      expect(nock.isDone()).toBe(true)
     })
   })
 
@@ -113,13 +123,14 @@ describe('restrictedPatientSearchClient', () => {
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(200, result)
 
-      const response = await client.getPatient('A1234AA')
+      const response = await client.getPatient('A1234AA', token)
 
       expect(response).toEqual({
         hospitalLocation: {
           description: 'Sheffield Hospital',
         },
       })
+      expect(nock.isDone()).toBe(true)
     })
   })
 
@@ -127,12 +138,13 @@ describe('restrictedPatientSearchClient', () => {
     it('works', async () => {
       fakeRestrictedPatientApi
         .delete('/restricted-patient/prison-number/A1234AA')
-        .matchHeader('authorization', `Bearer ${token}`)
+        .matchHeader('authorization', 'Bearer test-system-token')
         .reply(200)
 
-      const response = await client.removePatient('A1234AA')
+      const response = await client.removePatient('A1234AA', 'user1')
 
       expect(response).toEqual({})
+      expect(nock.isDone()).toBe(true)
     })
   })
 })

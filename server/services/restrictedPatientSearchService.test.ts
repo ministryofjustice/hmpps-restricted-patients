@@ -1,3 +1,5 @@
+import 'reflect-metadata'
+
 import RestrictedPatientSearchService from './restrictedPatientSearchService'
 import RestrictedPatientSearchClient from '../data/restrictedPatientSearchClient'
 import RestrictedPatientSearchResult from '../data/restrictedPatientSearchResult'
@@ -5,14 +7,8 @@ import PrisonApiClient, { Agency } from '../data/prisonApiClient'
 
 import { Context } from './context'
 
-const search = jest.fn()
-
 jest.mock('../data/hmppsAuthClient')
-jest.mock('../data/restrictedPatientSearchClient', () => {
-  return jest.fn().mockImplementation(() => {
-    return { search }
-  })
-})
+jest.mock('../data/restrictedPatientSearchClient')
 jest.mock('../data/prisonApiClient')
 
 const user = {
@@ -20,12 +16,13 @@ const user = {
 } as Context
 
 const prisonApiClient = new PrisonApiClient(null) as jest.Mocked<PrisonApiClient>
+const restrictedPatientSearchClient = new RestrictedPatientSearchClient() as jest.Mocked<RestrictedPatientSearchClient>
 
 describe('restrictedPatientSearchService', () => {
   let service: RestrictedPatientSearchService
 
   beforeEach(() => {
-    service = new RestrictedPatientSearchService(prisonApiClient)
+    service = new RestrictedPatientSearchService(prisonApiClient, restrictedPatientSearchClient)
     prisonApiClient.getAgenciesByType.mockResolvedValue([
       {
         agencyId: 'MDI',
@@ -50,7 +47,7 @@ describe('restrictedPatientSearchService', () => {
 
   describe('search', () => {
     it('search by prisoner identifier', async () => {
-      search.mockResolvedValue([
+      restrictedPatientSearchClient.search.mockResolvedValue([
         {
           alerts: [
             { alertType: 'T', alertCode: 'TCPA' },
@@ -88,12 +85,11 @@ describe('restrictedPatientSearchService', () => {
         ]),
       )
 
-      expect(RestrictedPatientSearchClient).toBeCalledWith(user.token)
-      expect(search).toBeCalledWith({ prisonerIdentifier: 'A1234AA' })
+      expect(restrictedPatientSearchClient.search).toBeCalledWith({ prisonerIdentifier: 'A1234AA' }, user.token)
     })
 
     it('search by prisoner name', async () => {
-      search.mockResolvedValue([
+      restrictedPatientSearchClient.search.mockResolvedValue([
         {
           firstName: 'JOHN',
           lastName: 'SMITH',
@@ -107,32 +103,31 @@ describe('restrictedPatientSearchService', () => {
 
       const results = await service.search({ searchTerm: 'Smith, John' }, user)
       expect(results).toEqual(expect.arrayContaining([expect.objectContaining({ displayName: 'Smith, John' })]))
-      expect(RestrictedPatientSearchClient).toBeCalledWith(user.token)
-      expect(search).toBeCalledWith({ lastName: 'Smith', firstName: 'John' })
+      expect(restrictedPatientSearchClient.search).toBeCalledWith({ lastName: 'Smith', firstName: 'John' }, user.token)
     })
 
     it('search by prisoner surname only', async () => {
       await service.search({ searchTerm: 'Smith' }, user)
-      expect(search).toBeCalledWith({ lastName: 'Smith' })
+      expect(restrictedPatientSearchClient.search).toBeCalledWith({ lastName: 'Smith' }, user.token)
     })
 
     it('search by prisoner name separated by a space', async () => {
       await service.search({ searchTerm: 'Smith John' }, user)
-      expect(search).toBeCalledWith({ lastName: 'Smith', firstName: 'John' })
+      expect(restrictedPatientSearchClient.search).toBeCalledWith({ lastName: 'Smith', firstName: 'John' }, user.token)
     })
 
     it('search by prisoner name separated by many spaces', async () => {
       await service.search({ searchTerm: '    Smith   John ' }, user)
-      expect(search).toBeCalledWith({ lastName: 'Smith', firstName: 'John' })
+      expect(restrictedPatientSearchClient.search).toBeCalledWith({ lastName: 'Smith', firstName: 'John' }, user.token)
     })
 
     it('search by prisoner identifier with extra spaces', async () => {
       await service.search({ searchTerm: '    A1234AA ' }, user)
-      expect(search).toBeCalledWith({ prisonerIdentifier: 'A1234AA' })
+      expect(restrictedPatientSearchClient.search).toBeCalledWith({ prisonerIdentifier: 'A1234AA' }, user.token)
     })
 
     it('augments supporting prison with description', async () => {
-      search.mockResolvedValue([
+      restrictedPatientSearchClient.search.mockResolvedValue([
         {
           firstName: 'JOHN',
           lastName: 'SMITH',

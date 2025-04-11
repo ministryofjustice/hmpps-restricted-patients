@@ -8,17 +8,24 @@ import AgencySearchService from './agencySearchService'
 import MigratePrisonerService from './migratePrisonerService'
 
 export const services = () => {
-  const { applicationInfo, hmppsAuthClient, manageUsersApiClient, prisonApiClient, prisonerSearchClient } = dataAccess()
+  const {
+    applicationInfo,
+    manageUsersApiClient,
+    prisonApiClient,
+    prisonerSearchClient,
+    restrictedPatientApiClient,
+    restrictedPatientSearchClient,
+  } = dataAccess()
 
   return {
     applicationInfo,
     userService: new UserService(manageUsersApiClient),
     prisonerSearchService: new PrisonerSearchService(prisonApiClient, prisonerSearchClient),
-    movePrisonerService: new MovePrisonerService(),
-    restrictedPatientSearchService: new RestrictedPatientSearchService(prisonApiClient),
-    removeRestrictedPatientService: new RemoveRestrictedPatientService(hmppsAuthClient, prisonApiClient),
+    movePrisonerService: new MovePrisonerService(restrictedPatientApiClient),
+    restrictedPatientSearchService: new RestrictedPatientSearchService(prisonApiClient, restrictedPatientSearchClient),
+    removeRestrictedPatientService: new RemoveRestrictedPatientService(prisonApiClient, restrictedPatientApiClient),
     agencySearchService: new AgencySearchService(prisonApiClient),
-    migratePrisonerService: new MigratePrisonerService(),
+    migratePrisonerService: new MigratePrisonerService(restrictedPatientApiClient),
   }
 }
 

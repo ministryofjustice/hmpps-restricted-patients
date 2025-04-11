@@ -1,11 +1,10 @@
 import MigratePrisonerService from './migratePrisonerService'
 
 import { Context } from './context'
-
-const migratePatient = jest.fn()
+import RestrictedPatientApiClient from '../data/restrictedPatientApiClient'
 
 jest.mock('../data/hmppsAuthClient')
-jest.mock('../data/restrictedPatientApiClient', () => jest.fn().mockImplementation(() => ({ migratePatient })))
+jest.mock('../data/restrictedPatientApiClient')
 
 const user = {
   username: 'user1',
@@ -14,9 +13,10 @@ const user = {
 
 describe('migratePrisonerService', () => {
   let service: MigratePrisonerService
+  const restrictedPatientApiClient = new RestrictedPatientApiClient(null) as jest.Mocked<RestrictedPatientApiClient>
 
   beforeEach(() => {
-    service = new MigratePrisonerService()
+    service = new MigratePrisonerService(restrictedPatientApiClient)
   })
 
   afterEach(() => {
@@ -25,7 +25,7 @@ describe('migratePrisonerService', () => {
 
   describe('dischargePatientToHospital', () => {
     beforeEach(() => {
-      migratePatient.mockResolvedValue({
+      restrictedPatientApiClient.migratePatient.mockResolvedValue({
         restrictivePatient: {
           supportingPrison: 'MDI',
         },
@@ -35,10 +35,13 @@ describe('migratePrisonerService', () => {
     it('makes the correct calls and returns the received data', async () => {
       const results = await service.migrateToHospital('A1234AA', 'SHEFF', user)
 
-      expect(migratePatient).toHaveBeenCalledWith({
-        offenderNo: 'A1234AA',
-        hospitalLocationCode: 'SHEFF',
-      })
+      expect(restrictedPatientApiClient.migratePatient).toHaveBeenCalledWith(
+        {
+          offenderNo: 'A1234AA',
+          hospitalLocationCode: 'SHEFF',
+        },
+        'token-1',
+      )
       expect(results).toStrictEqual({
         restrictivePatient: {
           supportingPrison: 'MDI',

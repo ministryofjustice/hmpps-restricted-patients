@@ -1,14 +1,10 @@
 import MovePrisonerService from './movePrisonerService'
 
 import { Context } from './context'
-
-const dischargePatient = jest.fn()
-const changeSupportingPrison = jest.fn()
+import RestrictedPatientApiClient from '../data/restrictedPatientApiClient'
 
 jest.mock('../data/hmppsAuthClient')
-jest.mock('../data/restrictedPatientApiClient', () =>
-  jest.fn().mockImplementation(() => ({ dischargePatient, changeSupportingPrison })),
-)
+jest.mock('../data/restrictedPatientApiClient')
 
 const user = {
   username: 'user1',
@@ -17,9 +13,10 @@ const user = {
 
 describe('movePrisonerService', () => {
   let service: MovePrisonerService
+  const restrictedPatientApiClient = new RestrictedPatientApiClient(null) as jest.Mocked<RestrictedPatientApiClient>
 
   beforeEach(() => {
-    service = new MovePrisonerService()
+    service = new MovePrisonerService(restrictedPatientApiClient)
   })
 
   afterEach(() => {
@@ -28,7 +25,7 @@ describe('movePrisonerService', () => {
 
   describe('dischargePatientToHospital', () => {
     beforeEach(() => {
-      dischargePatient.mockResolvedValue({
+      restrictedPatientApiClient.dischargePatient.mockResolvedValue({
         restrictedPatient: {
           supportingPrison: 'MDI',
         },
@@ -38,11 +35,14 @@ describe('movePrisonerService', () => {
     it('makes the correct calls and returns the received data', async () => {
       const results = await service.dischargePatientToHospital('A1234AA', 'MDI', 'SHEFF', user)
 
-      expect(dischargePatient).toBeCalledWith({
-        offenderNo: 'A1234AA',
-        fromLocationId: 'MDI',
-        hospitalLocationCode: 'SHEFF',
-      })
+      expect(restrictedPatientApiClient.dischargePatient).toBeCalledWith(
+        {
+          offenderNo: 'A1234AA',
+          fromLocationId: 'MDI',
+          hospitalLocationCode: 'SHEFF',
+        },
+        user.token,
+      )
       expect(results).toStrictEqual({
         restrictedPatient: {
           supportingPrison: 'MDI',
@@ -53,7 +53,7 @@ describe('movePrisonerService', () => {
 
   describe('changeSupportingPrison', () => {
     beforeEach(() => {
-      changeSupportingPrison.mockResolvedValue({
+      restrictedPatientApiClient.changeSupportingPrison.mockResolvedValue({
         restrictedPatient: {
           supportingPrison: 'MDI',
         },
@@ -63,10 +63,13 @@ describe('movePrisonerService', () => {
     it('makes the correct calls and returns the received data', async () => {
       const results = await service.changeSupportingPrison('A1234AA', 'MDI', user)
 
-      expect(changeSupportingPrison).toBeCalledWith({
-        offenderNo: 'A1234AA',
-        supportingPrisonId: 'MDI',
-      })
+      expect(restrictedPatientApiClient.changeSupportingPrison).toBeCalledWith(
+        {
+          offenderNo: 'A1234AA',
+          supportingPrisonId: 'MDI',
+        },
+        user.token,
+      )
       expect(results).toStrictEqual({
         restrictedPatient: {
           supportingPrison: 'MDI',

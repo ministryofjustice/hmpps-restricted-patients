@@ -10,6 +10,7 @@ jest.mock('../../services/restrictedPatientSearchService')
 
 const restrictedPatientSearchService = new RestrictedPatientSearchService(
   null,
+  null,
 ) as jest.Mocked<RestrictedPatientSearchService>
 
 let app: Express
