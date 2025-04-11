@@ -11,7 +11,7 @@ describe('restrictedPatientSearchClient', () => {
 
   beforeEach(() => {
     fakePrisonerSearchApi = nock(config.apis.prisonerSearch.url)
-    client = new RestrictedPatientSearchClient(token)
+    client = new RestrictedPatientSearchClient()
   })
 
   afterEach(() => {
@@ -26,9 +26,10 @@ describe('restrictedPatientSearchClient', () => {
       .matchHeader('authorization', `Bearer ${token}`)
       .reply(200, response)
 
-    const output = await client.search({ prisonerIdentifier: 'A1234AA' })
+    const output = await client.search({ prisonerIdentifier: 'A1234AA' }, token)
 
     expect(output).toEqual(results)
+    expect(nock.isDone()).toBe(true)
   })
 
   it('search by prisoner name', async () => {
@@ -39,9 +40,10 @@ describe('restrictedPatientSearchClient', () => {
       .matchHeader('authorization', `Bearer ${token}`)
       .reply(200, response)
 
-    const output = await client.search({ firstName: 'John', lastName: 'Smith' })
+    const output = await client.search({ firstName: 'John', lastName: 'Smith' }, token)
 
     expect(output).toEqual(results)
+    expect(nock.isDone()).toBe(true)
   })
 
   it('parses response correctly', async () => {
@@ -88,7 +90,7 @@ describe('restrictedPatientSearchClient', () => {
       .matchHeader('authorization', `Bearer ${token}`)
       .reply(200, response)
 
-    const output = await client.search({ prisonerIdentifier: 'A1234AA' })
+    const output = await client.search({ prisonerIdentifier: 'A1234AA' }, token)
 
     expect(output).toEqual([
       {
@@ -124,5 +126,6 @@ describe('restrictedPatientSearchClient', () => {
         dischargeDetails: 'Psychiatric Hospital Discharge to Hazelwood House',
       },
     ])
+    expect(nock.isDone()).toBe(true)
   })
 })

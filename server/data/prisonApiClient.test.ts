@@ -36,6 +36,7 @@ describe('prisonApiClient', () => {
       const response = await client.getPrisonerImage('A1234AA', asUser(token))
 
       expect(response.read()).toEqual(Buffer.from('image data'))
+      expect(nock.isDone()).toBe(true)
     })
 
     it('should log at only info level for 404s', async () => {
@@ -44,12 +45,13 @@ describe('prisonApiClient', () => {
         .matchHeader('authorization', `Bearer ${token}`)
         .reply(404)
 
-      expect.assertions(3)
+      expect.assertions(4)
 
       await expect(client.getPrisonerImage('A1234AA', asUser(token))).rejects.toEqual(new Error('Not Found'))
 
       expect(logger.info).toHaveBeenCalled()
       expect(logger.warn).not.toHaveBeenCalled()
+      expect(nock.isDone()).toBe(true)
     })
   })
 
@@ -91,6 +93,7 @@ describe('prisonApiClient', () => {
           },
         ],
       })
+      expect(nock.isDone()).toBe(true)
     })
   })
 })

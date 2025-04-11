@@ -33,7 +33,10 @@ export interface RestrictedPatientSearchCriteria {
 }
 
 export default class RestrictedPatientSearchService {
-  constructor(private readonly prisonApiClient: PrisonApiClient) {}
+  constructor(
+    private readonly prisonApiClient: PrisonApiClient,
+    private readonly restrictedPatientSearchClient: RestrictedPatientSearchClient,
+  ) {}
 
   async search(search: RestrictedPatientSearchCriteria, user: Context): Promise<RestrictedPatientSearchSummary[]> {
     const searchTerm = search.searchTerm.replace(/,/g, ' ').replace(/\s\s+/g, ' ').trim()
@@ -43,7 +46,7 @@ export default class RestrictedPatientSearchService {
       : searchByName(searchTerm)
 
     const [results, prisons]: [RestrictedPatientSearchResult[], Agency[]] = await Promise.all([
-      new RestrictedPatientSearchClient(user.token).search(searchRequest),
+      this.restrictedPatientSearchClient.search(searchRequest, user.token),
       this.prisonApiClient.getAgenciesByType('INST', asUser(user.token)),
     ])
 

@@ -1,7 +1,10 @@
 import { plainToClass } from 'class-transformer'
+import { asSystem, asUser, RestClient } from '@ministryofjustice/hmpps-rest-client'
+import { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
+
 import config from '../config'
-import RestClient from './restClient'
 import RestrictedPatientResult from './restrictedPatientResult'
+import logger from '../../logger'
 
 export interface RestrictedPatientDischargeToHospitalRequest {
   offenderNo: string
@@ -19,45 +22,58 @@ export interface ChangeSupportingPrisonRequest {
   supportingPrisonId: string
 }
 
-export default class RestrictedPatientApiClient {
-  restClient: RestClient
-
-  constructor(token: string) {
-    this.restClient = new RestClient('Restricted Patient', config.apis.restrictedPatientApi, token)
+export default class RestrictedPatientApiClient extends RestClient {
+  constructor(authenticationClient: AuthenticationClient) {
+    super('Restricted Patient', config.apis.restrictedPatientApi, logger, authenticationClient)
   }
 
-  async dischargePatient(searchRequest: RestrictedPatientDischargeToHospitalRequest): Promise<unknown> {
-    return this.restClient.post<RestrictedPatientDischargeToHospitalRequest>({
-      path: `/discharge-to-hospital`,
-      data: { ...searchRequest },
-    })
+  async dischargePatient(searchRequest: RestrictedPatientDischargeToHospitalRequest, token: string): Promise<unknown> {
+    return this.post<RestrictedPatientDischargeToHospitalRequest>(
+      {
+        path: `/discharge-to-hospital`,
+        data: { ...searchRequest },
+      },
+      asUser(token),
+    )
   }
 
-  async migratePatient(searchRequest: RestrictedPatientAddRequest): Promise<unknown> {
-    return this.restClient.post<RestrictedPatientAddRequest>({
-      path: `/migrate-in-restricted-patient`,
-      data: { ...searchRequest },
-    })
+  async migratePatient(searchRequest: RestrictedPatientAddRequest, token: string): Promise<unknown> {
+    return this.post<RestrictedPatientAddRequest>(
+      {
+        path: `/migrate-in-restricted-patient`,
+        data: { ...searchRequest },
+      },
+      asUser(token),
+    )
   }
 
-  async getPatient(prisonerNumber: string): Promise<RestrictedPatientResult> {
-    const response = await this.restClient.get<RestrictedPatientResult>({
-      path: `/restricted-patient/prison-number/${prisonerNumber}`,
-    })
+  async getPatient(prisonerNumber: string, token: string): Promise<RestrictedPatientResult> {
+    const response = await this.get<RestrictedPatientResult>(
+      {
+        path: `/restricted-patient/prison-number/${prisonerNumber}`,
+      },
+      asUser(token),
+    )
 
     return plainToClass(RestrictedPatientResult, response, { excludeExtraneousValues: true })
   }
 
-  async removePatient(prisonerNumber: string): Promise<Record<string, unknown>> {
-    return this.restClient.delete<Record<string, unknown>>({
-      path: `/restricted-patient/prison-number/${prisonerNumber}`,
-    })
+  async removePatient(prisonerNumber: string, username: string): Promise<Record<string, unknown>> {
+    return this.delete<Record<string, unknown>>(
+      {
+        path: `/restricted-patient/prison-number/${prisonerNumber}`,
+      },
+      asSystem(username),
+    )
   }
 
-  async changeSupportingPrison(searchRequest: ChangeSupportingPrisonRequest): Promise<unknown> {
-    return this.restClient.post<ChangeSupportingPrisonRequest>({
-      path: `/change-supporting-prison`,
-      data: { ...searchRequest },
-    })
+  async changeSupportingPrison(searchRequest: ChangeSupportingPrisonRequest, token: string): Promise<unknown> {
+    return this.post<ChangeSupportingPrisonRequest>(
+      {
+        path: `/change-supporting-prison`,
+        data: { ...searchRequest },
+      },
+      asUser(token),
+    )
   }
 }
