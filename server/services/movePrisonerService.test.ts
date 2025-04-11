@@ -3,7 +3,6 @@ import MovePrisonerService from './movePrisonerService'
 import { Context } from './context'
 import RestrictedPatientApiClient from '../data/restrictedPatientApiClient'
 
-jest.mock('../data/hmppsAuthClient')
 jest.mock('../data/restrictedPatientApiClient')
 
 const user = {

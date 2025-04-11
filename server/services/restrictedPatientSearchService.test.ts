@@ -7,7 +7,6 @@ import PrisonApiClient, { Agency } from '../data/prisonApiClient'
 
 import { Context } from './context'
 
-jest.mock('../data/hmppsAuthClient')
 jest.mock('../data/restrictedPatientSearchClient')
 jest.mock('../data/prisonApiClient')
 

@@ -6,7 +6,6 @@ import RestrictedPatientResult from '../data/restrictedPatientResult'
 
 import { Context } from './context'
 
-jest.mock('../data/hmppsAuthClient')
 jest.mock('../data/restrictedPatientApiClient')
 jest.mock('../data/prisonApiClient')
 

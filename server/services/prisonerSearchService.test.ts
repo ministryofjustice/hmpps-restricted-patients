@@ -9,7 +9,6 @@ import { Context } from './context'
 import PrisonerResult from '../data/prisonerResult'
 import PrisonerSearchResult from '../data/prisonerSearchResult'
 
-jest.mock('../data/hmppsAuthClient')
 jest.mock('../data/prisonerSearchClient')
 jest.mock('../data/prisonApiClient')
 
