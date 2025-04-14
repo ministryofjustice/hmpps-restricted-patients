@@ -20,6 +20,6 @@ $govuk-font-family-print: 'GDS Transport';
 @import './components/results-table';
 @import './components/autocomplete';
 @import './components/feedback-banner';
-@import './local';
+@import './overrides/local';
 @import 'horizontal-content';
 @import 'helpers';

@@ -1,3 +1,5 @@
+@import "govuk-frontend/dist/govuk/index";
+
 .horizontal-information {
   @media print, (min-width: #{map-get($govuk-breakpoints, 'tablet')}) {
     padding-bottom: 0;
