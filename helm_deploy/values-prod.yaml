@@ -1,7 +1,5 @@
 ---
 generic-service:
-  replicaCount: 4
-
   ingress:
     host: manage-restricted-patients.hmpps.service.justice.gov.uk
 
